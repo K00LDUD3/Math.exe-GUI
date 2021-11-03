@@ -29,7 +29,7 @@ changPass_frame = LabelFrame(root)
 
 #function for hiding given frame
 def hideFrame(frame):
-    try:
+    try̥:
         frame.pack_forget()
     except:
         None

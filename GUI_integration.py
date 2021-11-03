@@ -19,6 +19,7 @@ button_pady = 10
 root = Tk()
 root.title('Math.exe')
 root.geometry("365x150")
+root.iconbitmap('D:\Tanush_Python\Math.exe-GUI\logo3.png') #not working
 
 #creating neccessary frames
 editProfile_frame = LabelFrame(root)
@@ -26,10 +27,11 @@ homescreen_frame = LabelFrame(root)
 deleteProfile_frame = LabelFrame(root)
 changeUser_frame = LabelFrame(root)
 changPass_frame = LabelFrame(root)
+specNumProgram_frame = LabelFrame(root)
 
 #function for hiding given frame
 def hideFrame(frame):
-    try̥:
+    try:
         frame.pack_forget()
     except:
         None
@@ -186,6 +188,14 @@ def changeUser():
     changeUser_frame.pack(padx=10, pady=10)
     return
 
+def specNumProgram(frame):
+    #hiding active frame
+    hideFrame(frame)
+    
+    #neccessary buttons, labels, drop downs, etc.
+
+    return
+
 def changeUserVer(old_user, new_user, password):
     #validate with DB and display message accordingly
     return
@@ -196,6 +206,15 @@ def changePassVer(user, old_password, new_password, new_passwordConfirm):
 def delAccVer(user, password, passwordConfirm):
     #validate with DB and display message accordingly
     return
+
+def initGuessGame():
+    #call method from main method
+    return
+
+def initSciCalc():
+    #call scientific class
+    return
+
 homescreen(None)
 root.mainloop()
 

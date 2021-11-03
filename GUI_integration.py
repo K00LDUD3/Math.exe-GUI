@@ -187,6 +187,14 @@ def changeUser():
     return
 
 def changeUserVer(old_user, new_user, password):
+    #validate with DB and display message accordingly
+    return
+def changePassVer(user, old_password, new_password, new_passwordConfirm):
+    #validate with DB and display message accordingly
+    return
+
+def delAccVer(user, password, passwordConfirm):
+    #validate with DB and display message accordingly
     return
 homescreen(None)
 root.mainloop()

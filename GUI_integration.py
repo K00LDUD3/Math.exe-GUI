@@ -141,20 +141,18 @@ def changePass():
     #neccessary delete profile buttons, labels, textboxes
     l_enterUser = createLabel('Enter Username: ', button_width, 0, 0, button_padx, button_pady, changPass_frame)
     l_enterPass = createLabel('Enter your Password: ', button_width, 1, 0, button_padx, button_pady, changPass_frame)
-    l_enterPassConf =createLabel('Confirm Password: ', button_width, 2, 0, button_padx, button_pady, changPass_frame)
-    l_enterPassUser = createLabel('Enter New Password: ', button_width, 3, 0, button_padx, button_pady, changPass_frame)
-    l_enterNewPassConf = createLabel('Confirm New Password: ', button_width, 4, 0, button_padx, button_pady, changPass_frame)
+    l_enterPassUser = createLabel('Enter New Password: ', button_width, 2, 0, button_padx, button_pady, changPass_frame)
+    l_enterNewPassConf = createLabel('Confirm New Password: ', button_width, 3, 0, button_padx, button_pady, changPass_frame)
 
     e_username = createEntry(20, 0, 1, button_padx, button_pady, changPass_frame)
     e_pass = createEntry(20, 1, 1, button_padx, button_pady, changPass_frame)
-    e_passConf = createEntry(20, 2, 1, button_padx, button_pady, changPass_frame)
-    e_newPass = createEntry(20, 3, 1, button_padx, button_pady, changPass_frame)
-    e_newPassConf = createEntry(button_width, 4, 1, button_padx, button_pady, changPass_frame)
+    e_newPass = createEntry(20, 2, 1, button_padx, button_pady, changPass_frame)
+    e_newPassConf = createEntry(button_width, 3, 1, button_padx, button_pady, changPass_frame)
 
     b_confirm = createButton('Change Password', button_width, 5, 1, button_padx, button_pady, changPass_frame)
     b_cancel = createButton('Cancel',5, 5, 0, button_padx, button_pady, changPass_frame)
     b_cancel.config(command=lambda: editProfile(changPass_frame))
-
+    b_confirm.config(command=lambda: changePassVer(e_username.get(), e_pass.get(), e_newPass.get(), e_newPassConf.get()))
     #putting del profile frame on screen
     changPass_frame.pack(padx=10, pady=10)
     return

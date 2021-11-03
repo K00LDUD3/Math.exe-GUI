@@ -67,7 +67,7 @@ def homescreen(frame):
     b_editProfile = createButton('Edit Profile', button_width, 0,0, button_padx, button_pady, homescreen_frame)
     b_specNumPrg = createButton('Special Number Programs', button_width,0,1, button_padx, button_pady, homescreen_frame)
     b_calc = createButton('Scienctific Calculator', button_width,1,0, button_padx, button_pady, homescreen_frame)
-    b_guessGame = createButton('Guess A Number',button_width,1,1, button_padx, button_pady, homescreen_frame)
+    b_guessGame = createButton('Guessing Game',button_width,1,1, button_padx, button_pady, homescreen_frame)
     b_signOut = createButton('Sign Out',button_width,2,0, button_padx, button_pady, homescreen_frame)
 
     b_editProfile.config(command=lambda: editProfile(homescreen_frame))
@@ -169,24 +169,25 @@ def changeUser():
     #neccessary delete profile buttons, labels, textboxes
     l_enterUser = createLabel('Enter Username: ', button_width, 0, 0, button_padx, button_pady, changeUser_frame)
     l_enterPass = createLabel('Enter your Password: ', button_width, 1, 0, button_padx, button_pady, changeUser_frame)
-    l_enterPassConf = createLabel('Confirm Password: ', button_width, 2, 0, button_padx, button_pady, changeUser_frame)
+    #l_enterPassConf = createLabel('Confirm Password: ', button_width, 2, 0, button_padx, button_pady, changeUser_frame)
     l_enterNewUser = createLabel('Enter New Username: ', button_width, 3, 0, button_padx, button_pady, changeUser_frame)
-    l_enterNewUserConf = createLabel('Confirm New Username: ', button_width, 4, 0, button_padx, button_pady, changeUser_frame)
 
     e_username = createEntry(20, 0, 1, button_padx, button_pady, changeUser_frame)
     e_pass = createEntry(20, 1, 1, button_padx, button_pady, changeUser_frame)
-    e_passConf = createEntry(20, 2, 1, button_padx, button_pady, changeUser_frame)
+    #e_passConf = createEntry(20, 2, 1, button_padx, button_pady, changeUser_frame)
     e_newUser = createEntry(20, 3, 1, button_padx, button_pady, changeUser_frame)
-    e_newUserConf = createEntry(button_width, 4, 1, button_padx, button_pady, changeUser_frame)
 
-    b_confirm = createButton('Change Username', button_width, 5, 1, button_padx, button_pady, changeUser_frame)
-    b_cancel = createButton('Cancel',5, 5, 0, button_padx, button_pady, changeUser_frame)
+    b_confirm = createButton('Change Username', button_width, 4, 1, button_padx, button_pady, changeUser_frame)
+    b_confirm.config(command=lambda: changeUserVer(e_username.get(), e_newUser.get(), e_pass.get()))
+    b_cancel = createButton('Cancel',5, 4, 0, button_padx, button_pady, changeUser_frame)
     b_cancel.config(command=lambda: editProfile(changeUser_frame))
     
     #putting change user frame on screen
     changeUser_frame.pack(padx=10, pady=10)
     return
 
+def changeUserVer(old_user, new_user, password):
+    return
 homescreen(None)
 root.mainloop()
 

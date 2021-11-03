@@ -19,7 +19,7 @@ button_pady = 10
 root = Tk()
 root.title('Math.exe')
 root.geometry("365x150")
-root.iconbitmap('D:\Tanush_Python\Math.exe-GUI\logo3.png') #not working
+#root.iconbitmap('D:\Tanush_Python\Math.exe-GUI\logo3.png') #not working
 
 #creating neccessary frames
 editProfile_frame = LabelFrame(root)
@@ -73,6 +73,7 @@ def homescreen(frame):
     b_signOut = createButton('Sign Out',button_width,2,0, button_padx, button_pady, homescreen_frame)
 
     b_editProfile.config(command=lambda: editProfile(homescreen_frame))
+    b_specNumPrg.config(command=lambda: specNumProgram(editProfile_frame))
 
     homescreen_frame.pack()
     
@@ -186,12 +187,17 @@ def changeUser():
     changeUser_frame.pack(padx=10, pady=10)
     return
 
-def specNumProgram(frame):
+def specNumProgram(frame): #WORKING ON THIS
     #hiding active frame
     hideFrame(frame)
-    
-    #neccessary buttons, labels, drop downs, etc.
 
+    #neccessary buttons, labels, drop downs, etc.
+    clicked = StringVar()
+    clicked.set('hello')
+    dropdown = OptionMenu(specNumProgram_frame,clicked, 'hello')
+    
+    #putting specNumberProgram frame on screen
+    specNumProgram_frame.pack()
     return
 
 def changeUserVer(old_user, new_user, password):

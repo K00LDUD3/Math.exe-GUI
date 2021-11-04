@@ -22,13 +22,14 @@ root.title('Math.exe')
 root.geometry("365x150")
 #root.resizable(False, False)
 
-#creating neccessary frames
+#creating necessary frames
 editProfile_frame = LabelFrame(root)
 homescreen_frame = LabelFrame(root)
 deleteProfile_frame = LabelFrame(root) 
 changeUser_frame = LabelFrame(root)
 changPass_frame = LabelFrame(root)
 specNumPrgInitial_frame = LabelFrame(root)
+specNumPrg_frame = LabelFrame(root)
 
 #function for hiding given frame
 def hideFrame(frame):
@@ -62,15 +63,26 @@ combo = ttk.Combobox()
 def comboclick(event):
     print(combo.get())
 
+def specNumPrgPreSpExecEval(choice, num_raw):
+    num = 0
+    mess = 'hello'
+	try:
+		num = int(num_raw)
+        mess =  sp.evalSpecNum(choice, num)
+    except:
+		mess =  'Invalid Number, Please Try Again...'
+    return mess
+
+
+
 #homescreen frame
 def homescreen(frame):
-    print(sp.isArmstrong(5))
     #hiding active (if any) frame
     hideFrame(frame)
     root.geometry('365x150')
     root.title('Homescreen')
     
-    #neccessary buttons
+    #necessary buttons
     b_editProfile = createButton('Edit Profile', button_width, 0,0, button_padx, button_pady, homescreen_frame)
     b_specNumPrg = createButton('Special Number Programs', button_width,0,1, button_padx, button_pady, homescreen_frame)
     b_calc = createButton('Scienctific Calculator', button_width,1,0, button_padx, button_pady, homescreen_frame)
@@ -94,7 +106,7 @@ def editProfile(frame):
     size = str(editProfile_frame.winfo_width())+'x'+str(editProfile_frame.winfo_height())
     print(size)
     root.geometry('200x200')
-    #neccessary edit profile buttons
+    #necessary edit profile buttons
     b_changeUser = createButton('Change Username', button_width, 0, 0, button_padx, button_pady, editProfile_frame)
     b_changePass = createButton('Change Password', button_width, 1, 0, button_padx, button_pady, editProfile_frame)    
     b_delProfile = createButton('Delete Account', button_width, 2, 0, button_padx, button_pady, editProfile_frame)    
@@ -119,7 +131,7 @@ def deleteProfile():
     #setting proper size
     root.geometry('400x200')
 
-    #neccessary delete profile buttons, labels, textboxes
+    #necessary delete profile buttons, labels, textboxes
     l_enterUser = createLabel('Enter Username: ', button_width, 0, 0, button_padx, button_pady, deleteProfile_frame)
     l_enterPass = createLabel('Enter your Password: ', button_width, 1, 0, button_padx, button_pady, deleteProfile_frame)
     l_enterPassConf =createLabel('Confirm Password: ', button_width, 2, 0, button_padx, button_pady, deleteProfile_frame)
@@ -144,7 +156,7 @@ def changePass():
     #setting proper size
     root.geometry('400x300')
 
-    #neccessary delete profile buttons, labels, textboxes
+    #necessary delete profile buttons, labels, textboxes
     l_enterUser = createLabel('Enter Username: ', button_width, 0, 0, button_padx, button_pady, changPass_frame)
     l_enterPass = createLabel('Enter your Password: ', button_width, 1, 0, button_padx, button_pady, changPass_frame)
     l_enterPassConf =createLabel('Confirm Password: ', button_width, 2, 0, button_padx, button_pady, changPass_frame)
@@ -174,7 +186,7 @@ def changeUser():
     #setting proper size
     root.geometry('400x300')
 
-    #neccessary delete profile buttons, labels, textboxes
+    #necessary delete profile buttons, labels, textboxes
     l_enterUser = createLabel('Enter Username: ', button_width, 0, 0, button_padx, button_pady, changeUser_frame)
     l_enterPass = createLabel('Enter your Password: ', button_width, 1, 0, button_padx, button_pady, changeUser_frame)
     #l_enterPassConf = createLabel('Confirm Password: ', button_width, 2, 0, button_padx, button_pady, changeUser_frame)
@@ -237,14 +249,36 @@ def specNumPrgInitial(frame):
     specNumPrgInitial_frame.pack()
     return
     
+
 def specNumPrg(frame, choiceRaw):
     #hiding active frame
     hideFrame(frame)
     
-    choice = choiceRaw.split(' ')[1]
-    
+    choice = choiceRaw.split(' ')[1].lower()
+
+    #necessary buttons, labels, entrys, etc
+    l_enterNum = createLabel('Enter a number: ', button_width, 0,0,button_padx, button_pady, specNumPrg_frame)
+    l_result = createLabel('', button_width, 1, 0, button_padx, button_pady, specNumPrg_frame)
+
+    b_go = createButton('Go', button_width, 2, 1, button_padx, button_pady, specNumPrg_frame)
+    b_back = createButton('Back', 10, 2, 0, button_padx, button_pady, specNumPrg_frame)
+
+    e_Num = createEntry(button_width, 0, 1, button_padx, button_pady, specNumPrg_frame)
+
+
+    b_back.config(command=specNumPrgInitial(specNumPrg_frame))
+    b_go.config(command=lambda: specNumPrgPreSpExecEval(choice, e_Num.get())) # special number program pre special number execution evaluate
+
+
+
+    num = 0.0
+    lab = sp.evalSpecNum(choice.lower(), num)
     
 
+    #showing everything on screen
+    specNumPrg_frame.pack()
+    return
+    
 
 
 def changeUserVer(old_user, new_user, password):

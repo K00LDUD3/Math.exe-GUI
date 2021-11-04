@@ -1,8 +1,47 @@
 import math
 
 
-def evalSpecNum(choice):
-	return ''
+def evalSpecNum(choice, num):
+
+	if choice == 'armstrong':
+		return isArmstrong(num)
+	elif choice == 'Buzz':
+		return isBuzz(num)
+	elif choice == 'Automorphic':
+		return isAutomorphic(num)
+	elif choice == 'Capricon':
+		return isCapricon(num)
+	elif choice == 'Disarium':
+		return isDisarium(num)
+	elif choice == 'Duck':
+		return isDuck(num)
+	elif choice == 'Evil':
+		return isEvil(num)
+	elif choice == 'Odd':
+		return isEvenOdd(num)
+	elif choice == 'Krishnamurthy':
+		return isKrishnamurthy(num)
+	elif choice == 'Magic':
+		return isMagic(num)
+	elif choice == 'Neon':
+		return isNeon(num)
+	elif choice == 'Niven':
+		return isNiven(num)
+	elif choice == 'Palindrome':
+		return isPalindrome(num)
+	elif choice == 'Square':
+		return isPerfectSq(num)
+	elif choice == 'Strong':
+		return isStrong(num)
+	elif choice == 'Pronic':
+		return isPronic(num)
+	elif choice == 'Spy':
+		return isSpy(num)
+	elif choice == 'Tech':
+		return isTech(num)
+	elif choice == 'Prime':
+		return isPrime(num)
+
 def Factorial(num):
 	factorial = 1
 	if num<0:

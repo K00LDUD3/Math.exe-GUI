@@ -215,13 +215,19 @@ def specNumPrg(frame):
                     'Prime']
 
     specNum_list = [(str(i)+'. '+specNum_list[i]+ ' Number') for i in range(len(specNum_list))]
-    
+    specNum_list.append('Back To Homescreen')
     #necessary combobox, dropdwn, buttons, etc.
-    combo = ttk.Combobox(frame, values=specNum_list, state='readonly')
+    combo = ttk.Combobox(specNumPrg_frame, values=specNum_list, state='readonly', width=26, height=30)
     combo.current(0)
     combo.bind('<<ComboboxSelected>>',comboclick)
+
     #create submit BUTTON
+    b_go = createButton('Go', 5, 0, 1, button_padx, button_pady, specNumPrg_frame)
     combo.grid(row=0, column=0)
+
+
+    #showing everything on screen
+    specNumPrg_frame.pack()
     
 
 def changeUserVer(old_user, new_user, password):

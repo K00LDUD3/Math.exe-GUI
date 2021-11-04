@@ -3,7 +3,8 @@ LINKS
 tkinter basic stuff ===== https://www.javatpoint.com/python-tkinter
 
 '''
-#importing tkinter
+#importing libs, and modules
+import Special_Numbers as sp
 from tkinter import *
 from tkinter import ttk
 
@@ -63,6 +64,7 @@ def comboclick(event):
 
 #homescreen frame
 def homescreen(frame):
+    print(sp.isArmstrong(5))
     #hiding active (if any) frame
     hideFrame(frame)
     root.geometry('365x150')

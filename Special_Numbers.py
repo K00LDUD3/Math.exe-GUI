@@ -1,5 +1,8 @@
 import math
 
+
+def evalSpecNum(choice):
+	return ''
 def Factorial(num):
 	factorial = 1
 	if num<0:

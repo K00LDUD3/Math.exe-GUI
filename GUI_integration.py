@@ -19,6 +19,7 @@ button_pady = 10
 root = Tk()
 root.title('Math.exe')
 root.geometry("365x150")
+#root.resizable(False, False)
 
 #creating neccessary frames
 editProfile_frame = LabelFrame(root)
@@ -26,7 +27,7 @@ homescreen_frame = LabelFrame(root)
 deleteProfile_frame = LabelFrame(root) 
 changeUser_frame = LabelFrame(root)
 changPass_frame = LabelFrame(root)
-specNumPrg_frame = LabelFrame(root)
+specNumPrgInitial_frame = LabelFrame(root)
 
 #function for hiding given frame
 def hideFrame(frame):
@@ -75,6 +76,7 @@ def homescreen(frame):
     b_signOut = createButton('Sign Out',button_width,2,0, button_padx, button_pady, homescreen_frame)
 
     b_editProfile.config(command=lambda: editProfile(homescreen_frame))
+    b_specNumPrg.config(command=lambda: specNumPrgInitial(homescreen_frame))
 
     homescreen_frame.pack()
     
@@ -189,7 +191,7 @@ def changeUser():
     #putting change user frame on screen
     changeUser_frame.pack(padx=10, pady=10)
     return
-def specNumPrg(frame):
+def specNumPrgInitial(frame):
     # hiding the active frame
     hideFrame(frame)
 
@@ -215,20 +217,33 @@ def specNumPrg(frame):
                     'Prime']
 
     specNum_list = [(str(i)+'. '+specNum_list[i]+ ' Number') for i in range(len(specNum_list))]
-    specNum_list.append('Back To Homescreen')
-    #necessary combobox, dropdwn, buttons, etc.
-    combo = ttk.Combobox(specNumPrg_frame, values=specNum_list, state='readonly', width=26, height=30)
-    combo.current(0)
-    combo.bind('<<ComboboxSelected>>',comboclick)
 
+    #necessary combobox, dropdwn, buttons, etc.
+    combo = ttk.Combobox(specNumPrgInitial_frame, values=specNum_list, state='readonly', width=26, height=30)
+    combo.current(0)
+    combo.bind(comboclick)
+    combo.grid(row=0, column=0, columnspan=2)
     #create submit BUTTON
-    b_go = createButton('Go', 5, 0, 1, button_padx, button_pady, specNumPrg_frame)
+    b_go = createButton('Go', 10, 1, 1, button_padx, button_pady, specNumPrgInitial_frame)
+    b_back = createButton('Back', 10, 1, 0, button_padx, button_pady, specNumPrgInitial_frame)
+    
+    b_back.config(command=lambda: homescreen(specNumPrgInitial_frame))
+    b_go.config(command=lambda: specNumPrg(specNumPrgInitial_frame, combo.get()))
     combo.grid(row=0, column=0)
 
-
     #showing everything on screen
-    specNumPrg_frame.pack()
+    specNumPrgInitial_frame.pack()
+    return
     
+def specNumPrg(frame, choiceRaw):
+    #hiding active frame
+    hideFrame(frame)
+    
+    choice = choiceRaw.split(' ')[1]
+    
+    
+
+
 
 def changeUserVer(old_user, new_user, password):
     #validate with DB and display message accordingly
@@ -240,6 +255,6 @@ def changePassVer(user, old_password, new_password, new_passwordConfirm):
 def delAccVer(user, password, passwordConfirm):
     #validate with DB and display message accordingly
     return
-specNumPrg(None)
+homescreen(None)
 root.mainloop()
 

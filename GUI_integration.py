@@ -292,8 +292,13 @@ def specNumPrg(frame, choiceRaw):
     specNumPrg_frame.pack()
 
     return
-    
-
+####LEFT OFF HERE=============>
+def calcMenu(frame):
+    #hiding active frame
+    hideFrame(None)
+    calc_list = ['Scienctific', 'Quadratic', 'Exponential', 'Base=N', 'Vector', 'HCF & LCM']
+    specNum_list = [(str(i)+'. '+calc_list[i]+ ' Calculator') for i in range(len(calc_list))]
+    return
 
 def changeUserVer(old_user, new_user, password):
     #validate with DB and display message accordingly

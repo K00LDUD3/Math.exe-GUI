@@ -221,6 +221,7 @@ def specNumPrgMenu(frame):
     # hiding the active frame
     hideFrame(frame)
 
+    root.title('Special Number Menu')
     # creating spec num list
     specNum_list = ['Armstrong',
                     'Buzz',

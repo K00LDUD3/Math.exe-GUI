@@ -3,7 +3,7 @@ import math
 
 def evalSpecNum(choice, num):
 
-	if choice == 'armstrong':
+	if choice == 'Armstrong':
 		return isArmstrong(num)
 	elif choice == 'Buzz':
 		return isBuzz(num)

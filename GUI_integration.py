@@ -28,15 +28,18 @@ homescreen_frame = LabelFrame(root)
 deleteProfile_frame = LabelFrame(root) 
 changeUser_frame = LabelFrame(root)
 changPass_frame = LabelFrame(root)
-specNumPrgInitial_frame = LabelFrame(root)
+specNumPrgMenu_frame = LabelFrame(root)
 specNumPrg_frame = LabelFrame(root)
 
 #function for hiding given frame
 def hideFrame(frame):
     try:
         frame.pack_forget()
+        print('<<<Frame hidden successfully...>>>')
+        print(f'{frame=}')
     except:
-        None
+        print('<<<No active Frame>>>')
+    return
 
 #generic function to create button
 def createButton(Text, Width, xcor, ycor, px,py, frame):
@@ -63,15 +66,24 @@ combo = ttk.Combobox()
 def comboclick(event):
     print(combo.get())
 
-def specNumPrgPreSpExecEval(choice, num_raw):
+def specNumPrgPreSpExecEval(choice, num_raw, lab):
     num = 0
     mess = 'hello'
-	try:
-		num = int(num_raw)
-        mess =  sp.evalSpecNum(choice, num)
-    except:
-		mess =  'Invalid Number, Please Try Again...'
-    return mess
+    TF = False
+    if num_raw.isnumeric():
+        num = int(num_raw)
+        TF = (sp.evalSpecNum(choice, num))
+
+        if TF:
+            mess = f'{num} is {choice}'
+        else:
+            mess = f'{num} is not {choice}'
+    else:
+        mess = 'Invalid Number! Please Try Again...'
+    
+    lab.config(text=mess)
+    print(f'{TF=} --- {choice=} ---', type(num))
+    return
 
 
 
@@ -90,7 +102,7 @@ def homescreen(frame):
     b_signOut = createButton('Sign Out',button_width,2,0, button_padx, button_pady, homescreen_frame)
 
     b_editProfile.config(command=lambda: editProfile(homescreen_frame))
-    b_specNumPrg.config(command=lambda: specNumPrgInitial(homescreen_frame))
+    b_specNumPrg.config(command=lambda: specNumPrgMenu(homescreen_frame))
 
     homescreen_frame.pack()
     
@@ -205,7 +217,7 @@ def changeUser():
     #putting change user frame on screen
     changeUser_frame.pack(padx=10, pady=10)
     return
-def specNumPrgInitial(frame):
+def specNumPrgMenu(frame):
     # hiding the active frame
     hideFrame(frame)
 
@@ -233,28 +245,33 @@ def specNumPrgInitial(frame):
     specNum_list = [(str(i)+'. '+specNum_list[i]+ ' Number') for i in range(len(specNum_list))]
 
     #necessary combobox, dropdwn, buttons, etc.
-    combo = ttk.Combobox(specNumPrgInitial_frame, values=specNum_list, state='readonly', width=26, height=30)
+    combo = ttk.Combobox(specNumPrgMenu_frame, values=specNum_list, state='readonly', width=26, height=30)
     combo.current(0)
     combo.bind(comboclick)
     combo.grid(row=0, column=0, columnspan=2)
     #create submit BUTTON
-    b_go = createButton('Go', 10, 1, 1, button_padx, button_pady, specNumPrgInitial_frame)
-    b_back = createButton('Back', 10, 1, 0, button_padx, button_pady, specNumPrgInitial_frame)
+    b_go = createButton('Go', 10, 1, 1, button_padx, button_pady, specNumPrgMenu_frame)
+    b_back = createButton('Back', 10, 1, 0, button_padx, button_pady, specNumPrgMenu_frame)
     
-    b_back.config(command=lambda: homescreen(specNumPrgInitial_frame))
-    b_go.config(command=lambda: specNumPrg(specNumPrgInitial_frame, combo.get()))
+    b_back.config(command=lambda: homescreen(specNumPrgMenu_frame))
+    b_go.config(command=lambda: specNumPrg(specNumPrgMenu_frame, combo.get()))
     combo.grid(row=0, column=0)
 
     #showing everything on screen
-    specNumPrgInitial_frame.pack()
-    return
+    specNumPrgMenu_frame.pack()
     
 
 def specNumPrg(frame, choiceRaw):
     #hiding active frame
     hideFrame(frame)
-    
-    choice = choiceRaw.split(' ')[1].lower()
+
+    #extracting minimum requirements to open different frames according to the choice entered
+    choice = choiceRaw.split(' ')[1]
+
+    #setting window title
+    root.title(str(choice+' Number'))
+    if choice == 'Odd':
+        root.title('Odd or Even Number')
 
     #necessary buttons, labels, entrys, etc
     l_enterNum = createLabel('Enter a number: ', button_width, 0,0,button_padx, button_pady, specNumPrg_frame)
@@ -263,20 +280,16 @@ def specNumPrg(frame, choiceRaw):
     b_go = createButton('Go', button_width, 2, 1, button_padx, button_pady, specNumPrg_frame)
     b_back = createButton('Back', 10, 2, 0, button_padx, button_pady, specNumPrg_frame)
 
-    e_Num = createEntry(button_width, 0, 1, button_padx, button_pady, specNumPrg_frame)
+    e_num = createEntry(button_width, 0, 1, button_padx, button_pady, specNumPrg_frame)
 
-
-    b_back.config(command=specNumPrgInitial(specNumPrg_frame))
-    b_go.config(command=lambda: specNumPrgPreSpExecEval(choice, e_Num.get())) # special number program pre special number execution evaluate
-
-
-
-    num = 0.0
-    lab = sp.evalSpecNum(choice.lower(), num)
+    #setting commands for buttons
+    b_back.config(command=specNumPrgMenu(specNumPrg_frame))
+    b_go.config(command=lambda: specNumPrgPreSpExecEval(choice, e_num.get(), l_result)) # special number program pre special number execution evaluate
     
 
     #showing everything on screen
     specNumPrg_frame.pack()
+
     return
     
 

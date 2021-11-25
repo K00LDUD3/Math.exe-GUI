@@ -3,9 +3,10 @@ LINKS
 tkinter basic stuff ===== https://www.javatpoint.com/python-tkinter
 
 '''
-#importing tkinter
+#importing required modules
 from tkinter import *
 from tkinter import ttk
+import Special_Numbers as spn
 
 #active frame
 ##act_frame = None
@@ -57,8 +58,8 @@ def createEntry(Width, xcor, ycor, px,py, frame):
     return entry
 
 combo = ttk.Combobox()
-def comboclick(event):
-    print(combo.get())
+
+    
 
 #homescreen frame
 def homescreen(frame):
@@ -189,6 +190,7 @@ def changeUser():
     #putting change user frame on screen
     changeUser_frame.pack(padx=10, pady=10)
     return
+
 def specNumPrg(frame):
     # hiding the active frame
     hideFrame(frame)
@@ -217,17 +219,22 @@ def specNumPrg(frame):
     specNum_list = [(str(i)+'. '+specNum_list[i]+ ' Number') for i in range(len(specNum_list))]
     
     #necessary combobox, dropdwn, buttons, etc.
+    e_num = createEntry(button_width, 1, 1, button_padx, button_padx, specNumPrg_frame)
+
     combo = ttk.Combobox(specNumPrg_frame,values=specNum_list,state='readonly')
     combo.current(0)
-    combo.bind('<<ComboboxSelected>>',comboclick)
     combo.grid(row=0,column=0)
 
     b_back = createButton('Back',button_width, 1, 0, button_padx, button_pady, specNumPrg_frame)
     b_back.config(command= lambda: homescreen(specNumPrg_frame))
+    b_go = createButton('Go', button_width, 0, 1, button_padx, button_pady, specNumPrg_frame)
+    b_go.config(command=initSPN) # Prg this later
+    
     #showing the widgets on screen
     specNumPrg_frame.pack()
     return
-
+def initSPN(): # intialize special number programs
+    return
 def changeUserVer(old_user, new_user, password):
     #validate with Burgers DB and display message accordingly
     return
@@ -238,6 +245,10 @@ def changePassVer(user, old_password, new_password, new_passwordConfirm):
 def delAccVer(user, password, passwordConfirm):
     #validate with Burgers DB and display message accordingly
     return
+def comboclick(event):
+    print(combo.get())
+    print(combo.get().split(' ')[1])
+    #spn.evalSpecNum(combo.get().split(' ')[1], )
 homescreen(None)
 root.mainloop()
 

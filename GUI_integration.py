@@ -8,8 +8,8 @@ from tkinter import *
 from tkinter import ttk
 import Special_Numbers as spn
 import tkinter.font as font
-import GuessingGame as g
-
+import random
+import math
 
 
 #button var params
@@ -320,13 +320,14 @@ def initGuessingGame(frame):
     initGuessgame_frame.pack()
     return
 
-def guessingGame(frame, maxR, minR):
-    if not(maxR.isnumeric() and minR.isnumeric()) or (minR >= maxR) or minR == '' or maxR == '':
+def guessingGame(frame, minR, maxR):
+    '''if not(maxR.isnumeric() and minR.isnumeric()) or (minR >= maxR) or minR == '' or maxR == '':
         print('Invalid Input')
-        return
+        return'''
     minR = int(minR)
     maxR = int(maxR)
-
+    no_tries = 0
+    
     #hiding active frame
     hideFrame(frame)
     
@@ -334,7 +335,8 @@ def guessingGame(frame, maxR, minR):
     root.title(f'Guessing Game: {minR} to {maxR}')
 
     #setting rand number between 0 and maxR
-    g.number = g.randGen(maxR)
+    number = randGen(maxR)
+    print(f'{number=}')
 
     #creating necessary widgets
     #Row1
@@ -349,11 +351,26 @@ def guessingGame(frame, maxR, minR):
     b_back = createButton('Back', button_width, 2, 0, button_padx, button_pady, guessgame_frame)
     b_guess = createButton('Guess', button_width, 2, 1, button_padx, button_pady, guessgame_frame)
     b_back.config(command=lambda: initGuessingGame(guessgame_frame))
-    #b_guess.config(command=lambda:)
+    b_guess.config(command=lambda: validateChoice(int(e_input.get()), number, l_output, no_tries))
 
     #showing frame on screen
     guessgame_frame.pack()
     return
+
+def validateChoice(num, valid_num, label):
+    no_tries+=1
+    if num == valid_num:
+        message = f'Correct! Number of tries:{no_tries}'
+    elif num > valid_num:
+        message =  'Try Guessing Lower!'
+    elif num < valid_num:
+        message =  'Try Guessing Higher!'
+    label.config(text=message)
+
+def randGen(maxR):
+    maxR = int(maxR)
+    return random.randrange(maxR)
+
 def changeUserVer(old_user, new_user, password):
     #validate with Burgers DB and display message accordingly
     return

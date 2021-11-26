@@ -44,6 +44,9 @@ changPass_frame = LabelFrame(root)
 specNumPrg_frame = LabelFrame(root)
 initGuessgame_frame = LabelFrame(root)
 guessgame_frame = LabelFrame(root)
+
+#misc variables
+no_tries = 0
 #function for hiding given frame
 def hideFrame(frame):
     try:
@@ -315,24 +318,23 @@ def initGuessingGame(frame):
     b_back = createButton('Back', button_width, 2, 0, button_padx, button_pady, initGuessgame_frame)
     b_start = createButton('Start', button_width, 2, 1, button_padx, button_pady, initGuessgame_frame)
     b_back.config(command=lambda: homescreen(initGuessgame_frame))
-    b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMin.get(), e_rangeMax.get()))
+    b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get()))
     #showing frame on screen
     initGuessgame_frame.pack()
     return
 
-def guessingGame(frame, minR, maxR):
+def guessingGame(frame, maxR):
     '''if not(maxR.isnumeric() and minR.isnumeric()) or (minR >= maxR) or minR == '' or maxR == '':
         print('Invalid Input')
         return'''
-    minR = int(minR)
     maxR = int(maxR)
-    no_tries = 0
+    
 
     #hiding active frame
     hideFrame(frame)
     
     #setting window title
-    root.title(f'Guessing Game: {minR} to {maxR}')
+    root.title(f'Guessing Game: 0 to {maxR}')
 
     #setting rand number between 0 and maxR
     number = randGen(maxR)
@@ -366,6 +368,7 @@ def validateChoice(num, valid_num, label, no_tries):
     elif num < valid_num:
         message =  'Try Guessing Higher!'
     label.config(text=message)
+    return
 
 def randGen(maxR):
     maxR = int(maxR)

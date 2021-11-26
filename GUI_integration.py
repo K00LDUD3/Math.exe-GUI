@@ -327,7 +327,7 @@ def guessingGame(frame, minR, maxR):
     minR = int(minR)
     maxR = int(maxR)
     no_tries = 0
-    
+
     #hiding active frame
     hideFrame(frame)
     
@@ -357,7 +357,7 @@ def guessingGame(frame, minR, maxR):
     guessgame_frame.pack()
     return
 
-def validateChoice(num, valid_num, label):
+def validateChoice(num, valid_num, label, no_tries):
     no_tries+=1
     if num == valid_num:
         message = f'Correct! Number of tries:{no_tries}'

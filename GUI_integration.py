@@ -95,7 +95,7 @@ def editProfile(frame):
     b_changeUser = createButton('Change Username', button_width, 0, 0, button_padx, button_pady, editProfile_frame)
     b_changePass = createButton('Change Password', button_width, 1, 0, button_padx, button_pady, editProfile_frame)    
     b_delProfile = createButton('Delete Account', button_width, 2, 0, button_padx, button_pady, editProfile_frame)    
-    b_Homescreen = createButton('Back to Homescreen', button_width, 3, 0, button_padx, button_pady, editProfile_frame)
+    b_Homescreen = createButton('Back', button_width, 3, 0, button_padx, button_pady, editProfile_frame)
     
     #setting commands for above buttons
     b_delProfile.config(command=deleteProfile)
@@ -195,6 +195,9 @@ def specNumPrg(frame):
     # hiding the active frame
     hideFrame(frame)
 
+    #setting size of frame
+    root.geometry('540x180')
+
     # creating spec num list
     specNum_list = ['Armstrong',
                     'Buzz',
@@ -209,32 +212,72 @@ def specNumPrg(frame):
                     'Neon',
                     'Niven',
                     'Palindrome',
-                    'Square Root of a',
+                    'Perfect Square',
                     'Strong',
                     'Pronic',
                     'Spy',
                     'Tech',
-                    'Prime']
+                    'Prime',
+                    'Factorial of a']
 
     specNum_list = [(str(i)+'. '+specNum_list[i]+ ' Number') for i in range(len(specNum_list))]
     
     #necessary combobox, dropdwn, buttons, etc.
+    #Row 1
     e_num = createEntry(button_width, 1, 1, button_padx, button_padx, specNumPrg_frame)
+    l_num = createLabel('Enter a number:', button_width, 1, 0, button_padx, button_pady, specNumPrg_frame)
+    b_explain = createButton('Explanation', button_width, 0, 2, button_padx, button_pady, specNumPrg_frame)
+    b_explain.config(command=lambda: spnExplain(combo.get(),l_spnExplain))
 
+
+    #Row 2
     combo = ttk.Combobox(specNumPrg_frame,values=specNum_list,state='readonly')
     combo.current(0)
-    combo.grid(row=0,column=0)
+    combo.grid(row=0,column=1)
+    l_combo = createLabel('Choose function: ', button_width, 0, 0, button_padx, button_pady, specNumPrg_frame)
+    #l_spnExplain = createLabel('TEst',button_width, 1, 2, button_padx, button_pady, specNumPrg_frame) #INCREASE ROW SPAN
+    l_spnExplain = Label(specNumPrg_frame, width=button_width, text='Test', wraplength=150)
+    l_spnExplain.grid(row=1, column=2, rowspan=2)
 
-    b_back = createButton('Back',button_width, 1, 0, button_padx, button_pady, specNumPrg_frame)
+
+    #Row 3
+    l_output = createLabel('Output:', button_width, 2, 0, button_padx, button_pady, specNumPrg_frame)
+    l_opMessage = createLabel('', button_width, 2, 1, button_padx, button_pady, specNumPrg_frame)
+
+    #Row 4
+    b_back = createButton('Back',button_width, 3, 0, button_padx, button_pady, specNumPrg_frame)
     b_back.config(command= lambda: homescreen(specNumPrg_frame))
-    b_go = createButton('Go', button_width, 0, 1, button_padx, button_pady, specNumPrg_frame)
-    b_go.config(command=initSPN) # Prg this later
+    b_go = createButton('Go', button_width, 3, 1, button_padx, button_pady, specNumPrg_frame)
+    b_go.config(command=lambda: initSPN(combo.get(), e_num.get(), l_opMessage)) # Prg this later
     
     #showing the widgets on screen
     specNumPrg_frame.pack()
     return
-def initSPN(): # intialize special number programs
+
+def spnExplain(choice, label):
+    if choice.split(' ')[2] == 'Square':
+        choice = 'Square'
+    else:
+        choice = choice.split(' ')[1]
+    #print(f'{choice=}')
+    label.config(text=spn.specnum_explain[choice])
     return
+
+def initSPN(choice, number, label): # intialize special number programs
+    if len(number) == 0 or  not number.isnumeric():
+        label.config(text='Invalid Entry!')
+        return
+    if choice.split(' ')[2] == 'Square':
+        choice = 'Square'
+    else:
+        choice = choice.split(' ')[1]
+    number = int(number)
+
+    message = spn.evalSpecNum(choice=choice, num=number)
+    label.config(text=message)
+
+    return
+
 def changeUserVer(old_user, new_user, password):
     #validate with Burgers DB and display message accordingly
     return
@@ -245,10 +288,7 @@ def changePassVer(user, old_password, new_password, new_passwordConfirm):
 def delAccVer(user, password, passwordConfirm):
     #validate with Burgers DB and display message accordingly
     return
-def comboclick(event):
-    print(combo.get())
-    print(combo.get().split(' ')[1])
-    #spn.evalSpecNum(combo.get().split(' ')[1], )
+    
 homescreen(None)
 root.mainloop()
 

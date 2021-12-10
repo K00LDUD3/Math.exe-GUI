@@ -16,6 +16,9 @@ import tkinter.font as font
 button_width = 20
 button_padx = 10
 button_pady = 10
+c_button_width = 5
+c_button_padx = 10
+
 
 #creating WINDOW
 root = Tk()
@@ -39,6 +42,9 @@ button_list = []
 c_button_font = font.Font(size=15)
 
 #creating neccessary FRAMES
+initSignInUp_frame = LabelFrame(root)
+signIn_frame = LabelFrame(root)
+signUp_frame = LabelFrame(root)
 editProfile_frame = LabelFrame(root)
 homescreen_frame = LabelFrame(root)
 deleteProfile_frame = LabelFrame(root) 
@@ -49,6 +55,8 @@ initGuessgame_frame = LabelFrame(root)
 guessgame_frame = LabelFrame(root)
 sciCalc_frame = LabelFrame(root)
 
+#creating the dropdown for SPECIAL NUMBER PROGRAMS
+combo = ttk.Combobox()
 
 #function for HIDING given FRAME
 def hideFrame(frame):
@@ -79,9 +87,90 @@ def createEntry(Width, xcor, ycor, px,py, frame):
     entry.grid(row=xcor, column=ycor, padx=px, pady=py)
     return entry
 
-#creating the dropdown for SPECIAL NUMBER PROGRAMS
-combo = ttk.Combobox()
 
+
+
+#SIGN IN OR SIGN UP
+def initSignInUp(frame):
+    #hiding active frame
+    hideFrame(frame)
+
+    #configring WINDOW
+    root.geometry('250x150')
+    root.title('Sign In/Up')
+
+    #creating widgets
+    b_sign_in =  createButton('Sign In', button_width, 0, 0, button_padx, button_pady, initSignInUp_frame)
+    b_sign_up = createButton('Sign Up', button_width, 1, 0, button_padx, button_pady, initSignInUp_frame)
+    b_guest = createButton('Continue As Guest', button_width, 2, 0, button_padx, button_pady, initSignInUp_frame)
+    
+    b_guest.config(command=lambda: homescreen(initSignInUp_frame))
+    b_sign_in.config(command=lambda: signIn(initSignInUp_frame))
+    b_sign_up.config(command=lambda: signUp(initSignInUp_frame))
+
+    initSignInUp_frame.pack()
+    return
+
+def signIn(frame):
+    #hiding active frame
+    hideFrame(frame)
+
+    #configuring WINDOW
+    root.geometry('350x150')
+    root.title('Sign In')
+
+    #creating WIDGETS
+    l_user = createLabel('Enter Your Username:', button_width, 0, 0, button_padx, button_pady, signIn_frame)
+    l_pass = createLabel('Enter Your Password:', button_width, 1, 0, button_padx, button_pady, signIn_frame)
+    
+    e_user = createEntry(button_width, 0, 1, button_padx, button_pady, signIn_frame)
+    e_pass = createEntry(button_width, 1, 1, button_padx, button_pady, signIn_frame)
+    
+    b_back = createButton('Back', button_width, 2, 0, button_padx, button_pady, signIn_frame)
+    b_go = createButton('Sign In', button_width, 2, 1, button_padx, button_pady, signIn_frame)
+
+
+    b_back.config(command=lambda: initSignInUp(signIn_frame))
+    b_go.config(command=lambda: signInVer(e_user.get(), e_pass.get()))
+    
+    signIn_frame.pack()
+    return
+
+def signUp(frame):
+    #hiding active frame
+    hideFrame(frame)
+
+    #configuring WINDOW
+    root.geometry('350x200')
+    root.title('Sign Up')
+
+    #creating WIDGETS
+    '''
+    For password and user,
+    use a live action listener to check the database
+    if a user/password is taken/weak
+    '''
+
+
+
+
+    l_user = createLabel('Enter Your Username:', button_width, 0, 0, button_padx, button_pady, signUp_frame)
+    l_pass = createLabel('Enter Your Password:', button_width, 1, 0, button_padx, button_pady, signUp_frame)
+    l_passConf = createLabel('Confirm Your Password:', button_width, 2, 0, button_padx, button_pady, signUp_frame)
+
+    e_user = createEntry(button_width, 0, 1, button_padx, button_pady, signUp_frame)
+    e_pass = createEntry(button_width, 1, 1, button_padx, button_pady, signUp_frame)
+    e_passconf = createEntry(button_width, 2, 1, button_padx, button_pady, signUp_frame)
+
+    b_back = createButton('Back', button_width, 3, 0, button_padx, button_pady, signUp_frame)
+    b_go = createButton('Sign In', button_width, 3, 1, button_padx, button_pady, signUp_frame)
+
+
+    b_back.config(command=lambda: initSignInUp(signUp_frame))
+    b_go.config(command=lambda: signUpVer(e_user.get(), e_pass.get()))
+    
+    signUp_frame.pack()
+    return
     
 #HOMESCREEN frame
 def homescreen(frame):
@@ -99,10 +188,13 @@ def homescreen(frame):
 
     b_editProfile.config(command=lambda: editProfile(homescreen_frame))
     b_specNumPrg.config(command=lambda: specNumPrg(homescreen_frame))
-    b_calc.config(command=initCalc)
+    b_calc.config(command=lambda: sciCalc(homescreen_frame))
     b_guessGame.config(command=lambda: initGuessingGame(homescreen_frame))
+    b_signOut.config(command=lambda: initSignInUp(homescreen_frame))
+
+
     homescreen_frame.pack()
-    
+    return
 
 def initCalc():
     return
@@ -154,6 +246,7 @@ def deleteProfile():
     b_confirm = createButton('Delete Account', button_width, 3, 1, button_padx, button_pady, deleteProfile_frame)
     b_cancel = createButton('Cancel',5, 3, 0, button_padx, button_pady, deleteProfile_frame)
     b_cancel.config(command=lambda: editProfile(deleteProfile_frame))
+
 
     #putting del profile frame on screen
     deleteProfile_frame.pack(padx=10, pady=10)
@@ -306,54 +399,70 @@ def sciCalc(frame):
     #hiding active frame
     hideFrame(frame)
 
+    #configuring window
+    root.geometry("600x300")
+    root.title('Calculator')
+
     #creating WIDGETS
+    label = Label(sciCalc_frame, text='', width=55, height=2)
+    label.grid(row=0, column=0, columnspan=4)
     #assigning values of buttons (1-9, 0)
     for i in range(0,9):
-        button_list.append(Button(sciCalc_frame, width=button_width, text = (i+1), font=c_button_font))
-        button_list[i].grid(row=i//3+1, column=i%3, padx = button_padx, pady = button_pady)
+        button_list.append(Button(sciCalc_frame, width=c_button_width, text = (i+1), font=c_button_font))
+        button_list[i].grid(row=i//3+1, column=i%3, padx = c_button_padx, pady = button_pady)
 
-    button_list.append(Button(sciCalc_frame, width=button_width, text = 0, font=c_button_font))
+    button_list.append(Button(sciCalc_frame, width=c_button_width, text = 0, font=c_button_font))
     button_list[9].grid(row=4, column=1, padx = button_padx, pady = button_pady)
 
 
     #creating NUMBER BUTTONS
-    button_list[9].config(command = lambda: AddNumOperator('0'))
-    button_list[0].config(command = lambda: AddNumOperator('1'))
-    button_list[1].config(command = lambda: AddNumOperator('2'))
-    button_list[2].config(command = lambda: AddNumOperator('3'))
-    button_list[3].config(command = lambda: AddNumOperator('4'))
-    button_list[4].config(command = lambda: AddNumOperator('5'))
-    button_list[5].config(command = lambda: AddNumOperator('6'))
-    button_list[6].config(command = lambda: AddNumOperator('7'))
-    button_list[7].config(command = lambda: AddNumOperator('8'))
-    button_list[8].config(command = lambda: AddNumOperator('9'))
+    button_list[9].config(command = lambda: AddNumOperator('0', label))
+    button_list[0].config(command = lambda: AddNumOperator('1', label))
+    button_list[1].config(command = lambda: AddNumOperator('2', label))
+    button_list[2].config(command = lambda: AddNumOperator('3', label))
+    button_list[3].config(command = lambda: AddNumOperator('4', label))
+    button_list[4].config(command = lambda: AddNumOperator('5', label))
+    button_list[5].config(command = lambda: AddNumOperator('6', label))
+    button_list[6].config(command = lambda: AddNumOperator('7', label))
+    button_list[7].config(command = lambda: AddNumOperator('8', label))
+    button_list[8].config(command = lambda: AddNumOperator('9', label))
 
     #creating OPERATOR BUTTONS
     op_font = c_button_font
-    op_add = Button(sciCalc_frame, width=button_width, text='+', command=lambda: AddNumOperator('+'), font=op_font)
-    op_subtract = Button(sciCalc_frame, width=button_width, text='-', command=lambda: AddNumOperator('-'), font=op_font)
-    op_multiply = Button(sciCalc_frame, width=button_width, text='*', command=lambda: AddNumOperator('*'), font=op_font)
-    op_divide = Button(sciCalc_frame, width=button_width, text='/', command=lambda: AddNumOperator('/'), font=op_font)
-    op_modulus = Button(sciCalc_frame, width=button_width, text='mod', command=lambda: AddNumOperator('%'), font=op_font)
-    op_power = Button(sciCalc_frame, width=button_width, text='^', command=lambda: AddNumOperator('^'), font=op_font)
+    op_add = Button(sciCalc_frame, width=c_button_width, text='+', command=lambda: AddNumOperator('+', label), font=op_font)
+    op_subtract = Button(sciCalc_frame, width=c_button_width, text='-', command=lambda: AddNumOperator('-', label), font=op_font)
+    op_multiply = Button(sciCalc_frame, width=c_button_width, text='*', command=lambda: AddNumOperator('*', label), font=op_font)
+    op_divide = Button(sciCalc_frame, width=c_button_width, text='/', command=lambda: AddNumOperator('/', label), font=op_font)
+    op_modulus = Button(sciCalc_frame, width=c_button_width, text='mod', command=lambda: AddNumOperator('%', label), font=op_font)
+    op_power = Button(sciCalc_frame, width=c_button_width, text='^', command=lambda: AddNumOperator('^', label), font=op_font)
     op_add.grid(row=1, column=3, padx = button_padx, pady = button_pady)
-    op_subtract.grid(row=2, column=3, padx = button_padx, pady = button_pady)
-    op_multiply.grid(row=3, column=3, padx = button_padx, pady = button_pady)
-    op_divide.grid(row=4, column=3, padx = button_padx, pady = button_pady)
-    op_modulus.grid(row=4, column=0, padx=button_padx, pady=button_pady)
-    op_power.grid(row=3, column=4, padx=button_padx, pady=button_pady)
+    op_subtract.grid(row=2, column=3, padx = c_button_padx, pady = button_pady)
+    op_multiply.grid(row=3, column=3, padx = c_button_padx, pady = button_pady)
+    op_divide.grid(row=4, column=3, padx = c_button_padx, pady = button_pady)
+    op_modulus.grid(row=4, column=0, padx=c_button_padx, pady=button_pady)
+    op_power.grid(row=3, column=4, padx=c_button_padx, pady=button_pady)
 
-    #'=' button
-    __equal = Button(sciCalc_frame, width=button_width, text='=', command=EvalExp, font=c_button_font)
-    __equal.grid(row=2, column=4, padx = button_padx, pady = button_pady)
+    #'=' BUTTON
+    __equal = Button(sciCalc_frame, width=c_button_width, text='=', command=lambda: EvalExp(label), font=c_button_font)
+    __equal.grid(row=4, column=4, padx = c_button_padx, pady = button_pady)
 
-    #backspace button
-    __backspace = Button(sciCalc_frame, width=button_width, text='del', command=Backspace, font=c_button_font)
-    __backspace.grid(row=4, column=4, padx = button_padx, pady = button_pady)
+    #backspace BUTTON
+    __backspace = Button(sciCalc_frame, width=c_button_width, text='del', command=lambda: Backspace(label), font=c_button_font)
+    __backspace.grid(row=2, column=4, padx = c_button_padx, pady = button_pady)
     
+    #Clear BUTTON
+    AC = Button(sciCalc_frame, width=c_button_width, text = 'clear', command =lambda: clear(label), font=c_button_font)
+    AC.grid(row=1, column=4)
+    
+    #decimal point BUTTON
+    point = Button(sciCalc_frame, width=c_button_width, text = '.', command=lambda: AddNumOperator('.', label), font=c_button_font)
+    point.grid(row=4, column=2, padx=button_padx, pady=button_pady)
+
+    #back BUTTON
+    back = Button(sciCalc_frame, width=c_button_width, text = 'Back', command =lambda: homescreen(sciCalc_frame))
+    back.grid(row=5, column=0, padx=c_button_padx, pady=button_pady)
 
     sciCalc_frame.pack()
-    
     return
 
 #sci calc func EVALUATE THE EXPRESSION
@@ -382,7 +491,6 @@ def AddNumOperator(OpNum, label):
     if 'ERROR' in(exp):
         exp = ''
     
-    #exp.replace('ERROR','')
     print(f'{exp=}')
     try:
         if (OpNum.isnumeric() or OpNum=='.') and (exp[-1].isnumeric() or exp[-1]=='.'):
@@ -487,17 +595,29 @@ def randGen(maxR):
     maxR = int(maxR)
     return random.randrange(maxR)
 
+
+#editProfile func CHANGE USERNAME
 def changeUserVer(old_user, new_user, password):
     #validate with Burgers DB and display message accordingly
     return
+#editProfile func CHANGE PASSWORD
 def changePassVer(user, old_password, new_password, new_passwordConfirm):
     #validate with Burgers DB and display message accordingly
     return
-
+#editProfile func DELETE PROFILE
 def delAccVer(user, password, passwordConfirm):
     #validate with Burgers DB and display message accordingly
     return
 
-homescreen(None)
+#sign in or sign up func USERNAME AND PASSWORD verify
+def signInVer(user, password):
+    #validate with Burgers DB and continue accordingly
+    return
+#sign in or sign up func USERNAME, PASSWORD, CONFIRM PASSWORD verify
+def signUpVer(user, password, password_conf):
+    #validate with Burgers DB and continue accordingly
+    return
+
+initSignInUp(None)
 root.mainloop()
 

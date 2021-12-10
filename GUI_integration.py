@@ -301,6 +301,7 @@ def initSPN(choice, number, label): # intialize special number programs
 
     return
 
+#add a display label and reference it in every cong(command)
 def sciCalc(frame):
     #hiding active frame
     hideFrame(frame)

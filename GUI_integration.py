@@ -366,10 +366,11 @@ def specNumPrg(frame):
     #Row 1
     combo = ttk.Combobox(specNumPrg_frame,values=specNum_list,state='readonly', width=25)
     combo.current(0)
+    combo.bind('<<ComboboxSelected>>', lambda event: spnExplain(combo.get(), l_spnExplain))
     combo.grid(row=0,column=1)
     l_combo = createLabel('Choose function: ', button_width, 0, 0, button_padx, button_pady, specNumPrg_frame)
-    b_explain = createButton('Explanation', button_width, 0, 2, button_padx, button_pady, specNumPrg_frame)
-    b_explain.config(command=lambda: spnExplain(combo.get(),l_spnExplain))
+    #b_explain = createButton('Explanation', button_width, 0, 2, button_padx, button_pady, specNumPrg_frame)
+    #b_explain.config(command=lambda: spnExplain(combo.get(),l_spnExplain))
 
 
     #Row 2
@@ -394,12 +395,14 @@ def specNumPrg(frame):
     return
 
 def spnExplain(choice, label):
+    label.grid_forget()
     if choice.split(' ')[2] == 'Square':
         choice = 'Square'
     else:
         choice = choice.split(' ')[1]
     print(f'{choice=}')
     label.config(text=spn.specnum_explain[choice])
+    label.grid(row=1, column=2, rowspan=2)
     return
 
 def initSPN(choice, number, label): # intialize special number programs

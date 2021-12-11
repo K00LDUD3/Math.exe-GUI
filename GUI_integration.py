@@ -10,7 +10,6 @@ import Special_Numbers as spn
 import tkinter.font as font
 import random
 import math
-import tkinter.font as font
 
 #WIDGET var PARAMS
 button_width = 20
@@ -124,14 +123,16 @@ def signIn(frame):
     l_pass = createLabel('Enter Your Password:', button_width, 1, 0, button_padx, button_pady, signIn_frame)
     
     e_user = createEntry(button_width, 0, 1, button_padx, button_pady, signIn_frame)
+    e_user.bind('<Return>', lambda event: signInVer(event, e_user.get(), e_pass.get()))
     e_pass = createEntry(button_width, 1, 1, button_padx, button_pady, signIn_frame)
-    
+    e_pass.bind('<Return>', lambda event: signInVer(event, e_user.get(), e_pass.get()))
+
     b_back = createButton('Back', button_width, 2, 0, button_padx, button_pady, signIn_frame)
     b_go = createButton('Sign In', button_width, 2, 1, button_padx, button_pady, signIn_frame)
 
 
     b_back.config(command=lambda: initSignInUp(signIn_frame))
-    b_go.config(command=lambda: signInVer(e_user.get(), e_pass.get()))
+    b_go.config(command=lambda: signInVer(None, e_user.get(), e_pass.get()))
     
     signIn_frame.pack()
     return
@@ -159,15 +160,20 @@ def signUp(frame):
     l_passConf = createLabel('Confirm Your Password:', button_width, 2, 0, button_padx, button_pady, signUp_frame)
 
     e_user = createEntry(button_width, 0, 1, button_padx, button_pady, signUp_frame)
+    e_user.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
+
     e_pass = createEntry(button_width, 1, 1, button_padx, button_pady, signUp_frame)
+    e_pass.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
+
     e_passconf = createEntry(button_width, 2, 1, button_padx, button_pady, signUp_frame)
+    e_passconf.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
 
     b_back = createButton('Back', button_width, 3, 0, button_padx, button_pady, signUp_frame)
     b_go = createButton('Sign In', button_width, 3, 1, button_padx, button_pady, signUp_frame)
 
 
     b_back.config(command=lambda: initSignInUp(signUp_frame))
-    b_go.config(command=lambda: signUpVer(e_user.get(), e_pass.get()))
+    b_go.config(command=lambda: signUpVer(None, e_user.get(), e_pass.get(), e_passconf.get()))
     
     signUp_frame.pack()
     return
@@ -240,10 +246,14 @@ def deleteProfile():
     l_enterPassConf =createLabel('Confirm Password: ', button_width, 2, 0, button_padx, button_pady, deleteProfile_frame)
 
     e_username = createEntry(20, 0, 1, button_padx, button_pady, deleteProfile_frame)
+    e_username.bind('<Return>', lambda event: delAccVer(event, e_username.get(), e_pass.get(), e_passConf.get()))
     e_pass = createEntry(20, 1, 1, button_padx, button_pady, deleteProfile_frame)
+    e_pass.bind('<Return>', lambda event: delAccVer(event, e_username.get(), e_pass.get(), e_passConf.get()))
     e_passConf = createEntry(20, 2, 1, button_padx, button_pady, deleteProfile_frame)
+    e_passConf.bind('<Return>', lambda event: delAccVer(event, e_username.get(), e_pass.get(), e_passConf.get()))
 
     b_confirm = createButton('Delete Account', button_width, 3, 1, button_padx, button_pady, deleteProfile_frame)
+    b_confirm.config(command= lambda: delAccVer(None, e_username.get(), e_pass.get(), e_passConf.get()))
     b_cancel = createButton('Cancel',5, 3, 0, button_padx, button_pady, deleteProfile_frame)
     b_cancel.config(command=lambda: editProfile(deleteProfile_frame))
 
@@ -268,12 +278,18 @@ def changePass():
     l_enterNewPassConf = createLabel('Confirm New Password: ', button_width, 4, 0, button_padx, button_pady, changPass_frame)
 
     e_username = createEntry(20, 0, 1, button_padx, button_pady, changPass_frame)
+    e_username.bind('<Return>', lambda event: changePassVer(event, e_username.get(), e_pass.get(), e_passConf.get(), e_newPass.get(), e_newPassConf.get()))
     e_pass = createEntry(20, 1, 1, button_padx, button_pady, changPass_frame)
+    e_pass.bind('<Return>', lambda event: changePassVer(event, e_username.get(), e_pass.get(), e_passConf.get(), e_newPass.get(), e_newPassConf.get()))
     e_passConf = createEntry(20, 2, 1, button_padx, button_pady, changPass_frame)
+    e_passConf.bind('<Return>', lambda event: changePassVer(event, e_username.get(), e_pass.get(), e_passConf.get(), e_newPass.get(), e_newPassConf.get()))
     e_newPass = createEntry(20, 3, 1, button_padx, button_pady, changPass_frame)
+    e_newPass.bind('<Return>', lambda event: changePassVer(event, e_username.get(), e_pass.get(), e_passConf.get(), e_newPass.get(), e_newPassConf.get()))
     e_newPassConf = createEntry(button_width, 4, 1, button_padx, button_pady, changPass_frame)
+    e_newPassConf.bind('<Return>', lambda event: changePassVer(event, e_username.get(), e_pass.get(), e_passConf.get(), e_newPass.get(), e_newPassConf.get()))
 
     b_confirm = createButton('Change Password', button_width, 5, 1, button_padx, button_pady, changPass_frame)
+    b_confirm.config(command=lambda: changePassVer(None, e_username.get(), e_pass.get(), e_passConf.get(), e_newPass.get(), e_newPassConf.get()))
     b_cancel = createButton('Cancel',5, 5, 0, button_padx, button_pady, changPass_frame)
     b_cancel.config(command=lambda: editProfile(changPass_frame))
 
@@ -296,11 +312,14 @@ def changeUser():
     l_enterNewUser = createLabel('Enter New Username: ', button_width, 3, 0, button_padx, button_pady, changeUser_frame)
 
     e_username = createEntry(20, 0, 1, button_padx, button_pady, changeUser_frame)
+    e_username.bind('<Return>', lambda event: changeUserVer(event, e_username.get(), e_newUser.get(), e_pass.get()))
     e_pass = createEntry(20, 1, 1, button_padx, button_pady, changeUser_frame)
+    e_pass.bind('<Return>', lambda event: changeUserVer(event, e_username.get(), e_newUser.get(), e_pass.get()))
     e_newUser = createEntry(20, 3, 1, button_padx, button_pady, changeUser_frame)
+    e_newUser.bind('<Return>', lambda event: changeUserVer(event, e_username.get(), e_newUser.get(), e_pass.get()))
 
     b_confirm = createButton('Change Username', button_width, 4, 1, button_padx, button_pady, changeUser_frame)
-    b_confirm.config(command=lambda: changeUserVer(e_username.get(), e_newUser.get(), e_pass.get()))
+    b_confirm.config(command=lambda: changeUserVer(None, e_username.get(), e_newUser.get(), e_pass.get()))
     b_cancel = createButton('Cancel',5, 4, 0, button_padx, button_pady, changeUser_frame)
     b_cancel.config(command=lambda: editProfile(changeUser_frame))
     
@@ -308,6 +327,10 @@ def changeUser():
     changeUser_frame.pack(padx=10, pady=10)
     return
 
+"""
+Finish binding <Return> to rest of the ENTRIES
+Left off hereerererere
+"""
 def specNumPrg(frame):
     # hiding active frame
     hideFrame(frame)
@@ -597,26 +620,46 @@ def randGen(maxR):
 
 
 #editProfile func CHANGE USERNAME
-def changeUserVer(old_user, new_user, password):
+def changeUserVer(event, old_user, new_user, password):
     #validate with Burgers DB and display message accordingly
+    print(f'{event=}')
+
     return
 #editProfile func CHANGE PASSWORD
-def changePassVer(user, old_password, new_password, new_passwordConfirm):
+def changePassVer(event, user, old_password, old_passwordConfirm, new_password, new_passwordConfirm):
     #validate with Burgers DB and display message accordingly
+    print(f'{event=}')
+    print(f'{user=}')
+    print(f'{old_password=}')
+    print(f'{old_passwordConfirm=}')
+    print(f'{new_password=}')
+    print(f'{new_passwordConfirm=}')
+
     return
 #editProfile func DELETE PROFILE
-def delAccVer(user, password, passwordConfirm):
+def delAccVer(event, user, password, passwordConfirm):
     #validate with Burgers DB and display message accordingly
+    print(f'{event=}')
+    print(f'{user=}')
+    print(f'{password=}')
+    print(f'{passwordConfirm=}')
+
     return
 
 #sign in or sign up func USERNAME AND PASSWORD verify
-def signInVer(user, password):
+def signInVer(event, user, password):
     #validate with Burgers DB and continue accordingly
+    print(f'{event=}')
+    print(f'{user=}')
+    print(f'{password=}')
+
     return
 #sign in or sign up func USERNAME, PASSWORD, CONFIRM PASSWORD verify
-def signUpVer(user, password, password_conf):
+def signUpVer(event, user, password, password_conf):
     #validate with Burgers DB and continue accordingly
+    print(f'{event=}')
     return
+
 
 initSignInUp(None)
 root.mainloop()

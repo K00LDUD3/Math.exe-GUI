@@ -122,6 +122,7 @@ def signIn(frame):
     l_user = createLabel('Enter Your Username:', button_width, 0, 0, button_padx, button_pady, signIn_frame)
     l_pass = createLabel('Enter Your Password:', button_width, 1, 0, button_padx, button_pady, signIn_frame)
     
+    
     e_user = createEntry(button_width, 0, 1, button_padx, button_pady, signIn_frame)
     e_user.bind('<Return>', lambda event: signInVer(event, e_user.get(), e_pass.get()))
     e_pass = createEntry(button_width, 1, 1, button_padx, button_pady, signIn_frame)
@@ -159,8 +160,13 @@ def signUp(frame):
     l_pass = createLabel('Enter Your Password:', button_width, 1, 0, button_padx, button_pady, signUp_frame)
     l_passConf = createLabel('Confirm Your Password:', button_width, 2, 0, button_padx, button_pady, signUp_frame)
 
-    e_user = createEntry(button_width, 0, 1, button_padx, button_pady, signUp_frame)
+
+    sv = StringVar()
+    sv.trace('w', lambda name, index, mode, sv=sv: checkUserExists(sv.get()))
+    #e_user = createEntry(button_width, 0, 1, button_padx, button_pady, signUp_frame)
+    e_user = Entry(signUp_frame, width=button_width, textvariable=sv)
     e_user.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
+    e_user.grid(row=0, column=1, padx=button_padx, pady=button_pady)
 
     e_pass = createEntry(button_width, 1, 1, button_padx, button_pady, signUp_frame)
     e_pass.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
@@ -378,6 +384,7 @@ def specNumPrg(frame):
     l_num = createLabel('Enter a number:', button_width, 1, 0, button_padx, button_pady, specNumPrg_frame)
     l_spnExplain = Label(specNumPrg_frame, width=button_width, text='', wraplength=150)
     l_spnExplain.grid(row=1, column=2, rowspan=2)
+    l_spnExplain.config(text='')
 
 
     #Row 3
@@ -621,7 +628,13 @@ def randGen(maxR):
     maxR = int(maxR)
     return random.randrange(maxR)
 
-
+#sign up func LIVE CHECK IF USER EXISTS
+def checkUserExists(username):
+    #validate with burgers DB and set label accordingly 
+    #in a future update pass label too
+    print(f'{username=}')
+    
+    return
 #editProfile func CHANGE USERNAME
 def changeUserVer(event, old_user, new_user, password):
     #validate with Burgers DB and display message accordingly
@@ -661,6 +674,7 @@ def signInVer(event, user, password):
 def signUpVer(event, user, password, password_conf):
     #validate with Burgers DB and continue accordingly
     print(f'{event=}')
+
     return
 
 

@@ -582,7 +582,7 @@ def initGuessingGame(frame):
     b_back = createButton('Back', button_width, 1, 0, button_padx, button_pady, initGuessgame_frame)
     b_start = createButton('Start', button_width, 1, 1, button_padx, button_pady, initGuessgame_frame)
     b_back.config(command=lambda: homescreen(initGuessgame_frame))
-    b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get())) # disable this button if input is not valid, use live listener
+    b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get()), state='disabled') # disable this button if input is not valid, use live listener
 
     #showing frame on screen
     initGuessgame_frame.pack()
@@ -699,6 +699,12 @@ def signUpVer(event, user, password, password_conf):
 
     return
 
+#guessing game func checking if input is a positive integer
+def checkMaxR(event, num, button):
+    if num.isnumeric():
+        if num <10000:
+            None
+    return
 
 initSignInUp(None)
 root.mainloop()

@@ -575,15 +575,18 @@ def initGuessingGame(frame):
     #e_rangeMin = createEntry(button_width, 0, 1, button_padx, button_pady, initGuessgame_frame)
     
     #Row 2
+    sv = StringVar()
+    sv.trace('w', lambda name, index, mode, sv=sv: checkMaxR(e_rangeMax.get(), b_start))
     l_rangeMax = createLabel('Enter maximum value:', button_width, 0, 0, button_padx, button_pady, initGuessgame_frame)
-    e_rangeMax = createEntry(button_width, 0, 1, button_padx, button_pady, initGuessgame_frame)
+    #e_rangeMax = createEntry(button_width, 0, 1, button_padx, button_pady, initGuessgame_frame)
+    e_rangeMax = Entry(initGuessgame_frame, width=button_width, textvariable=sv)
 
     #Row 3
     b_back = createButton('Back', button_width, 1, 0, button_padx, button_pady, initGuessgame_frame)
     b_start = createButton('Start', button_width, 1, 1, button_padx, button_pady, initGuessgame_frame)
     b_back.config(command=lambda: homescreen(initGuessgame_frame))
-    b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get()), state='disabled') # disable this button if input is not valid, use live listener
-
+    b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get()), state='active') # disable this button if input is not valid, use live listener
+    e_rangeMax.grid(row=0, column=1, padx=button_padx, pady=button_pady)
     #showing frame on screen
     initGuessgame_frame.pack()
     return
@@ -700,10 +703,17 @@ def signUpVer(event, user, password, password_conf):
     return
 
 #guessing game func checking if input is a positive integer
-def checkMaxR(event, num, button):
+def checkMaxR(num, button):
     if num.isnumeric():
-        if num <10000:
-            None
+        print(f'{num.isnumeric()=}')
+        try:
+            if int(num) <10000:
+                print(f'{num.isnumeric()=}')
+                button.config(state='active')
+        except:
+            button.config(state='disabled')
+    else:
+        button.config(state='disabled')
     return
 
 initSignInUp(None)

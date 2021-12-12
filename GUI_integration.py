@@ -36,6 +36,9 @@ button_font_c = font.Font(size=15)
 #Guessing game var NUMBER OF TRIES
 count_tries = 0
 
+#is Guest User
+is_guest = True
+
 #scientific calculator vars
 button_list = []
 c_button_font = font.Font(size=15)
@@ -91,6 +94,9 @@ def createEntry(Width, xcor, ycor, px,py, frame):
 
 #SIGN IN OR SIGN UP
 def initSignInUp(frame):
+    #resetting is_guest var
+    global is_guest
+    is_guest = True
     #hiding active frame
     hideFrame(frame)
 
@@ -117,6 +123,10 @@ def signIn(frame):
     #configuring WINDOW
     root.geometry('350x150')
     root.title('Sign In')
+
+    #confirming guest user
+    global is_guest
+    is_guest = False
 
     #creating WIDGETS
     l_user = createLabel('Enter Your Username:', button_width, 0, 0, button_padx, button_pady, signIn_frame)
@@ -145,7 +155,11 @@ def signUp(frame):
     #configuring WINDOW
     root.geometry('350x200')
     root.title('Sign Up')
-
+    
+    #confirming guest user
+    global is_guest
+    is_guest = False
+    
     #creating WIDGETS
     '''
     For password and user,
@@ -192,13 +206,18 @@ def homescreen(frame):
     root.title('Homescreen')
     
     #neccessary BUTTONS
-    b_editProfile = createButton('Edit Profile', button_width, 0,0, button_padx, button_pady, homescreen_frame)
+    global is_guest
+    print(f'<{is_guest=}>')
+    if not is_guest:
+        #if the user isnt a guest user, then they cannot edit a profile
+        b_editProfile = createButton('Edit Profile', button_width, 0,0, button_padx, button_pady, homescreen_frame)
+        b_editProfile.config(command=lambda: editProfile(homescreen_frame))
+    
     b_specNumPrg = createButton('Special Number Programs', button_width,0,1, button_padx, button_pady, homescreen_frame)
     b_calc = createButton('Scienctific Calculator', button_width,1,0, button_padx, button_pady, homescreen_frame)
     b_guessGame = createButton('Guessing Game',button_width,1,1, button_padx, button_pady, homescreen_frame)
     b_signOut = createButton('Sign Out',button_width,2,0, button_padx, button_pady, homescreen_frame)
 
-    b_editProfile.config(command=lambda: editProfile(homescreen_frame))
     b_specNumPrg.config(command=lambda: specNumPrg(homescreen_frame))
     b_calc.config(command=lambda: sciCalc(homescreen_frame))
     b_guessGame.config(command=lambda: initGuessingGame(homescreen_frame))
@@ -343,6 +362,7 @@ def specNumPrg(frame):
 
     #configuring window
     root.geometry('540x180')
+    root.title('Special Number Programs - Armstrong')
 
     # creating spec num list
     specNum_list = ['Armstrong',
@@ -402,6 +422,8 @@ def specNumPrg(frame):
     return
 
 def spnExplain(choice, label):
+    #set title accordingly 
+    #root.title(('Special Number -', choice.split(' ')[1]))
     label.grid_forget()
     if choice.split(' ')[2] == 'Square':
         choice = 'Square'
@@ -433,7 +455,7 @@ def sciCalc(frame):
     hideFrame(frame)
 
     #configuring window
-    root.geometry("600x300")
+    root.geometry("600x400")
     root.title('Calculator')
 
     #creating WIDGETS
@@ -549,18 +571,18 @@ def initGuessingGame(frame):
 
     #creating necessary widgets
     #Row 1
-    l_rangeMin = createLabel('Enter minimum value:', button_width, 0, 0, button_padx, button_pady, initGuessgame_frame)
-    e_rangeMin = createEntry(button_width, 0, 1, button_padx, button_pady, initGuessgame_frame)
+    #l_rangeMin = createLabel('Enter minimum value:', button_width, 0, 0, button_padx, button_pady, initGuessgame_frame)
+    #e_rangeMin = createEntry(button_width, 0, 1, button_padx, button_pady, initGuessgame_frame)
     
     #Row 2
-    l_rangeMax = createLabel('Enter maximum value:', button_width, 1, 0, button_padx, button_pady, initGuessgame_frame)
-    e_rangeMax = createEntry(button_width, 1, 1, button_padx, button_pady, initGuessgame_frame)
+    l_rangeMax = createLabel('Enter maximum value:', button_width, 0, 0, button_padx, button_pady, initGuessgame_frame)
+    e_rangeMax = createEntry(button_width, 0, 1, button_padx, button_pady, initGuessgame_frame)
 
     #Row 3
-    b_back = createButton('Back', button_width, 2, 0, button_padx, button_pady, initGuessgame_frame)
-    b_start = createButton('Start', button_width, 2, 1, button_padx, button_pady, initGuessgame_frame)
+    b_back = createButton('Back', button_width, 1, 0, button_padx, button_pady, initGuessgame_frame)
+    b_start = createButton('Start', button_width, 1, 1, button_padx, button_pady, initGuessgame_frame)
     b_back.config(command=lambda: homescreen(initGuessgame_frame))
-    b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get()))
+    b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get())) # disable this button if input is not valid, use live listener
 
     #showing frame on screen
     initGuessgame_frame.pack()

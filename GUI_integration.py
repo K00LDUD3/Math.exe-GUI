@@ -47,8 +47,8 @@ c_button_font = font.Font(size=15)
 initSignInUp_frame = LabelFrame(root)
 signIn_frame = LabelFrame(root)
 signUp_frame = LabelFrame(root)
-editProfile_frame = LabelFrame(root)
 homescreen_frame = LabelFrame(root)
+editProfile_frame = LabelFrame(root)
 deleteProfile_frame = LabelFrame(root) 
 changeUser_frame = LabelFrame(root)
 changPass_frame = LabelFrame(root)
@@ -63,7 +63,7 @@ combo = ttk.Combobox()
 #function for HIDING given FRAME
 def hideFrame(frame):
     try:
-        frame.pack_forget()
+        frame.place_forget()
     except:
         None
     return
@@ -113,7 +113,7 @@ def initSignInUp(frame):
     b_sign_in.config(command=lambda: signIn(initSignInUp_frame))
     b_sign_up.config(command=lambda: signUp(initSignInUp_frame))
 
-    initSignInUp_frame.pack()
+    initSignInUp_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
     return
 
 def signIn(frame):
@@ -145,7 +145,7 @@ def signIn(frame):
     b_back.config(command=lambda: initSignInUp(signIn_frame))
     b_go.config(command=lambda: signInVer(None, e_user.get(), e_pass.get()))
     
-    signIn_frame.pack()
+    signIn_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
     return
 
 def signUp(frame):
@@ -195,7 +195,7 @@ def signUp(frame):
     b_back.config(command=lambda: initSignInUp(signUp_frame))
     b_go.config(command=lambda: signUpVer(None, e_user.get(), e_pass.get(), e_passconf.get()))
     
-    signUp_frame.pack()
+    signUp_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
     return
     
 #HOMESCREEN frame
@@ -224,7 +224,7 @@ def homescreen(frame):
     b_signOut.config(command=lambda: initSignInUp(homescreen_frame))
 
 
-    homescreen_frame.pack()
+    homescreen_frame.place(relwidth=0.9, relx=0.05)
     return
 
 def initCalc():
@@ -418,7 +418,7 @@ def specNumPrg(frame):
     b_go.config(command=lambda: initSPN(combo.get(), e_num.get(), l_opMessage)) # Prg this later
     
     #showing the widgets on screen
-    specNumPrg_frame.pack()
+    specNumPrg_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
     return
 
 def spnExplain(choice, label):
@@ -517,7 +517,7 @@ def sciCalc(frame):
     back = Button(sciCalc_frame, width=c_button_width, text = 'Back', command =lambda: homescreen(sciCalc_frame))
     back.grid(row=5, column=0, padx=c_button_padx, pady=button_pady)
 
-    sciCalc_frame.pack()
+    sciCalc_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
     return
 
 #sci calc func EVALUATE THE EXPRESSION
@@ -588,7 +588,7 @@ def initGuessingGame(frame):
     b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get()), state='active') # disable this button if input is not valid, use live listener
     e_rangeMax.grid(row=0, column=1, padx=button_padx, pady=button_pady)
     #showing frame on screen
-    initGuessgame_frame.pack()
+    initGuessgame_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
     return
 
 def guessingGame(frame, maxR):
@@ -628,7 +628,7 @@ def guessingGame(frame, maxR):
     b_guess.config(command=lambda: validateChoice(int(e_input.get()), number, l_output, b_guess))
 
     #showing frame on screen
-    guessgame_frame.pack()
+    guessgame_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
     return
 
 

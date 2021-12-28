@@ -182,15 +182,19 @@ def signUp(frame):
     e_user = Entry(signUp_frame, width=button_width, textvariable=sv)
     e_user.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
     e_user.grid(row=0, column=1, padx=button_padx, pady=button_pady)
-
-    e_pass = createEntry(button_width, 1, 1, button_padx, button_pady, signUp_frame)
+    
+    svp = StringVar()
+    svp.trace('w', lambda name, index, mode, sv=svp: passIsStrong(password=svp.get(), conf_pass_tb=e_passconf))
+    e_pass = Entry(signUp_frame, width=button_width, textvariable=svp, show='*')
+    e_pass.grid(row=1, column=1, padx=button_padx, pady=button_pady)
     e_pass.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
 
     e_passconf = createEntry(button_width, 2, 1, button_padx, button_pady, signUp_frame)
     e_passconf.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
+    e_passconf.config(state='disabled', show='*')
 
     b_back = createButton('Back', button_width, 3, 0, button_padx, button_pady, signUp_frame)
-    b_go = createButton('Sign In', button_width, 3, 1, button_padx, button_pady, signUp_frame)
+    b_go = createButton('Sign Up', button_width, 3, 1, button_padx, button_pady, signUp_frame)
 
 
     b_back.config(command=lambda: initSignInUp(signUp_frame))
@@ -701,9 +705,25 @@ def signUpVer(event, user, password, password_conf):
     #validate with Burgers DB and continue accordingly
     print(f'{event=}')
 
-    return
+    if password != password_conf:
+        print(f'<Pass equality err> -- {password_conf=}, {password=}')
+        return
 
-#guessing game func checking if input is a positive integer
+    return
+#sign up func PASSWORD checking strength of password and neabling/disabling conf password text box
+def passIsStrong(password, conf_pass_tb):
+    print(f'{password=}')
+    message = ''
+    if len(password) < 8:
+        #message = 'Too Short'
+        message = 'Too Short'
+        conf_pass_tb.config(state='disabled')
+        return
+
+    conf_pass_tb.config(state='normal')
+    return True
+
+#guessing game func checking if input is valid
 def checkMaxR(num, button):
     if num.isnumeric():
         print(f'{num.isnumeric()=}')

@@ -22,6 +22,7 @@ c_button_padx = 10
 #creating WINDOW
 root = Tk()
 root.title('Math.exe')
+root.resizable(False, False)
 root.geometry("365x150")
 
 '''

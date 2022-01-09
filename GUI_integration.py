@@ -211,7 +211,8 @@ def homescreen(frame):
     root.title('Homescreen')
     
     #neccessary BUTTONS
-    global is_guest
+    global is_guest## change later
+    is_guest = False
     print(f'<{is_guest=}>')
     if not is_guest:
         #if the user isnt a guest user, then they cannot edit a profile

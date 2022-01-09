@@ -21,6 +21,10 @@ class Calc:
         self.button = Button(master=frame, width=w, text=t, font=f)
         self.button.grid(row=xcor, column=ycor, padx=px, pady=py)
         return self.button
+    
+    def createLabel(self, frame, w, h, t, px, py, xcor, ycore, f, cspan, rspan, bg, fg, act_bg, act_fg, dis_bg, dis_fg, state, hig_bg, hig_fg):
+        self.label = Label(master=frame)
+        return
 
 
 

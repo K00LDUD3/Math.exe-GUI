@@ -2,38 +2,65 @@ from tkinter import *
 import tkinter.font as font
 from types import NoneType
 
-from GUI_integration import createButton
+
 
 root = Tk()
 root.title('Calculator')
 
 class Calc:
+    wd = {} #Widget Dictionary
+    gd = {
+            'column':None,
+            'row':None,
+            'cspan':None,
+            'rspan':None,
+            'padx':None,
+            'pady':None,
+            'ipadx':None,
+            'ipady':None
+        }
     #frame = None
-    def __init__(self, f_par_dict, l_par_dict) -> None:
-        self.frame = Frame(master=root)
-        self.frame.pack(padx=5, pady=5)
-
-        self.lab = Label(master=self.frame, text='Label', width=10, height=2, font=None, foreground=None, background=None, borderwidth=None, border=None, bg=None, fg=None, anchor=None)
-        self.lab.grid(row=0, column=0, columnspan=4)
-
-        self.button_l = []
-    def createButton(self, frame, w, t, px, py, xcor, ycor, f):
-        self.button = Button(master=frame, width=w, text=t, font=f)
-        self.button.grid(row=xcor, column=ycor, padx=px, pady=py)
-        return self.button
+    def __init__(self, type, widg_dict, text, grid_dict) -> None:
+        #check type of widg (button, label, textbox, frame), then call a function to create that specific widg
+        self.wd = widg_dict
+        if type.upper() == 'BUTTON':
+            self.createB(self.wd, text)
+            pass
+        elif type.upper() == 'LABEL':
+            pass
+        elif type.upper() == 'TEXTBOX':
+            pass
+        elif type.upper() == 'FRAME':
+            pass
+        else:
+            print('err: widget unidentified')
+            return
+        pass
     
-    def createLabel(self, frame, w, h, t, px, py, xcor, ycore, f, cspan, rspan, bg, fg, act_bg, act_fg, dis_bg, dis_fg, state, hig_bg, hig_fg):
-        self.label = Label(master=frame)
+    def createB(self, dict, text):
+        self.button = Button(None)
         return
 
+    def b_dict_init(self, widg_d):
+        self.d = {
+            #button config params
+            'act_bg':widg_d['act_bg'],
+            'act_fg':widg_d['act_fg'],
+            'bg':widg_d['bg'],
+            'fg':widg_d['fg'],
+            'border':widg_d['border'],
+            'font':widg_d['font'],
+            'height':widg_d['height'],
+            'highl_color':widg_d['highl_color'],
+            'image':widg_d['image'],
+            'justify':widg_d['justify'],
+            'padx':widg_d['padx'],
+            'pady':widg_d['pady'],
+            'relief':widg_d['relief'],
+            'underline':widg_d['underline'],
+            'w':widg_d['w'],
+            'wraplength':widg_d['wraplength'],
+        }
+        
 
-
-c = Calc(None, None)
-c.createButton(c.frame, 10, 'hello', 10, 10, 1, 0, None)
-
-
-for i in range(0,9):
-    c.button_l.append(createButton(frame=c.frame, Text=i+1, ))
-    pass
-print(c.__dict__)
 root.mainloop()

@@ -66,15 +66,11 @@ def evalSpecNum(choice, num):
 		return Factorial(num)
 
 def Factorial(num):
-	factorial = 1
-	if num<0:
-		print("Factorial does not exist for negative numbers")
-	elif num==0:
-		print("Factorial of 0 is 1")
+	if num == 1:
+		return 1
+
 	else:
-		for i in range(1,num+1):
-			factorial*= i
-	return factorial
+		return num * Factorial(num-1)
 
 def isArmstrong(num): # Function to check whether the number is armstrong or not
 	d = 0

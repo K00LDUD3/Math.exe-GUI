@@ -8,6 +8,7 @@ root = Tk()
 root.title('Calculator')
 
 class Calc:
+    text = ''
     wd = {} #Widget Dictionary
     gd = {
             'column':None,
@@ -21,9 +22,10 @@ class Calc:
         }
     #frame = None
     def __init__(self, type, widg_dict, text, grid_dict) -> None:
+        self.text = text
+        self.wd = widg_dict
         #check type of widg (button, label, textbox, frame), then call a function to create that specific widg
         if type.upper() == 'BUTTON':
-            self.b_dict_init(widg_d = widg_dict)
             pass
         elif type.upper() == 'LABEL':
             pass
@@ -36,33 +38,58 @@ class Calc:
             return
         pass
     
-    def createB(self, dict, text):
-        self.button = Button(None)
-        return
+    #Gen 
+    def createB(self):
+        self.button = Button(
+            master= self.wd['frame'],
+            activebackground= self.wd['act_bg'],
+            activeforeground= self.wd['act_fg'],
+            text=self.text,
+            width=self.wd['w'],
+            height=self.wd['height'],
+            font=self.wd['font'],
+            highlightbackground=self.wd['highl_color'],
+            background=self.wd['bg'],
+            foreground=self.wd['fg'],
+            justify=self.wd['justify'],
+            padx=self.wd['padx'],
+            pady=self.wd['pady'],
+            wraplength=self.wd['wraplength'],
+            relief=self.wd['relief'],
+            underline=self.wd['underline']
 
-    def b_dict_init(self, widg_d):
-        self.wd = {
-            #button config params
-            'act_bg':widg_d['act_bg'],
-            'act_fg':widg_d['act_fg'],
-            'bg':widg_d['bg'],
-            'fg':widg_d['fg'],
-            'border':widg_d['border'],
-            'font':widg_d['font'],
-            'height':widg_d['height'],
-            'highl_color':widg_d['highl_color'],
-            'image':widg_d['image'],
-            'justify':widg_d['justify'],
-            'padx':widg_d['padx'],
-            'pady':widg_d['pady'],
-            'relief':widg_d['relief'],
-            'underline':widg_d['underline'],
-            'w':widg_d['w'],
-            'wraplength':widg_d['wraplength'],
-        }
+        )
+        self.button.grid(row=0, column=0)
 
 
-        
-        
+
+
+
+
+
+
+
+frame = LabelFrame(root)
+frame.pack()
+
+widg_test_dict = {'frame':frame,
+            'act_bg':None,
+            'act_fg':None,
+            'bg':None,
+            'fg':None,
+            'border':None,
+            'font':None,
+            'height':None,
+            'highl_color':None,
+            'image':None,
+            'justify':None,
+            'padx':None,
+            'pady':None,
+            'relief':None,
+            'underline':None,
+            'w':10,
+            'wraplength':None}
+widg_test = Calc('BUTTON', widg_test_dict, 'test', None)
+widg_test.createB()
 
 root.mainloop()

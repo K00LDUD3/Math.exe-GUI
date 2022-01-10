@@ -64,10 +64,10 @@ combo = ttk.Combobox()
 #function for HIDING given FRAME
 def hideFrame(frame):
     try:
-        frame.place_forget()
+        frame.pack_forget()
     except:
         None
-    return
+    return                            
 
 #generic function to CREATE BUTTON
 def createButton(Text, Width, xcor, ycor, px,py, frame):
@@ -114,8 +114,8 @@ def initSignInUp(frame):
     b_sign_in.config(command=lambda: signIn(initSignInUp_frame))
     b_sign_up.config(command=lambda: signUp(initSignInUp_frame))
 
-    initSignInUp_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
-    return
+    initSignInUp_frame.pack()
+    return                        
 
 def signIn(frame):
     #hiding active frame
@@ -146,7 +146,7 @@ def signIn(frame):
     b_back.config(command=lambda: initSignInUp(signIn_frame))
     b_go.config(command=lambda: signInVer(None, e_user.get(), e_pass.get()))
     
-    signIn_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
+    signIn_frame.pack()
     return
 
 def signUp(frame):
@@ -200,7 +200,7 @@ def signUp(frame):
     b_back.config(command=lambda: initSignInUp(signUp_frame))
     b_go.config(command=lambda: signUpVer(None, e_user.get(), e_pass.get(), e_passconf.get()))
     
-    signUp_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
+    signUp_frame.pack()
     return
     
 #HOMESCREEN frame
@@ -230,7 +230,7 @@ def homescreen(frame):
     b_signOut.config(command=lambda: initSignInUp(homescreen_frame))
 
 
-    homescreen_frame.place(relwidth=0.9, relx=0.05)
+    homescreen_frame.pack()
     return
 
 def initCalc():
@@ -424,7 +424,7 @@ def specNumPrg(frame):
     b_go.config(command=lambda: initSPN(combo.get(), e_num.get(), l_opMessage)) # Prg this later
     
     #showing the widgets on screen
-    specNumPrg_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
+    specNumPrg_frame.pack()
     return
 
 def spnExplain(choice, label):
@@ -523,7 +523,7 @@ def sciCalc(frame):
     back = Button(sciCalc_frame, width=c_button_width, text = 'Back', command =lambda: homescreen(sciCalc_frame))
     back.grid(row=5, column=0, padx=c_button_padx, pady=button_pady)
 
-    sciCalc_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
+    sciCalc_frame.pack()
     return
 
 #sci calc func EVALUATE THE EXPRESSION
@@ -594,7 +594,7 @@ def initGuessingGame(frame):
     b_start.config(command=lambda: guessingGame(initGuessgame_frame, e_rangeMax.get()), state='active') # disable this button if input is not valid, use live listener
     e_rangeMax.grid(row=0, column=1, padx=button_padx, pady=button_pady)
     #showing frame on screen
-    initGuessgame_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
+    initGuessgame_frame.pack()
     return
 
 def guessingGame(frame, maxR):
@@ -634,7 +634,7 @@ def guessingGame(frame, maxR):
     b_guess.config(command=lambda: validateChoice(int(e_input.get()), number, l_output, b_guess))
 
     #showing frame on screen
-    guessgame_frame.place(relx=0.05, relwidth=0.9, rely=0.05, relheight=0.9)
+    guessgame_frame.pack()
     return
 
 
@@ -707,20 +707,21 @@ def signUpVer(event, user, password, password_conf):
     print(f'{event=}')
 
     if password != password_conf:
-        print(f'<Pass equality err> -- {password_conf=}, {password=}')
+        print(f'<Pass equality err> -- {password_conf=}, {password=}') #display this message on GUI
         return
+    
 
     return
 #sign up func PASSWORD checking strength of password and neabling/disabling conf password text box
 def passIsStrong(password, conf_pass_tb):
     print(f'{password=}')
     message = ''
-    if len(password) < 8:
+    if len(password) < 4 or len(password) > 16:
         #message = 'Too Short'
         message = 'Too Short'
         conf_pass_tb.config(state='disabled')
         return
-
+        
     conf_pass_tb.config(state='normal')
     return True
 
@@ -729,9 +730,8 @@ def checkMaxR(num, button):
     if num.isnumeric():
         print(f'{num.isnumeric()=}')
         try:
-            if int(num) <10000:
-                print(f'{num.isnumeric()=}')
-                button.config(state='active')
+            print(f'{num.isnumeric()=}')
+            button.config(state='active')
         except:
             button.config(state='disabled')
     else:

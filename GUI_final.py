@@ -149,6 +149,7 @@ def homescreen(frame):
 
     #Row 1
     b_specNum = gfunc.GenFunc('button', homescreen_b_dic, 'Special Numbers', homescreen_g_dic)
+    b_specNum.widg.config(command= lambda: specNum(homescreen_frame))
     homescreen_g_dic['column'] = 1
     b_guessG = gfunc.GenFunc('button', homescreen_b_dic, 'Guessing Game', homescreen_g_dic)
     b_guessG.widg.config(command= lambda: initGG(homescreen_frame))
@@ -513,7 +514,7 @@ def specNum(frame):
         'master':specNum_frame,
         'bd':None,
         'height':None,
-        'w':15,
+        'w':20,
         'bg':None,
         'fg':None,
         'font':None,
@@ -529,6 +530,7 @@ def specNum(frame):
         'relief':None,
         'yscrollcommand':None,
         'xscrollcommand':None,
+        
     }
     spn_g_dic = {
         'column':0,
@@ -542,8 +544,33 @@ def specNum(frame):
     }
 
     #Row 1
-    l_choose = gfunc.GenFunc('label', spn_b_dic, 'Choose a Function:', spn_g_dic)
-    
+    l_choose = gfunc.GenFunc('label', spn_l_dic, 'Choose a Function:', spn_g_dic)
+    specNum_list = ['Armstrong',
+                    'Buzz',
+                    'Automorphic',
+                    'Capricon',
+                    'Disarium',
+                    'Duck',
+                    'Evil',
+                    'Odd or Even',
+                    'Krishnamurthy',
+                    'Magic',
+                    'Neon',
+                    'Niven',
+                    'Palindrome',
+                    'Perfect Square',
+                    'Strong',
+                    'Pronic',
+                    'Spy',
+                    'Tech',
+                    'Prime',
+                    'Factorial of a']
+    specNum_list = [(str(i)+'. '+specNum_list[i]+ ' number') for i in range(len(specNum_list))]
+    combo = ttk.Combobox(specNum_frame, values= specNum_list, state= 'readonly', width=20)
+    combo.current(0)
+    spn_g_dic['column']+=1
+    combo.grid(row=spn_g_dic['row'], column=spn_g_dic['column'])
+    combo.bind('<<ComboboxSelected>>', lambda event: spnExplain(combo.get(), l_exp))
     #Row 2
     spn_g_dic['row']+=1
     spn_g_dic['column'] = 0
@@ -559,12 +586,35 @@ def specNum(frame):
     
     #Row 4
     spn_g_dic['row']+=1
-    l_exp = gfunc.GenFunc('label', spn_l_dic, '<insert explanation>')
+    spn_g_dic['rspan'] = 2
+    #FIXX
+    l_exp = gfunc.GenFunc('label', spn_l_dic, '', spn_g_dic)
+    spnExplain(combo.get(), l_exp)
+    spn_g_dic['rspan'] = 1
 
     #Row 5
+    spn_g_dic['row']+=2
     spn_g_dic['cspan'] = 1
+    spn_g_dic['cspan'] = 1
+    b_back = gfunc.GenFunc('button', spn_b_dic, 'Back', spn_g_dic)
+    b_back.widg.config(command= lambda: homescreen(specNum_frame))
+    spn_g_dic['column']+=1
+    b_go = gfunc.GenFunc('button', spn_b_dic, 'Go', spn_g_dic)
     
+    specNum_frame.pack()
     return
+#Function to explain the special numbers 
+def spnExplain(choice, label_obj):
+    #set title accordingly 
+    #root.title(('Special Number -', choice.split(' ')[1]))
+    if choice.split(' ')[2] == 'Square':
+        choice = 'Square'
+    else:
+        choice = choice.split(' ')[1]
+    print(f'{choice=}')
+    label_obj.widg.config(text=spn.specnum_explain[choice])
+    return
+
 initSignInUp(None)
 #Showing WINDOW
 root.mainloop()

@@ -420,8 +420,78 @@ def validateNum(num, val_num, label_obj, button_obj):
 def calcMenu(frame):
     hideFrame(frame)
     #Defining param DICTIONARIES for WIDGETS
-    cm__b_dic = {
+    cm_b_dic = {
         'master':calcMenu_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':25,
+        'wraplength':None
+    }
+    cm_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+
+    #6 Rows (not sure what happened to two more XD)
+    b_calc = gfunc.GenFunc('button', cm_b_dic, 'Normal Calculator', cm_g_dic)
+    cm_g_dic['row'] +=1
+    b_baseN = gfunc.GenFunc('button', cm_b_dic, 'Base-N Calculator', cm_g_dic)
+    cm_g_dic['row'] +=1
+    b_quad = gfunc.GenFunc('button', cm_b_dic, 'Quadratic Equation Calculator', cm_g_dic)
+    cm_g_dic['row'] +=1
+    b_vect = gfunc.GenFunc('button', cm_b_dic, 'Vector Calculator', cm_g_dic)
+    cm_g_dic['row'] +=1
+    b_back = gfunc.GenFunc('button', cm_b_dic, 'Back', cm_g_dic)
+    b_back.widg.config(command= lambda: homescreen(calcMenu_frame))
+    cm_g_dic['row'] +=1
+
+    calcMenu_frame.pack()
+    return
+
+def specNum(frame):
+    hideFrame(frame)
+
+    #Definging param DICTIONARIES for WIDGETS
+    spn_l_dic = {
+        'master':specNum_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    spn_b_dic = {
+        'master':specNum_frame,
         'act_bg':'blue',
         'act_fg':'yellow',
         'bg':None,
@@ -439,7 +509,28 @@ def calcMenu(frame):
         'w':15,
         'wraplength':None
     }
-    cm_g_dic = {
+    spn_e_dic = {
+        'master':specNum_frame,
+        'bd':None,
+        'height':None,
+        'w':15,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+    }
+    spn_g_dic = {
         'column':0,
         'row':0,
         'cspan':1,
@@ -450,22 +541,30 @@ def calcMenu(frame):
         'ipady':0
     }
 
-    #6 Rows (not sure what happened to two more XD)
-    b_calc = gfunc.GenFunc('button', cm__b_dic, 'Normal Calculator', cm_g_dic)
-    cm_g_dic['row'] +=1
-    b_baseN = gfunc.GenFunc('button', cm__b_dic, 'Base-N Calculator', cm_g_dic)
-    cm_g_dic['row'] +=1
-    b_quad = gfunc.GenFunc('button', cm__b_dic, 'Quadratic Equation Calculator', cm_g_dic)
-    cm_g_dic['row'] +=1
-    b_vect = gfunc.GenFunc('button', cm__b_dic, 'Vector Calculator', cm_g_dic)
-    cm_g_dic['row'] +=1
-    b_back = gfunc.GenFunc('button', cm__b_dic, 'Back', cm_g_dic)
-    b_back.widg.config(command= lambda: homescreen(calcMenu_frame))
-    cm_g_dic['row'] +=1
+    #Row 1
+    l_choose = gfunc.GenFunc('label', spn_b_dic, 'Choose a Function:', spn_g_dic)
+    
+    #Row 2
+    spn_g_dic['row']+=1
+    spn_g_dic['column'] = 0
+    l_inp = gfunc.GenFunc('label', spn_l_dic, 'Enter a Number:', spn_g_dic)
+    spn_g_dic['column']+=1
+    e_inp = gfunc.GenFunc('entry', spn_e_dic, StringVar(), spn_g_dic)
 
-    calcMenu_frame.pack()
+    #Row 3
+    spn_g_dic['row']+=1
+    spn_g_dic['column'] = 0
+    spn_g_dic['cspan'] = 2
+    l_op = gfunc.GenFunc('label', spn_l_dic, '<insert output>', spn_g_dic)
+    
+    #Row 4
+    spn_g_dic['row']+=1
+    l_exp = gfunc.GenFunc('label', spn_l_dic, '<insert explanation>')
+
+    #Row 5
+    spn_g_dic['cspan'] = 1
+    
     return
-
 initSignInUp(None)
 #Showing WINDOW
 root.mainloop()

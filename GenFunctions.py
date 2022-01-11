@@ -3,9 +3,10 @@ import tkinter.font as font
 from types import NoneType
 
 
-
+'''
 root = Tk()
 root.title('Calculator')
+'''
 
 class GenFunc:
     widg = None
@@ -31,23 +32,16 @@ class GenFunc:
         }
         '''
 
-        #checking type of widg (button, label, textbox, frame), then call a function to create that specific widg
+        #checking type of widg (button, label, textbox), then call a function to create that specific widg
         if type.upper() == 'BUTTON':
-            self.widg = Button()
-            pass
+            self.createB()
         elif type.upper() == 'LABEL':
-            self.widg = Label()
-            pass
+            self.createL()
         elif type.upper() == 'ENTRY':
-            self.widg = Entry()
-            pass
-        elif type.upper() == 'LABELFRAME':
-            self.widg = LabelFrame()
-            pass
+            self.createE()
         else:
             print('err: widget unidentified')
-            return
-        pass
+        return
 
     #Generating a BUTTON using parameters stored in a dictionary
     def createB(self):
@@ -209,7 +203,7 @@ class GenFunc:
         '''
         return
 
-'''-------------TESTING-------------'''
+'''-------------TESTING-------------
 frame = LabelFrame(root)
 frame.pack()
 
@@ -248,3 +242,4 @@ widg_test.createB()
 print(str(widg_test.widg).split('!')[-1]) # getting type of widget
 
 root.mainloop()
+'''

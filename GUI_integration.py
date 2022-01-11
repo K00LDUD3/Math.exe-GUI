@@ -115,7 +115,9 @@ def initSignInUp(frame):
     b_sign_up.config(command=lambda: signUp(initSignInUp_frame))
 
     initSignInUp_frame.pack()
-    return                        
+    return
+
+
 
 def signIn(frame):
     #hiding active frame

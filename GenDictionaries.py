@@ -66,6 +66,7 @@ rowspan − How many rowswidget occupies; default 1.
 
 
 lab_dict = {
+    'master':None,
     'anchor':None,
     'bg':None,
     'bitmap':None,

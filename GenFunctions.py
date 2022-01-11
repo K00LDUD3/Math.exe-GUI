@@ -101,7 +101,7 @@ class GenFunc:
     def createL(self):
         self.widg = Label(
             master= self.wd['master'],
-            textvariable=  self.text,
+            text=  self.text,
             anchor=  self.wd['anchor'],
             background=  self.wd['bg'],
             foreground=  self.wd['fg'],
@@ -163,7 +163,7 @@ class GenFunc:
             foreground= self.wd['fg'],
             font= self.wd['font'],
             insertofftime= self.wd['insertofftime'],
-            insertontime= self.wd['insesrtontime'],
+            insertontime= self.wd['insertontime'],
             highlightbackground= self.wd['highlbg'],
             highlightcolor= self.wd['highlcolor'],
             relief= self.wd['relief'],

@@ -112,10 +112,11 @@ def initSignInUp(frame):
     initSignInUp_frame.pack()
     return
 
+#Main screen FRAME
 def homescreen(frame):
     hideFrame(frame)
 
-    #Defining button DICTIONARIES for BUTTONS
+    #Defining param DICTIONARIES for WIDGETS
     homescreen_b_dic = {
         'master':homescreen_frame,
         'act_bg':'blue',
@@ -151,6 +152,7 @@ def homescreen(frame):
     homescreen_g_dic['column'] = 1
     b_guessG = gfunc.GenFunc('button', homescreen_b_dic, 'Guessing Game', homescreen_g_dic)
     b_guessG.widg.config(command= lambda: initGG(homescreen_frame))
+
     #Row 2
     homescreen_g_dic['row'] = 1
     homescreen_g_dic['column'] = 0
@@ -158,7 +160,7 @@ def homescreen(frame):
     b_signOut.widg.config(command= lambda: initSignInUp(homescreen_frame))
     homescreen_g_dic['column'] = 1
     b_calc = gfunc.GenFunc('button', homescreen_b_dic, 'Calculators', homescreen_g_dic)
-
+    b_calc.widg.config(command= lambda: calcMenu(homescreen_frame))
     #Row 3
     homescreen_g_dic['row'] = 2
     homescreen_g_dic['column'] = 0
@@ -169,6 +171,7 @@ def homescreen(frame):
     homescreen_frame.pack()
     return
 
+#Guessing game menu
 def initGG(frame):
     hideFrame(frame)
 
@@ -232,7 +235,8 @@ def initGG(frame):
     ]
 
     #Row 1
-    b_go = gfunc.GenFunc('button', initGG_b_dic, 'GO', initGG_g_dic)
+    b_start = gfunc.GenFunc('button', initGG_b_dic, 'Start', initGG_g_dic)
+    b_start.widg.config(command= lambda: guessG(initGG_frame, genNum(combo.get())))
     diff_list = [(str(i)+'. '+diff_list[i]+ ' Level') for i in range(len(diff_list))]
     combo = ttk.Combobox(initGG_frame, values= diff_list, state= 'readonly', width=20)
     combo.bind('<<ComboboxSelected>>', lambda event: diff_expl(l_range, combo.get()))
@@ -245,6 +249,7 @@ def initGG(frame):
     l_range = gfunc.GenFunc('label', initGG_l_dic, '', initGG_g_dic)
     initGG_g_dic['column'] = 1
     b_back = gfunc.GenFunc('button', initGG_b_dic, 'Cancel', initGG_g_dic)
+    b_back.widg.config(command= lambda: homescreen(initGG_frame))
 
     diff_expl(l_range, combo.get())
 
@@ -254,17 +259,211 @@ def initGG(frame):
 def diff_expl(label_obj, choice):
     choice = choice.split(' ')[1].lower()
     if choice == 'easy':
-        label_obj.widg.config(text='set range')
+        label_obj.widg.config(text='0 -10')
     elif choice == 'medium':
-        label_obj.widg.config(text='set range')
+        label_obj.widg.config(text='0 - 100')
     elif choice == 'hard':
-        label_obj.widg.config(text='set range')
+        label_obj.widg.config(text='0 - 1000')
     elif choice == 'insane':
-        label_obj.widg.config(text='set range')
+        label_obj.widg.config(text='0 - 10000')
     elif choice == 'god':
-        label_obj.widg.config(text='set range')
+        label_obj.widg.config(text='0 - 100000')
     elif choice == 'foodmen':
-        label_obj.widg.config(text='set range')
+        label_obj.widg.config(text='-1000000000 - 1000000000')
+    return
+
+#Guessing game 
+def guessG(frame, number):
+    hideFrame(frame)
+
+    guessG_l_dic = {
+        'master':guessG_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    guessG_b_dic = {
+        'master':guessG_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    guessG_e_dic = {
+        'master':guessG_frame,
+        'bd':None,
+        'height':None,
+        'w':15,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+    }
+    guessG_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+    
+    #Row 1
+    l_promptGuess = gfunc.GenFunc('label', guessG_l_dic, 'Guess a number:', guessG_g_dic)
+    guessG_g_dic['column'] = 1
+    e_guess = gfunc.GenFunc('entry', guessG_e_dic, StringVar(), guessG_g_dic)
+    
+    #Row 2
+    guessG_g_dic['column'] = 0
+    guessG_g_dic['row'] = 1
+    guessG_g_dic['cspan'] = 2
+    guessG_l_dic['w'] = 20
+    l_op = gfunc.GenFunc('label', guessG_l_dic, '', guessG_g_dic)
+
+    #Row 3
+    guessG_g_dic['row'] = 2
+    guessG_g_dic['cspan'] = 1
+    b_back = gfunc.GenFunc('button', guessG_b_dic, 'Back', guessG_g_dic)
+    b_back.widg.config(command= lambda: initGG(guessG_frame))
+    guessG_g_dic['column'] = 1
+    b_guess = gfunc.GenFunc('button', guessG_b_dic, 'Guess', guessG_g_dic)
+    b_guess.widg.config(command= lambda: validateNum(str(e_guess.widg.get()), number, l_op, b_guess))
+    
+    guessG_frame.pack()
+    return
+    #Generating a random mnumber with min range and max range
+def genNum(choice):
+    choice = choice.split(' ')[1].lower()
+    number = 0
+    if choice == 'easy':
+        number = random.randint(0,10)
+        r = '0 - 10'
+    elif choice == 'medium':
+        number = random.randint(0,100)
+        r = '0 - 100'
+    elif choice == 'hard':
+        number = random.randint(0,1000)
+        r = '0 - 1000'
+    elif choice == 'insane':
+        number = random.randint(0,10000)
+        r = '0 - 100000'
+    elif choice == 'god':
+        number = random.randint(0,100000)
+        r = '0 - 1000000'
+    elif choice == 'foodmen':
+        number = random.randint(-1000000000, 1000000000)
+        root.title(f'Guessing Game: -1000000000 - 1000000000')
+        print(f'{number=}')
+        return number
+    root.title(f'Guessing Game: {r}')
+    print(f'{number=}')
+    return number
+#checking if  guess is correct for guessing game
+def validateNum(num, val_num, label_obj, button_obj):
+    global no_tries
+    try:
+        num = int(num.strip())
+        if num == val_num:
+            no_tries+=1
+            mess = f'Correct! Number of tries: {no_tries}'
+            button_obj.widg.config(state='disabled')
+        elif num < val_num:
+            no_tries+=1
+            mess = 'Try guessing higher!'
+        elif num > val_num:
+            no_tries+=1
+            mess = 'Try guessing lower!'
+        label_obj.widg.config(text=mess)
+    except:
+        label_obj.widg.config(text='Invalid guess!')
+
+#Calculator menu
+def calcMenu(frame):
+    hideFrame(frame)
+    #Defining param DICTIONARIES for WIDGETS
+    cm__b_dic = {
+        'master':calcMenu_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    cm_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+
+    #6 Rows (not sure what happened to two more XD)
+    b_calc = gfunc.GenFunc('button', cm__b_dic, 'Normal Calculator', cm_g_dic)
+    cm_g_dic['row'] +=1
+    b_baseN = gfunc.GenFunc('button', cm__b_dic, 'Base-N Calculator', cm_g_dic)
+    cm_g_dic['row'] +=1
+    b_quad = gfunc.GenFunc('button', cm__b_dic, 'Quadratic Equation Calculator', cm_g_dic)
+    cm_g_dic['row'] +=1
+    b_vect = gfunc.GenFunc('button', cm__b_dic, 'Vector Calculator', cm_g_dic)
+    cm_g_dic['row'] +=1
+    b_back = gfunc.GenFunc('button', cm__b_dic, 'Back', cm_g_dic)
+    b_back.widg.config(command= lambda: homescreen(calcMenu_frame))
+    cm_g_dic['row'] +=1
+
+    calcMenu_frame.pack()
     return
 
 initSignInUp(None)

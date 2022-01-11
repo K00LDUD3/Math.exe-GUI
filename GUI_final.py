@@ -238,7 +238,7 @@ def initGG(frame):
     combo.bind('<<ComboboxSelected>>', lambda event: diff_expl(l_range, combo.get()))
     combo.grid(row=0, column=0)
     combo.current(0)
-    
+
     #Row 2
     initGG_g_dic['column'] = 0
     initGG_g_dic['row'] = 1
@@ -250,6 +250,7 @@ def initGG(frame):
 
     initGG_frame.pack()
     return
+#Explaining ranges of difficulty
 def diff_expl(label_obj, choice):
     choice = choice.split(' ')[1].lower()
     if choice == 'easy':
@@ -265,6 +266,7 @@ def diff_expl(label_obj, choice):
     elif choice == 'foodmen':
         label_obj.widg.config(text='set range')
     return
+
 initSignInUp(None)
 #Showing WINDOW
 root.mainloop()

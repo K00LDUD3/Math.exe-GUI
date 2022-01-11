@@ -7,7 +7,7 @@ from types import NoneType
 root = Tk()
 root.title('Calculator')
 
-class Calc:
+class GenFunc:
     widg = None
     text = ''
     wd = {} #Widget Dictionary
@@ -243,7 +243,7 @@ grid_test_dict = {
     'ipadx':0,
     'ipady':5
 }
-widg_test = Calc(type='button', widg_dict=widg_test_dict, text='test', grid_dict=grid_test_dict)
+widg_test = GenFunc(type='button', widg_dict=widg_test_dict, text='test', grid_dict=grid_test_dict)
 widg_test.createB() 
 print(str(widg_test.widg).split('!')[-1]) # getting type of widget
 

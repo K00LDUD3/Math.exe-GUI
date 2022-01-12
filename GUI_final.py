@@ -455,6 +455,7 @@ def calcMenu(frame):
     b_calc = gfunc.GenFunc('button', cm_b_dic, 'Normal Calculator', cm_g_dic)
     cm_g_dic['row'] +=1
     b_baseN = gfunc.GenFunc('button', cm_b_dic, 'Base-N Calculator', cm_g_dic)
+    b_baseN.widg.config(command= lambda: baseCalc(calcMenu_frame))
     cm_g_dic['row'] +=1
     b_quad = gfunc.GenFunc('button', cm_b_dic, 'Quadratic Equation Calculator', cm_g_dic)
     cm_g_dic['row'] +=1
@@ -466,6 +467,116 @@ def calcMenu(frame):
 
     calcMenu_frame.pack()
     return
+
+def baseCalc(frame):
+    hideFrame(frame)
+
+    baseCalc_e_dic = {
+        'master':baseCalc_frame,
+        'bd':None,
+        'height':None,
+        'w':20,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+        
+    }
+    baseCalc_l_dic = {
+        'master':baseCalc_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    baseCalc_b_dic = {
+        'master':baseCalc_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    baseCalc_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+    #Row 1
+
+    l_inpPrompt = gfunc.GenFunc('label', baseCalc_l_dic, 'Enter number:', baseCalc_g_dic)
+    baseCalc_g_dic['column']+=1
+    e_inp = gfunc.GenFunc('entry', baseCalc_e_dic, StringVar(), baseCalc_g_dic)
+
+    #Row 2
+    baseCalc_g_dic['row']+=1
+    #baseCalc_g_dic['column'] =1
+    x = IntVar()
+    r_ip2 = Radiobutton(master=baseCalc_frame, value=2, text='Base 2', variable=x)
+    r_ip2.grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    r_ip3 = Radiobutton(master=baseCalc_frame, value=8, text='Base 8', variable=X)
+    r_ip3.grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    #FIX RADIO BUTTONS
+    
+    #Row 3
+    baseCalc_g_dic['row']+=1
+    #baseCalc_g_dic['column'] =1
+    
+
+
+    #Row 4
+    baseCalc_g_dic['row']+=1
+    baseCalc_g_dic['column'] =0
+    b_back = gfunc.GenFunc('button', baseCalc_b_dic, 'Back', baseCalc_g_dic)
+    b_back.widg.config(command= lambda: calcMenu(baseCalc_frame))
+    baseCalc_g_dic['column']+=1
+    l_op = gfunc.GenFunc('label', baseCalc_l_dic, '<OUTPUT>', baseCalc_g_dic)
+
+    baseCalc_frame.pack()
+    return
+
+    
 
 def specNum(frame):
     hideFrame(frame)

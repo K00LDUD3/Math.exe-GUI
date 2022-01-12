@@ -1,5 +1,5 @@
-#Importing required libs and mods
 from tkinter import *
+#Importing required libs and mods
 from tkinter import ttk
 import Special_Numbers as spn
 import tkinter.font as font
@@ -570,7 +570,7 @@ def specNum(frame):
     combo.current(0)
     spn_g_dic['column']+=1
     combo.grid(row=spn_g_dic['row'], column=spn_g_dic['column'])
-    combo.bind('<<ComboboxSelected>>', lambda event: spnExplain(combo.get(), l_exp))
+    combo.bind('<<ComboboxSelected>>', lambda event: spnExplain(combo.get(), l_exp, l_op))
     #Row 2
     spn_g_dic['row']+=1
     spn_g_dic['column'] = 0
@@ -582,15 +582,19 @@ def specNum(frame):
     spn_g_dic['row']+=1
     spn_g_dic['column'] = 0
     spn_g_dic['cspan'] = 2
-    l_op = gfunc.GenFunc('label', spn_l_dic, '<insert output>', spn_g_dic)
+    spn_l_dic['w'] = 40
+    l_op = gfunc.GenFunc('label', spn_l_dic, '', spn_g_dic)
     
     #Row 4
     spn_g_dic['row']+=1
     spn_g_dic['rspan'] = 2
-    #FIXX
+    spn_l_dic['w'] = 40
+    spn_l_dic['wraplength'] = 300
     l_exp = gfunc.GenFunc('label', spn_l_dic, '', spn_g_dic)
-    spnExplain(combo.get(), l_exp)
+    spnExplain(combo.get(), l_exp, l_op)
     spn_g_dic['rspan'] = 1
+    spn_l_dic['w'] = 15
+    spn_l_dic['wraplength'] = None
 
     #Row 5
     spn_g_dic['row']+=2
@@ -600,13 +604,15 @@ def specNum(frame):
     b_back.widg.config(command= lambda: homescreen(specNum_frame))
     spn_g_dic['column']+=1
     b_go = gfunc.GenFunc('button', spn_b_dic, 'Go', spn_g_dic)
+    b_go.widg.config(command= lambda: evalSpecNum(combo.get(), e_inp.widg.get(), l_op))
     
     specNum_frame.pack()
     return
 #Function to explain the special numbers 
-def spnExplain(choice, label_obj):
+def spnExplain(choice, label_obj, op_obj):
     #set title accordingly 
     #root.title(('Special Number -', choice.split(' ')[1]))
+    op_obj.widg.config(text='')
     if choice.split(' ')[2] == 'Square':
         choice = 'Square'
     else:
@@ -614,7 +620,19 @@ def spnExplain(choice, label_obj):
     print(f'{choice=}')
     label_obj.widg.config(text=spn.specnum_explain[choice])
     return
+def evalSpecNum(choice, num, label_obj):
+    if len(num) == 0 or  not num.isnumeric():
+        label_obj.widg.config(text='Invalid Entry!')
+        return
+    if choice.split(' ')[2] == 'Square':
+        choice = 'Square'
+    else:
+        choice = choice.split(' ')[1]
+    num = int(num)
 
+    message = spn.evalSpecNum(choice=choice, num=num)
+    label_obj.widg.config(text=message)
+    return
 initSignInUp(None)
 #Showing WINDOW
 root.mainloop()

@@ -24,6 +24,8 @@ root = Tk()
 root.title('Math.exe')
 root.resizable(False, False)
 root.geometry("365x150")
+photo = PhotoImage(file='Logo.png')
+root.iconphoto(False, photo)
 
 '''
 #button Param Variables
@@ -186,7 +188,7 @@ def signUp(frame):
     e_user.grid(row=0, column=1, padx=button_padx, pady=button_pady)
     
     svp = StringVar()
-    svp.trace('w', lambda name, index, mode, sv=svp: passIsStrong(password=svp.get(), conf_pass_tb=e_passconf))
+    svp.trace('w', lambda name, index, mode, sv=svp: passIsStrong(password=svp.get(), conf_pass_tb=e_passconf, button=b_go))
     e_pass = Entry(signUp_frame, width=button_width, textvariable=svp, show='*')
     e_pass.grid(row=1, column=1, padx=button_padx, pady=button_pady)
     e_pass.bind('<Return>', lambda event: signUpVer(event, e_user.get(), e_pass.get(), e_passconf.get()))
@@ -711,17 +713,17 @@ def signUpVer(event, user, password, password_conf):
     if password != password_conf:
         print(f'<Pass equality err> -- {password_conf=}, {password=}') #display this message on GUI
         return
-    
-
     return
+
 #sign up func PASSWORD checking strength of password and neabling/disabling conf password text box
-def passIsStrong(password, conf_pass_tb):
+def passIsStrong(password, conf_pass_tb, button):
     print(f'{password=}')
     message = ''
     if len(password) < 4 or len(password) > 16:
         #message = 'Too Short'
         message = 'Too Short'
         conf_pass_tb.config(state='disabled')
+        #button.config(state='disabled')
         return
         
     conf_pass_tb.config(state='normal')

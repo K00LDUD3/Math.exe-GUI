@@ -13,6 +13,8 @@ root = Tk()
 root.title('Math.exe')
 #root.resizable(False, False)
 root.geometry("365x150")
+photo = PhotoImage(file='Logo.png')
+root.iconphoto(False, photo)
 
 
 #Creating FRAMES for hosting WIDGETS
@@ -476,7 +478,7 @@ def baseCalc(frame):
         'master':baseCalc_frame,
         'bd':None,
         'height':None,
-        'w':20,
+        'w':50,
         'bg':None,
         'fg':None,
         'font':None,
@@ -492,7 +494,6 @@ def baseCalc(frame):
         'relief':None,
         'yscrollcommand':None,
         'xscrollcommand':None,
-        
     }
     baseCalc_l_dic = {
         'master':baseCalc_frame,
@@ -547,24 +548,42 @@ def baseCalc(frame):
 
     l_inpPrompt = gfunc.GenFunc('label', baseCalc_l_dic, 'Enter number:', baseCalc_g_dic)
     baseCalc_g_dic['column']+=1
+    baseCalc_g_dic['cspan'] = 4
     e_inp = gfunc.GenFunc('entry', baseCalc_e_dic, StringVar(), baseCalc_g_dic)
+    baseCalc_g_dic['cspan'] = 1
+    baseCalc_g_dic['column']+=4
+    b_go = gfunc.GenFunc('button', baseCalc_b_dic, 'Convert', baseCalc_g_dic)
 
     #Row 2
     baseCalc_g_dic['row']+=1
-    #baseCalc_g_dic['column'] =1
-    x = IntVar()
-    r_ip2 = Radiobutton(master=baseCalc_frame, value=2, text='Base 2', variable=x)
-    r_ip2.grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column'] = 0
+    l_fromBase = gfunc.GenFunc('label', baseCalc_l_dic, 'From:', baseCalc_g_dic)
     baseCalc_g_dic['column']+=1
-    r_ip3 = Radiobutton(master=baseCalc_frame, value=8, text='Base 8', variable=X)
-    r_ip3.grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
-    #FIX RADIO BUTTONS
-    
+    base_list = [
+        ('Base 2',2),
+        ('Base 4',4),
+        ('Base 8',8),
+        ('Base 16',16),
+    ]
+    inp_bases = []
+    base_var_inp = IntVar()
+    base_var_inp.set(2)
+    for text, mode in base_list:
+        inp_bases.append(Radiobutton(master=baseCalc_frame, text=text, variable=base_var_inp, value=mode).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column']))
+        baseCalc_g_dic['column']+=1
+
+
     #Row 3
     baseCalc_g_dic['row']+=1
-    #baseCalc_g_dic['column'] =1
-    
-
+    baseCalc_g_dic['column'] =0
+    l_toBase = gfunc.GenFunc('label', baseCalc_l_dic, 'To:', baseCalc_g_dic)
+    baseCalc_g_dic['column']+=1
+    op_bases = []
+    base_var_op = IntVar()
+    base_var_op.set(2)
+    for text, mode in base_list:
+        op_bases.append(Radiobutton(master=baseCalc_frame, text=text, variable=base_var_op, value=mode, padx=10).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column']))
+        baseCalc_g_dic['column']+=1
 
     #Row 4
     baseCalc_g_dic['row']+=1
@@ -572,13 +591,25 @@ def baseCalc(frame):
     b_back = gfunc.GenFunc('button', baseCalc_b_dic, 'Back', baseCalc_g_dic)
     b_back.widg.config(command= lambda: calcMenu(baseCalc_frame))
     baseCalc_g_dic['column']+=1
+    baseCalc_g_dic['cspan'] = 4
     l_op = gfunc.GenFunc('label', baseCalc_l_dic, '<OUTPUT>', baseCalc_g_dic)
+    baseCalc_g_dic['cspan'] = 1
 
     baseCalc_frame.pack()
     return
-
-    
-
+def converBase(num, base1, base2):
+    if validBase(num, base1):
+        #Do the convert base thingy
+        #https://stackoverflow.com/questions/2267362/how-to-convert-an-integer-to-a-string-in-any-base
+        pass
+    return
+def validBase(num, op):
+    chars = '0123456789ABCDEF'
+    chars = chars[0:op]
+    for i in num:
+        if i.upper() not in chars:
+            return False
+    return True
 def specNum(frame):
     hideFrame(frame)
 

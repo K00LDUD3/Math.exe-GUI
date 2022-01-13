@@ -1,6 +1,7 @@
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
+from types import NoneType
 import Special_Numbers as spn
 import tkinter.font as font
 import random

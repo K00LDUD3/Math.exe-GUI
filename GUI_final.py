@@ -1,5 +1,6 @@
 from cProfile import label
 from email import message
+from operator import index
 from pydoc import text
 from tkinter import *
 #Importing required libs and mods
@@ -662,9 +663,8 @@ def converBase(num, label_obj):
             if b2 == 8:
                 pass
             elif b2 == 10:
-                op = int(num)
+                op = int(num, 2)
                 op = str(op)
-                op = op[2:]
             elif b2 == 16:
                 op = hex(int(num, 2))
                 op = str(op)[2:].upper()
@@ -679,27 +679,34 @@ def converBase(num, label_obj):
             if b2 == 2:
                 op = str(bin(num))[2:]
             elif b2 == 8:
-                op = str(oct(num))[2:]
+                op = str(oct(int(num)))[2:]
             elif b2 == 16:
-                op = str(hex(num))[2:].upper()
+                op = str(hex(int(num)))[2:].upper()
         elif b1 == 16:
             if b2 == 2:
                 op = str(bin(int(num, 16)))[2:]
             elif b2 == 8:
                 op = str(oct(int(num, 16)))[2:]
             elif b2 == 10:
-                op = str(int(num, 16))[2:]
+                op = str(int(num, 16))
         label_obj.widg.config(text=op)
     return
 #Checking if number input lies within opted base
 def validBase(num, op, label_obj):
-    chars = '0123456789ABCDEF'
-    chars = chars[0:op]
+    chars = '+-0123456789ABCDEF'
+    chars = chars[0:op+2]
     if num == '':
         label_obj.widg.config(text= 'INVALID INPUT FOR GIVEN BASE')
         return False
-    for i in num:
-        if i.upper() not in chars:
+    
+    for i in range(len(num)):
+        if num[i] == '.':
+            label_obj.widg.config(text= 'Integers only!')
+            return False
+        if (num[i] == '-' and i != 0) or (num[i] == '+' and i != 0):
+            label_obj.widg.config(text= 'INVALID INPUT FOR GIVEN BASE')
+            return False
+        if num[i].upper() not in chars:
             label_obj.widg.config(text= 'INVALID INPUT FOR GIVEN BASE')
             return False
     label_obj.widg.config(text='Valid....')

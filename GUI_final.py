@@ -1,7 +1,11 @@
+from cProfile import label
+from email import message
+from pydoc import text
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
 from types import NoneType
+from typing import final
 import Special_Numbers as spn
 import tkinter.font as font
 import random
@@ -43,10 +47,11 @@ guessG_frame = LabelFrame(root) #Guessing game
 
 
 #GLOBAL vars for using across methods
-is_guest = True
-no_tries = 0
-calc_button_list = []
-
+is_guest = True #Used while checking if person is a guest or not
+no_tries = 0 #Used in guessing game to count number of tries taken to guess the number
+calc_button_list = [] #Used to encapsulate all calculator button objects
+b1 = 2 #Base 1 in BaseN calculator (From what base)
+b2 = 2 #Base 2 in BaseN calculator (To what base)
 
 #Creating hide frame function
 #Used to hide previous frame so that new frame can safely come on screen
@@ -56,6 +61,15 @@ def hideFrame(frame):
         print(f'Frame Hidden')
     except (TypeError, AttributeError):
         print(f'Err: No Frame Found <<{AttributeError}>>')
+    finally:
+        return
+#Destroying label for showing explanation of special numbers as it creates problems once it opens the spn frame again
+def destroySPNLab(label, frame):
+    try:
+        label.destroy()
+        homescreen(frame)
+    except:
+        print('Unable to destroy label')
     finally:
         return
     
@@ -474,11 +488,18 @@ def calcMenu(frame):
 def baseCalc(frame):
     hideFrame(frame)
 
+    base_list = [
+        ('Base 2',2),
+        ('Base 4',4),
+        ('Base 8',8),
+        ('Base 10',10),
+        ('Base 16',16),
+    ]
     baseCalc_e_dic = {
         'master':baseCalc_frame,
         'bd':None,
         'height':None,
-        'w':50,
+        'w':int(len(base_list)*12.5),
         'bg':None,
         'fg':None,
         'font':None,
@@ -548,29 +569,35 @@ def baseCalc(frame):
 
     l_inpPrompt = gfunc.GenFunc('label', baseCalc_l_dic, 'Enter number:', baseCalc_g_dic)
     baseCalc_g_dic['column']+=1
-    baseCalc_g_dic['cspan'] = 4
+    baseCalc_g_dic['cspan'] = len(base_list)
     e_inp = gfunc.GenFunc('entry', baseCalc_e_dic, StringVar(), baseCalc_g_dic)
     baseCalc_g_dic['cspan'] = 1
-    baseCalc_g_dic['column']+=4
+    baseCalc_g_dic['column']+=len(base_list)
     b_go = gfunc.GenFunc('button', baseCalc_b_dic, 'Convert', baseCalc_g_dic)
+    b_go.widg.config(command= lambda: converBase(e_inp.widg.get(), l_op))
 
     #Row 2
     baseCalc_g_dic['row']+=1
     baseCalc_g_dic['column'] = 0
     l_fromBase = gfunc.GenFunc('label', baseCalc_l_dic, 'From:', baseCalc_g_dic)
     baseCalc_g_dic['column']+=1
-    base_list = [
-        ('Base 2',2),
-        ('Base 4',4),
-        ('Base 8',8),
-        ('Base 16',16),
-    ]
     inp_bases = []
     base_var_inp = IntVar()
     base_var_inp.set(2)
-    for text, mode in base_list:
-        inp_bases.append(Radiobutton(master=baseCalc_frame, text=text, variable=base_var_inp, value=mode).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column']))
-        baseCalc_g_dic['column']+=1
+    '''for text, mode in base_list:
+        x = ttk.Radiobutton(master=baseCalc_frame, text=text, variable=base_var_inp, value=mode).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+        baseCalc_g_dic['column']+=1'''
+    #Creating each radio button separately as there is no way to set commands properly using loops
+    inp_base_2 = Radiobutton(master=baseCalc_frame, text='Base 2', variable=base_var_inp, value=2, command= lambda: setGlobalBase(2, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    inp_base_4 = Radiobutton(master=baseCalc_frame, text='Base 4', variable=base_var_inp, value=4, command= lambda: setGlobalBase(4, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    inp_base_8 = Radiobutton(master=baseCalc_frame, text='Base 8', variable=base_var_inp, value=8, command= lambda: setGlobalBase(8, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    inp_base_10 = Radiobutton(master=baseCalc_frame, text='Base 10', variable=base_var_inp, value=10, command= lambda: setGlobalBase(10, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    inp_base_16 = Radiobutton(master=baseCalc_frame, text='Base 16', variable=base_var_inp, value=16, command= lambda: setGlobalBase(16, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
 
 
     #Row 3
@@ -581,9 +608,20 @@ def baseCalc(frame):
     op_bases = []
     base_var_op = IntVar()
     base_var_op.set(2)
-    for text, mode in base_list:
+    '''for text, mode in base_list:
         op_bases.append(Radiobutton(master=baseCalc_frame, text=text, variable=base_var_op, value=mode, padx=10).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column']))
-        baseCalc_g_dic['column']+=1
+        baseCalc_g_dic['column']+=1'''
+    #Creating each radio button separately as there is no way to set commands properly using loops
+    op_base_2 = Radiobutton(master=baseCalc_frame, text='Base 2', variable=base_var_op, value=2, command= lambda: setGlobalBase(2, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    op_base_4 = Radiobutton(master=baseCalc_frame, text='Base 4', variable=base_var_op, value=4, command= lambda: setGlobalBase(4, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    op_base_8 = Radiobutton(master=baseCalc_frame, text='Base 8', variable=base_var_op, value=8, command= lambda: setGlobalBase(8, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    op_base_10 = Radiobutton(master=baseCalc_frame, text='Base 10', variable=base_var_op, value=10, command= lambda: setGlobalBase(10, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
+    op_base_16 = Radiobutton(master=baseCalc_frame, text='Base 16', variable=base_var_op, value=16, command= lambda: setGlobalBase(16, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
+    baseCalc_g_dic['column']+=1
 
     #Row 4
     baseCalc_g_dic['row']+=1
@@ -591,25 +629,82 @@ def baseCalc(frame):
     b_back = gfunc.GenFunc('button', baseCalc_b_dic, 'Back', baseCalc_g_dic)
     b_back.widg.config(command= lambda: calcMenu(baseCalc_frame))
     baseCalc_g_dic['column']+=1
-    baseCalc_g_dic['cspan'] = 4
+    baseCalc_g_dic['cspan'] = len(base_list)
     l_op = gfunc.GenFunc('label', baseCalc_l_dic, '<OUTPUT>', baseCalc_g_dic)
     baseCalc_g_dic['cspan'] = 1
 
     baseCalc_frame.pack()
     return
-def converBase(num, base1, base2):
-    if validBase(num, base1):
+#Setting global bases
+def setGlobalBase(num, _12):
+    if _12 == 1:
+        global b1
+        b1 = num
+        print(f'{b1=}')
+    elif _12 == 2:
+        global b2
+        b2 = num
+        print(f'{b2=}')
+    return
+#Converting Bases
+def converBase(num, label_obj):
+    global b1
+    global b2
+    if validBase(num, b1, label_obj):
+        if b1 == b2:
+            label_obj.widg.config(text=num)
+            return
         #Do the convert base thingy
         #https://stackoverflow.com/questions/2267362/how-to-convert-an-integer-to-a-string-in-any-base
-        pass
+        print('Converting base...')
+        op = 0
+        if b1 == 2:
+            if b2 == 8:
+                pass
+            elif b2 == 10:
+                op = int(num)
+                op = str(op)
+                op = op[2:]
+            elif b2 == 16:
+                op = hex(int(num, 2))
+                op = str(op)[2:].upper()
+        elif b1 == 8:
+            if b2 == 2:
+                op = str(bin(int(num, 8)))[2:]
+            elif b2 == 10:
+                op = str(int(num, 8))[2:]
+            elif b2 == 16:
+                op = str(hex(int(num, 8)))[2:].upper()
+        elif b1 == 10:
+            if b2 == 2:
+                op = str(bin(num))[2:]
+            elif b2 == 8:
+                op = str(oct(num))[2:]
+            elif b2 == 16:
+                op = str(hex(num))[2:].upper()
+        elif b1 == 16:
+            if b2 == 2:
+                op = str(bin(int(num, 16)))[2:]
+            elif b2 == 8:
+                op = str(oct(int(num, 16)))[2:]
+            elif b2 == 10:
+                op = str(int(num, 16))[2:]
+        label_obj.widg.config(text=op)
     return
-def validBase(num, op):
+#Checking if number input lies within opted base
+def validBase(num, op, label_obj):
     chars = '0123456789ABCDEF'
     chars = chars[0:op]
+    if num == '':
+        label_obj.widg.config(text= 'INVALID INPUT FOR GIVEN BASE')
+        return False
     for i in num:
         if i.upper() not in chars:
+            label_obj.widg.config(text= 'INVALID INPUT FOR GIVEN BASE')
             return False
+    label_obj.widg.config(text='Valid....')
     return True
+
 def specNum(frame):
     hideFrame(frame)
 
@@ -744,7 +839,7 @@ def specNum(frame):
     spn_g_dic['cspan'] = 1
     spn_g_dic['cspan'] = 1
     b_back = gfunc.GenFunc('button', spn_b_dic, 'Back', spn_g_dic)
-    b_back.widg.config(command= lambda: homescreen(specNum_frame))
+    b_back.widg.config(command= lambda: destroySPNLab(l_exp.widg, specNum_frame))
     spn_g_dic['column']+=1
     b_go = gfunc.GenFunc('button', spn_b_dic, 'Go', spn_g_dic)
     b_go.widg.config(command= lambda: evalSpecNum(combo.get(), e_inp.widg.get(), l_op))
@@ -776,6 +871,7 @@ def evalSpecNum(choice, num, label_obj):
     message = spn.evalSpecNum(choice=choice, num=num)
     label_obj.widg.config(text=message)
     return
+
 initSignInUp(None)
 #Showing WINDOW
 root.mainloop()

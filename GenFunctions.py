@@ -1,12 +1,5 @@
 from tkinter import *
 import tkinter.font as font
-#from types import NoneType
-
-
-'''
-root = Tk()
-root.title('Calculator')
-'''
 
 class GenFunc:
     widg = None
@@ -202,44 +195,3 @@ class GenFunc:
         }
         '''
         return
-
-'''-------------TESTING-------------
-frame = LabelFrame(root)
-frame.pack()
-
-widg_test_dict = {
-    'master':frame,
-    'act_bg':None,
-    'act_fg':None,
-    'bg':None,
-    'fg':None,
-    'border':None,
-    'font':None,
-    'height':None,
-    'highl_color':None,
-    'image':None,
-    'justify':None,
-    'padx':None,
-    'pady':None,
-    'relief':None,
-    'underline':None,
-    'w':10,
-    'wraplength':None
-}
-            
-grid_test_dict = {
-    'column':0,
-    'row':1,
-    'cspan':1,
-    'rspan':1,
-    'padx':0,
-    'pady':0,
-    'ipadx':0,
-    'ipady':5
-}
-widg_test = GenFunc(type='button', widg_dict=widg_test_dict, text='test', grid_dict=grid_test_dict)
-widg_test.createB() 
-print(str(widg_test.widg).split('!')[-1]) # getting type of widget
-
-root.mainloop()
-'''

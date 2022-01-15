@@ -1,5 +1,6 @@
 from cProfile import label
 from email import message
+from lib2to3.refactor import get_fixers_from_package
 from operator import index
 from pydoc import text
 from tkinter import *
@@ -73,7 +74,15 @@ def destroySPNLab(label, frame):
         print('Unable to destroy label')
     finally:
         return
-    
+
+#Configuring root based on x-size, y-size and title
+def configRoot(x, y, title):
+    root.title(title)
+    try:
+        root.geometry(str(f'{x}x{y}'))
+    finally:
+        return
+#Signing in or signing up
 def initSignInUp(frame):
     hideFrame(frame)
 
@@ -414,7 +423,6 @@ def genNum(choice):
         print(f'{number=}')
         return number
     root.title(f'Guessing Game: {r}')
-    print(f'{number=}')
     return number
 #checking if  guess is correct for guessing game
 def validateNum(num, val_num, label_obj, button_obj):
@@ -476,6 +484,7 @@ def calcMenu(frame):
     b_baseN.widg.config(command= lambda: baseCalc(calcMenu_frame))
     cm_g_dic['row'] +=1
     b_quad = gfunc.GenFunc('button', cm_b_dic, 'Quadratic Equation Calculator', cm_g_dic)
+    b_quad.widg.config(command= lambda: quadCalc(calcMenu_frame))
     cm_g_dic['row'] +=1
     b_vect = gfunc.GenFunc('button', cm_b_dic, 'Vector Calculator', cm_g_dic)
     cm_g_dic['row'] +=1
@@ -642,11 +651,9 @@ def setGlobalBase(num, _12):
     if _12 == 1:
         global b1
         b1 = num
-        print(f'{b1=}')
     elif _12 == 2:
         global b2
         b2 = num
-        print(f'{b2=}')
     return
 #Converting Bases
 def convertBase(num, label_obj, labelErr_obj):
@@ -658,7 +665,6 @@ def convertBase(num, label_obj, labelErr_obj):
             return
         #Do the convert base thingy
         #https://stackoverflow.com/questions/2267362/how-to-convert-an-integer-to-a-string-in-any-base
-        print('Converting base...')
         op = 0
         if b1 == 2:
             if b2 == 8:
@@ -714,6 +720,111 @@ def validBase(num, op, labelOp_obj, labelErr_obj):
     labelErr_obj.widg.config(text='Base Converted...')
     return True
 
+#Quadratic equation calculator
+def quadCalc(frame):
+    hideFrame(frame)
+
+    #Definging param DICTIONARIES for WIDGETS
+    quadCalc_l_dic = {
+        'master':quadCalc_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':5,
+        'wraplength':None
+    }
+    quadCalc_b_dic = {
+        'master':quadCalc_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    quadCalc_e_dic = {
+        'master':quadCalc_frame,
+        'bd':None,
+        'height':None,
+        'w':5,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+        
+    }
+    quadCalc_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':2,
+        'pady':2,
+        'ipadx':0,
+        'ipady':0
+    }
+
+    #Row 1
+    #x^2 inp
+    e_x2 = gfunc.GenFunc('entry', quadCalc_e_dic, StringVar(), quadCalc_g_dic)
+    quadCalc_g_dic['column']+= 1
+    l_x2 = gfunc.GenFunc('label', quadCalc_l_dic, 'x²  +', quadCalc_g_dic)
+    quadCalc_g_dic['column']+= 1
+    #x inp
+    e_x = gfunc.GenFunc('entry', quadCalc_e_dic, StringVar(), quadCalc_g_dic)
+    quadCalc_g_dic['column']+= 1
+    l_x = gfunc.GenFunc('label', quadCalc_l_dic, 'x  +', quadCalc_g_dic)
+    quadCalc_g_dic['column']+= 1
+    #const inp
+    e_const = gfunc.GenFunc('entry', quadCalc_e_dic, StringVar(), quadCalc_g_dic)
+    quadCalc_g_dic['column']+= 1
+    l_exp = gfunc.GenFunc('label', quadCalc_l_dic, ' = 0', quadCalc_g_dic)
+    quadCalc_g_dic['column']+= 1
+    
+    #Row 2
+    quadCalc_g_dic['row']+= 1
+    quadCalc_g_dic['column'] = 1
+    quadCalc_l_dic['w'] = 20
+    quadCalc_g_dic['cspan'] = 6
+    #configure wraplength
+    l_op = gfunc.GenFunc('label', quadCalc_l_dic, '<OUTPUT>', quadCalc_g_dic)
+    quadCalc_frame.pack()
+    return
+
+#Special number programs
 def specNum(frame):
     hideFrame(frame)
 
@@ -855,6 +966,10 @@ def specNum(frame):
     
     specNum_frame.pack()
     return
+
+
+
+    
 #Function to explain the special numbers 
 def spnExplain(choice, label_obj, op_obj):
     #set title accordingly 
@@ -864,7 +979,6 @@ def spnExplain(choice, label_obj, op_obj):
         choice = 'Square'
     else:
         choice = choice.split(' ')[1]
-    print(f'{choice=}')
     label_obj.widg.config(text=spn.specnum_explain[choice])
     return
 def evalSpecNum(choice, num, label_obj):
@@ -878,10 +992,9 @@ def evalSpecNum(choice, num, label_obj):
     num = int(num)
 
     message = spn.evalSpecNum(choice=choice, num=num)
+
     label_obj.widg.config(text=message)
     return
-
 initSignInUp(None)
 #Showing WINDOW
 root.mainloop()
-

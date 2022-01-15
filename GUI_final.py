@@ -493,7 +493,6 @@ def baseCalc(frame):
         ('Base 2',2),
         ('Base 4',4),
         ('Base 8',8),
-        ('Base 10',10),
         ('Base 16',16),
     ]
     baseCalc_e_dic = {
@@ -575,7 +574,7 @@ def baseCalc(frame):
     baseCalc_g_dic['cspan'] = 1
     baseCalc_g_dic['column']+=len(base_list)
     b_go = gfunc.GenFunc('button', baseCalc_b_dic, 'Convert', baseCalc_g_dic)
-    b_go.widg.config(command= lambda: converBase(e_inp.widg.get(), l_op))
+    b_go.widg.config(command= lambda: convertBase(e_inp.widg.get(), l_op, l_err))
 
     #Row 2
     baseCalc_g_dic['row']+=1
@@ -591,8 +590,6 @@ def baseCalc(frame):
     #Creating each radio button separately as there is no way to set commands properly using loops
     inp_base_2 = Radiobutton(master=baseCalc_frame, text='Base 2', variable=base_var_inp, value=2, command= lambda: setGlobalBase(2, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
     baseCalc_g_dic['column']+=1
-    inp_base_4 = Radiobutton(master=baseCalc_frame, text='Base 4', variable=base_var_inp, value=4, command= lambda: setGlobalBase(4, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
-    baseCalc_g_dic['column']+=1
     inp_base_8 = Radiobutton(master=baseCalc_frame, text='Base 8', variable=base_var_inp, value=8, command= lambda: setGlobalBase(8, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
     baseCalc_g_dic['column']+=1
     inp_base_10 = Radiobutton(master=baseCalc_frame, text='Base 10', variable=base_var_inp, value=10, command= lambda: setGlobalBase(10, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
@@ -600,6 +597,11 @@ def baseCalc(frame):
     inp_base_16 = Radiobutton(master=baseCalc_frame, text='Base 16', variable=base_var_inp, value=16, command= lambda: setGlobalBase(16, 1)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
     baseCalc_g_dic['column']+=1
 
+    #Row 2 & 3
+    baseCalc_g_dic['rspan'] = 2
+    l_err = gfunc.GenFunc('label', baseCalc_l_dic, '', baseCalc_g_dic)
+    l_err.widg.config(wraplength=100)
+    baseCalc_g_dic['rspan'] = 1
 
     #Row 3
     baseCalc_g_dic['row']+=1
@@ -615,8 +617,6 @@ def baseCalc(frame):
     #Creating each radio button separately as there is no way to set commands properly using loops
     op_base_2 = Radiobutton(master=baseCalc_frame, text='Base 2', variable=base_var_op, value=2, command= lambda: setGlobalBase(2, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
     baseCalc_g_dic['column']+=1
-    op_base_4 = Radiobutton(master=baseCalc_frame, text='Base 4', variable=base_var_op, value=4, command= lambda: setGlobalBase(4, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
-    baseCalc_g_dic['column']+=1
     op_base_8 = Radiobutton(master=baseCalc_frame, text='Base 8', variable=base_var_op, value=8, command= lambda: setGlobalBase(8, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
     baseCalc_g_dic['column']+=1
     op_base_10 = Radiobutton(master=baseCalc_frame, text='Base 10', variable=base_var_op, value=10, command= lambda: setGlobalBase(10, 2)).grid(row=baseCalc_g_dic['row'], column=baseCalc_g_dic['column'])
@@ -631,7 +631,8 @@ def baseCalc(frame):
     b_back.widg.config(command= lambda: calcMenu(baseCalc_frame))
     baseCalc_g_dic['column']+=1
     baseCalc_g_dic['cspan'] = len(base_list)
-    l_op = gfunc.GenFunc('label', baseCalc_l_dic, '<OUTPUT>', baseCalc_g_dic)
+    baseCalc_l_dic['w'] = int(len(base_list)*11)
+    l_op = gfunc.GenFunc('label', baseCalc_l_dic, '', baseCalc_g_dic)
     baseCalc_g_dic['cspan'] = 1
 
     baseCalc_frame.pack()
@@ -648,10 +649,10 @@ def setGlobalBase(num, _12):
         print(f'{b2=}')
     return
 #Converting Bases
-def converBase(num, label_obj):
+def convertBase(num, label_obj, labelErr_obj):
     global b1
     global b2
-    if validBase(num, b1, label_obj):
+    if validBase(num, b1, label_obj, labelErr_obj):
         if b1 == b2:
             label_obj.widg.config(text=num)
             return
@@ -661,7 +662,7 @@ def converBase(num, label_obj):
         op = 0
         if b1 == 2:
             if b2 == 8:
-                pass
+                op = str(oct(int(num, 2)))[2:]
             elif b2 == 10:
                 op = int(num, 2)
                 op = str(op)
@@ -672,7 +673,7 @@ def converBase(num, label_obj):
             if b2 == 2:
                 op = str(bin(int(num, 8)))[2:]
             elif b2 == 10:
-                op = str(int(num, 8))[2:]
+                op = str(int(num, 8))
             elif b2 == 16:
                 op = str(hex(int(num, 8)))[2:].upper()
         elif b1 == 10:
@@ -692,24 +693,25 @@ def converBase(num, label_obj):
         label_obj.widg.config(text=op)
     return
 #Checking if number input lies within opted base
-def validBase(num, op, label_obj):
+def validBase(num, op, labelOp_obj, labelErr_obj):
+    labelOp_obj.widg.config(text='')
     chars = '+-0123456789ABCDEF'
     chars = chars[0:op+2]
     if num == '':
-        label_obj.widg.config(text= 'INVALID INPUT FOR GIVEN BASE')
+        labelErr_obj.widg.config(text= 'Invalid Input!')
         return False
     
     for i in range(len(num)):
         if num[i] == '.':
-            label_obj.widg.config(text= 'Integers only!')
+            labelErr_obj.widg.config(text= 'Integers only!')
             return False
         if (num[i] == '-' and i != 0) or (num[i] == '+' and i != 0):
-            label_obj.widg.config(text= 'INVALID INPUT FOR GIVEN BASE')
+            labelErr_obj.widg.config(text= 'Invalid Input!')
             return False
         if num[i].upper() not in chars:
-            label_obj.widg.config(text= 'INVALID INPUT FOR GIVEN BASE')
+            labelErr_obj.widg.config(text= 'Invalid Input!')
             return False
-    label_obj.widg.config(text='Valid....')
+    labelErr_obj.widg.config(text='Base Converted...')
     return True
 
 def specNum(frame):

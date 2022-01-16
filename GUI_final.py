@@ -1,18 +1,14 @@
 from cProfile import label
-from email import message
-from lib2to3.refactor import get_fixers_from_package
-from operator import index
-from pydoc import text
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
-from types import NoneType
-from typing import final
+from tokenize import String
 import Special_Numbers as spn
 import tkinter.font as font
 import random
 import math
 import GenFunctions as gfunc
+import cmath
 
 #Creating WINDOW for hosting FRAMES
 root = Tk()
@@ -125,11 +121,11 @@ def initSignInUp(frame):
 
     #row 1
     b_signIn = gfunc.GenFunc('button', signInUp_b_dic, 'Sign In', signInUp_g_dic)
-
+    b_signIn.widg.config(command= lambda: signIn(initSignInUp_frame))
     #row 2
     signInUp_g_dic['row'] = 1
-    b_guest = gfunc.GenFunc('button', signInUp_b_dic, 'Sign Up', signInUp_g_dic)
-    
+    b_signUp = gfunc.GenFunc('button', signInUp_b_dic, 'Sign Up', signInUp_g_dic)
+    b_signUp.widg.config(command= lambda: signUp(initSignInUp_frame))
     #row 3
     signInUp_g_dic['row'] = 2
     b_guest = gfunc.GenFunc('button', signInUp_b_dic, 'Continue As Guest', signInUp_g_dic)
@@ -139,7 +135,220 @@ def initSignInUp(frame):
     initSignInUp_frame.pack()
     return
 
-#Main screen FRAME
+#Signing in
+def signIn(frame):
+    hideFrame(frame)
+
+    #Setting is_guest as false
+    global is_guest
+    is_guest = False
+    
+    signIn_l_dic = {
+        'master':signIn_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    signIn_b_dic = {
+        'master':signIn_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    signIn_e_dic = {
+        'master':signIn_frame,
+        'bd':None,
+        'height':None,
+        'w':20,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+    }
+    signIn_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+
+    #Row 1
+    l_user = gfunc.GenFunc('label', signIn_l_dic, 'Username:', signIn_g_dic)
+    signIn_g_dic['column']+=1
+    e_user = gfunc.GenFunc('entry', signIn_e_dic, StringVar(), signIn_g_dic)
+    
+    #Row 2
+    signIn_g_dic['row']+= 1
+    signIn_g_dic['column'] = 0
+    l_pass = gfunc.GenFunc('label', signIn_l_dic, 'Password:', signIn_g_dic)
+    signIn_g_dic['column']+=1
+    e_pass = gfunc.GenFunc('entry', signIn_e_dic, StringVar(), signIn_g_dic)
+    e_pass.widg.config(show='*')
+    
+    
+    #Row 3
+    signIn_g_dic['row']+= 1
+    signIn_g_dic['column'] = 0
+    b_back = gfunc.GenFunc('button', signIn_b_dic, 'Back', signIn_g_dic)
+    b_back.widg.config(command= lambda: initSignInUp(signIn_frame))
+    signIn_g_dic['column']+=1
+    b_signIn = gfunc.GenFunc('button', signIn_b_dic, 'Sign In', signIn_g_dic)
+    
+    signIn_frame.pack()
+    return
+#Signing in
+def signUp(frame):
+    hideFrame(frame)
+
+    #Setting is_guest as false
+    global is_guest
+    is_guest = False
+
+    signUp_l_dic = {
+        'master':signUp_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    signUp_b_dic = {
+        'master':signUp_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    signUp_e_dic = {
+        'master':signUp_frame,
+        'bd':None,
+        'height':None,
+        'w':20,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+    }
+    signUp_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+
+    #Row 1
+    l_user = gfunc.GenFunc('label', signUp_l_dic, 'Username:', signUp_g_dic)
+    signUp_g_dic['column']+=1
+    e_user = gfunc.GenFunc('entry', signUp_e_dic, StringVar(), signUp_g_dic)
+    
+    #Row 2
+    signUp_g_dic['row']+= 1
+    signUp_g_dic['column'] = 0
+    l_pass = gfunc.GenFunc('label', signUp_l_dic, 'Password:', signUp_g_dic)
+    signUp_g_dic['column']+=1
+    e_pass = gfunc.GenFunc('entry', signUp_e_dic, StringVar(), signUp_g_dic)
+    e_pass.widg.config(show='*')
+    
+    #Row 3
+    signUp_g_dic['row']+= 1
+    signUp_g_dic['column'] = 0
+    l_passConf = gfunc.GenFunc('label', signUp_l_dic, 'Confirm Password:', signUp_g_dic)
+    signUp_g_dic['column']+=1
+    e_passConf = gfunc.GenFunc('entry', signUp_e_dic, StringVar(), signUp_g_dic)
+    e_passConf.widg.config(show='*')
+    
+    #Row 4
+    signUp_g_dic['row']+= 1
+    signUp_g_dic['column'] = 0
+    b_back = gfunc.GenFunc('button', signUp_b_dic, 'Back', signUp_g_dic)
+    b_back.widg.config(command= lambda: initSignInUp(signUp_frame))
+    signUp_g_dic['column']+=1
+    b_signUp = gfunc.GenFunc('button', signUp_b_dic, 'Sign Up', signUp_g_dic)
+    
+    signUp_frame.pack()
+    return
+#Main screen 
 def homescreen(frame):
     hideFrame(frame)
 
@@ -195,7 +404,7 @@ def homescreen(frame):
     global is_guest
     if not(is_guest):
         b_editProf = gfunc.GenFunc('button', homescreen_b_dic, 'Edit Profile', homescreen_g_dic)
-
+        b_editProf.widg.config()
     homescreen_frame.pack()
     return
 
@@ -817,11 +1026,52 @@ def quadCalc(frame):
     #Row 2
     quadCalc_g_dic['row']+= 1
     quadCalc_g_dic['column'] = 1
-    quadCalc_l_dic['w'] = 20
+    quadCalc_l_dic['w'] = 30
+    quadCalc_l_dic['justify'] = LEFT
     quadCalc_g_dic['cspan'] = 6
     #configure wraplength
-    l_op = gfunc.GenFunc('label', quadCalc_l_dic, '<OUTPUT>', quadCalc_g_dic)
+    l_op = gfunc.GenFunc('label', quadCalc_l_dic, '', quadCalc_g_dic)
+
+    #Row 3
+    quadCalc_g_dic['row']+= 1
+    quadCalc_g_dic['column'] = 0
+    quadCalc_g_dic['cspan'] = 3
+    b_back = gfunc.GenFunc('button', quadCalc_b_dic, 'Back', quadCalc_g_dic)
+    b_back.widg.config(command= lambda: calcMenu(quadCalc_frame))
+    quadCalc_g_dic['column']+= 3
+    b_go = gfunc.GenFunc('button', quadCalc_b_dic, 'Compute', quadCalc_g_dic)
+    b_go.widg.config(command= lambda: computeQuadRoots(l_op, e_x2.widg.get(), e_x.widg.get(), e_const.widg.get()))
+
     quadCalc_frame.pack()
+    return
+def computeQuadRoots(label_obj, a, b, c):
+    #Checking if only floating point / integer values are inputted
+    try: 
+        a = float(a)
+        b = float(b)
+        c = float(c)
+    except:
+        label_obj.widg.config(text='Floating values only!')
+        return
+    
+    #Preventing div by 0 err to be thrown
+    if a == 0:
+        label_obj.widg.config(text='Coefficient of x^2 cannot be 0!')
+        return
+
+    #Discriminant
+    d = (b**2) - (4*a*c)
+
+    #Roots
+    r1 = str((-b-cmath.sqrt(d))/(2*a))[1:-1]
+    r2 = str((-b+cmath.sqrt(d))/(2*a))[1:-1]
+
+    #Cleaning up raw string roots
+    if r1.endswith('0j'):
+        r1 = r1[0:-3]
+    if r2.endswith('0j'):
+        r2 = r2[0:-3]
+    label_obj.widg.config(text=f'Root 1: {r1}\nRoot 2: {r2}')
     return
 
 #Special number programs

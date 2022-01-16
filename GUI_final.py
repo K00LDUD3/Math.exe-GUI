@@ -1,14 +1,14 @@
-from cProfile import label
+from sqlite3 import Row
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
-from tokenize import String
 import Special_Numbers as spn
 import tkinter.font as font
 import random
 import math
 import GenFunctions as gfunc
 import cmath
+from PIL import Image,ImageTk
 
 #Creating WINDOW for hosting FRAMES
 root = Tk()
@@ -134,7 +134,12 @@ def initSignInUp(frame):
     #Showing FRAME
     initSignInUp_frame.pack()
     return
-
+#For show/hide password
+def switchButton(b1, b2):
+    b1.place_forget()
+    b2.place(relx=0.8)
+    print('button switched')
+    return
 #Signing in
 def signIn(frame):
     hideFrame(frame)
@@ -224,11 +229,27 @@ def signIn(frame):
     signIn_g_dic['column'] = 0
     l_pass = gfunc.GenFunc('label', signIn_l_dic, 'Password:', signIn_g_dic)
     signIn_g_dic['column']+=1
-    e_pass = gfunc.GenFunc('entry', signIn_e_dic, StringVar(), signIn_g_dic)
-    e_pass.widg.config(show='*')
+    #e_pass = gfunc.GenFunc('entry', signIn_e_dic, '', signIn_g_dic)
+    #e_pass.widg.config(show='*')
+    e_pass = Entry(master=signIn_frame)
+    e_pass.grid(row=signIn_g_dic['row'], column=signIn_g_dic['column'])
     
+    hide_photo = Image.open('Hide.png')
+    resized_image= hide_photo.resize((20,12), Image.ANTIALIAS)
+    hide_photo= ImageTk.PhotoImage(resized_image)
+
+    show_photo = Image.open('Show.png')
+    resized_image= show_photo.resize((20,12), Image.ANTIALIAS)
+    show_photo= ImageTk.PhotoImage(resized_image)
     
+    signIn_b_dic['w'] = 5
+    b1 = Button(master=e_pass, justify=RIGHT, image=hide_photo)
+    b1.config(command= lambda: switchButton(b1, b2))
+    b2 = Button(master=e_pass, justify=RIGHT, image=show_photo)
+    b2.config(command= lambda: switchButton(b2, b1))
+
     #Row 3
+    signIn_b_dic['w'] = 15
     signIn_g_dic['row']+= 1
     signIn_g_dic['column'] = 0
     b_back = gfunc.GenFunc('button', signIn_b_dic, 'Back', signIn_g_dic)
@@ -236,8 +257,10 @@ def signIn(frame):
     signIn_g_dic['column']+=1
     b_signIn = gfunc.GenFunc('button', signIn_b_dic, 'Sign In', signIn_g_dic)
     
+    b1.place(relx=0.8)
     signIn_frame.pack()
     return
+
 #Signing in
 def signUp(frame):
     hideFrame(frame)

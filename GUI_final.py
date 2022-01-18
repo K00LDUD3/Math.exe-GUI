@@ -1,4 +1,4 @@
-from sqlite3 import Row
+
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
@@ -134,6 +134,7 @@ def initSignInUp(frame):
     #Showing FRAME
     initSignInUp_frame.pack()
     return
+
 #For show/hide password
 def switchButton(b1, b2):
     b1.place_forget()
@@ -711,6 +712,7 @@ def calcMenu(frame):
 
     #6 Rows (not sure what happened to two more XD)
     b_calc = gfunc.GenFunc('button', cm_b_dic, 'Normal Calculator', cm_g_dic)
+    b_calc.widg.config(command= lambda: normCalc(calcMenu_frame))
     cm_g_dic['row'] +=1
     b_baseN = gfunc.GenFunc('button', cm_b_dic, 'Base-N Calculator', cm_g_dic)
     b_baseN.widg.config(command= lambda: baseCalc(calcMenu_frame))
@@ -727,6 +729,12 @@ def calcMenu(frame):
     calcMenu_frame.pack()
     return
 
+def normCalc(frame):
+    hideFrame(frame)
+
+    
+
+    return
 def baseCalc(frame):
     hideFrame(frame)
 

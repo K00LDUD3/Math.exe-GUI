@@ -1,4 +1,5 @@
 
+from email import message
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
@@ -376,6 +377,8 @@ def signUp(frame):
 def homescreen(frame):
     hideFrame(frame)
 
+    
+    
     #Defining param DICTIONARIES for WIDGETS
     homescreen_b_dic = {
         'master':homescreen_frame,
@@ -427,8 +430,11 @@ def homescreen(frame):
     homescreen_g_dic['column'] = 0
     global is_guest
     if not(is_guest):
+        configRoot(300, 150, 'Homescreen')
         b_editProf = gfunc.GenFunc('button', homescreen_b_dic, 'Edit Profile', homescreen_g_dic)
         b_editProf.widg.config()
+    else:
+        configRoot(300, 100, 'Homescreen')
     homescreen_frame.pack()
     return
 
@@ -720,8 +726,6 @@ def calcMenu(frame):
     b_quad = gfunc.GenFunc('button', cm_b_dic, 'Quadratic Equation Calculator', cm_g_dic)
     b_quad.widg.config(command= lambda: quadCalc(calcMenu_frame))
     cm_g_dic['row'] +=1
-    b_vect = gfunc.GenFunc('button', cm_b_dic, 'Vector Calculator', cm_g_dic)
-    cm_g_dic['row'] +=1
     b_back = gfunc.GenFunc('button', cm_b_dic, 'Back', cm_g_dic)
     b_back.widg.config(command= lambda: homescreen(calcMenu_frame))
     cm_g_dic['row'] +=1
@@ -732,8 +736,9 @@ def calcMenu(frame):
 def normCalc(frame):
     hideFrame(frame)
 
-    
 
+
+    normCalc_frame.pack()
     return
 def baseCalc(frame):
     hideFrame(frame)
@@ -924,7 +929,7 @@ def convertBase(num, label_obj, labelErr_obj):
                 op = str(hex(int(num, 8)))[2:].upper()
         elif b1 == 10:
             if b2 == 2:
-                op = str(bin(num))[2:]
+                op = str(bin(int(num)))[2:]
             elif b2 == 8:
                 op = str(oct(int(num)))[2:]
             elif b2 == 16:
@@ -1247,9 +1252,6 @@ def specNum(frame):
     
     specNum_frame.pack()
     return
-
-
-
     
 #Function to explain the special numbers 
 def spnExplain(choice, label_obj, op_obj):
@@ -1276,6 +1278,20 @@ def evalSpecNum(choice, num, label_obj):
 
     label_obj.widg.config(text=message)
     return
+
+#Function for verifying Sign In:
+def SignInVer(label_obj, user, password):
+    #homescreen(frame=signIn_frame)
+    #Uncomment above command to call homesreen
+
+    mess = 'Invalid User or Password. Missed the part where thats my problem...' #DIsplay message if user or pass is invalid
+    #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
+
+    return
+#Function for verifying Sign Up:
+#Function for verifying Delete Acc:
+#Function for verifying Change Username:
+#Function for verifying Change Password:
 initSignInUp(None)
 #Showing WINDOW
 root.mainloop()

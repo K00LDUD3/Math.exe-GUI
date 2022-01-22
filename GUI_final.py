@@ -367,10 +367,18 @@ def signUp(frame):
     #Row 4
     signUp_g_dic['row']+= 1
     signUp_g_dic['column'] = 0
+    signUp_g_dic['cspan'] = 2
+    l_op = gfunc.GenFunc('label', signUp_l_dic, '', signUp_g_dic)
+    signUp_g_dic['cspan'] = 1
+
+    #Row 5
+    signUp_g_dic['row']+= 1
+    signUp_g_dic['column'] = 0
     b_back = gfunc.GenFunc('button', signUp_b_dic, 'Back', signUp_g_dic)
     b_back.widg.config(command= lambda: initSignInUp(signUp_frame))
     signUp_g_dic['column']+=1
     b_signUp = gfunc.GenFunc('button', signUp_b_dic, 'Sign Up', signUp_g_dic)
+    b_signUp.widg.config(command= lambda: signUpVer(l_op, e_user.widg.get(), e_pass.widg.get(), e_passConf.widg.get()))
     
     signUp_frame.pack()
     return
@@ -378,8 +386,6 @@ def signUp(frame):
 def homescreen(frame):
     hideFrame(frame)
 
-    
-    
     #Defining param DICTIONARIES for WIDGETS
     homescreen_b_dic = {
         'master':homescreen_frame,
@@ -430,10 +436,10 @@ def homescreen(frame):
     homescreen_g_dic['row'] = 2
     homescreen_g_dic['column'] = 0
     global is_guest
-    if not(is_guest):
+    if (is_guest):
         configRoot(300, 150, 'Homescreen')
         b_editProf = gfunc.GenFunc('button', homescreen_b_dic, 'Edit Profile', homescreen_g_dic)
-        b_editProf.widg.config()
+        b_editProf.widg.config(command= lambda: editProfile(homescreen_frame))
     else:
         configRoot(300, 100, 'Homescreen')
     homescreen_frame.pack()
@@ -683,6 +689,75 @@ def validateNum(num, val_num, label_obj, button_obj):
     except:
         label_obj.widg.config(text='Invalid guess!')
 
+def editProfile(frame):
+    hideFrame(frame)
+
+    eP_b_dic = {
+        'master':editProfile_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    eP_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+
+    #Row 1
+    b_changeUser = gfunc.GenFunc('button', eP_b_dic, 'Change Username', eP_g_dic)
+    b_changeUser.widg.config(command= lambda: changeUser(editProfile_frame))
+    
+    #Row 2
+    eP_g_dic['row'] += 1
+    b_changePass = gfunc.GenFunc('button', eP_b_dic, 'Change Password', eP_g_dic)
+    b_changePass.widg.config(command= lambda: changePass(editProfile_frame))
+
+    #Row 3
+    eP_g_dic['row'] += 1
+    b_delAcct = gfunc.GenFunc('button', eP_b_dic, 'Delete Account', eP_g_dic)
+    b_delAcct.widg.config(command= lambda: delProf(editProfile_frame))
+
+    #Row 4
+    eP_g_dic['row'] += 1
+    b_back = gfunc.GenFunc('button', eP_b_dic, 'Cancel', eP_g_dic)
+    b_back.widg.config(command= lambda: homescreen(editProfile_frame))
+
+    editProfile_frame.pack()
+    return
+
+def changeUser(frame):
+    hideFrame(frame)
+    
+    return
+
+def changePass(frame):
+    hideFrame(frame)
+
+    return
+
+def delProf(frame):
+    hideFrame(frame)
+
+    return
 #Calculator menu
 def calcMenu(frame):
     hideFrame(frame)
@@ -1309,11 +1384,11 @@ def signUpVer(label_obj, user, password, conf_password):
     return
 
 #Function for verifying Delete Acc:
-def signUpVer(label_obj, user, password, conf_password):
+def delPofileVer(label_obj, user, password, conf_password):
     '''
     global is_guest
     is_guest = True
-    homescreen(delProf_frame)
+    initSignInUp(delProf_frame)
     '''
     #Uncomment the above to call homescreen
 
@@ -1322,7 +1397,7 @@ def signUpVer(label_obj, user, password, conf_password):
 
     return
 #Function for verifying Change Username:
-def signUpVer(label_obj, user, new_user, password):
+def changeUserVer(label_obj, user, new_user, password):
     '''
     mess = 'Username changed. Gonna cry?'
     #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message

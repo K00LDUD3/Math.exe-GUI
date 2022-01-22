@@ -244,13 +244,14 @@ def signIn(frame):
     resized_image= show_photo.resize((20,12), Image.ANTIALIAS)
     show_photo= ImageTk.PhotoImage(resized_image)
     
-    signIn_b_dic['w'] = 5
-    b1 = Button(master=e_pass, justify=RIGHT, image=hide_photo)
-    b1.config(command= lambda: switchButton(b1, b2))
-    b2 = Button(master=e_pass, justify=RIGHT, image=show_photo)
-    b2.config(command= lambda: switchButton(b2, b1))
-
     #Row 3
+    signIn_g_dic['row']+= 1
+    signIn_g_dic['column'] = 0
+    signIn_g_dic['cspan'] = 2
+    l_op = gfunc.GenFunc('label', signIn_l_dic, '', signIn_g_dic)
+    signIn_g_dic['cspan'] = 1
+
+    #Row 4
     signIn_b_dic['w'] = 15
     signIn_g_dic['row']+= 1
     signIn_g_dic['column'] = 0
@@ -259,7 +260,7 @@ def signIn(frame):
     signIn_g_dic['column']+=1
     b_signIn = gfunc.GenFunc('button', signIn_b_dic, 'Sign In', signIn_g_dic)
     
-    b1.place(relx=0.8)
+   
     signIn_frame.pack()
     return
 
@@ -1281,16 +1282,58 @@ def evalSpecNum(choice, num, label_obj):
 
 #Function for verifying Sign In:
 def SignInVer(label_obj, user, password):
-    #homescreen(frame=signIn_frame)
-    #Uncomment above command to call homesreen
+    '''
+    global is_guest
+    is_guest = False
+    homescreen(signIn_frame)
+    '''
+    #Uncomment above command to call homesreen function
 
     mess = 'Invalid User or Password. Missed the part where thats my problem...' #DIsplay message if user or pass is invalid
     #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
 
     return
+
 #Function for verifying Sign Up:
+def signUpVer(label_obj, user, password, conf_password):
+    '''
+    global is_guest
+    is_guest = False
+    homescreen(signUp_frame)
+    '''
+    #Uncomment the above to call homescreen
+
+    mess = 'Invalid User or Password. Missed the part where thats my problem...'#DIsplay message if user or pass or conf pass is invalid
+    #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
+
+    return
+
 #Function for verifying Delete Acc:
+def signUpVer(label_obj, user, password, conf_password):
+    '''
+    global is_guest
+    is_guest = True
+    homescreen(delProf_frame)
+    '''
+    #Uncomment the above to call homescreen
+
+    mess = 'Invalid User or Password. Missed the part where thats my problem...'#DIsplay message if user or pass or conf pass is invalid
+    #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
+
+    return
 #Function for verifying Change Username:
+def signUpVer(label_obj, user, new_user, password):
+    '''
+    mess = 'Username changed. Gonna cry?'
+    #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
+    return
+    '''
+    #Uncomment the above to tell user that the username has been changed
+
+    mess = 'Invalid User or Password. Missed the part where thats my problem...'#DIsplay message if user or pass or conf pass is invalid
+    #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
+
+    return
 #Function for verifying Change Password:
 initSignInUp(None)
 #Showing WINDOW

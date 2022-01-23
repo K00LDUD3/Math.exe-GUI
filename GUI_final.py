@@ -1,5 +1,6 @@
 
 from functools import cache
+from pyexpat import native_encoding
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
@@ -1260,19 +1261,38 @@ def normCalc(frame):
     normCalc_g_dic['row'] += 1
     b_mod = gfunc.GenFunc('button', normCalc_b_dic, 'mod', normCalc_g_dic)
     b_mod.widg.config(command= lambda: addNumOp('%', l_op))
+
     #Last Row
     normCalc_g_dic['row'] = 5
     normCalc_g_dic['column'] = 0
     b_back = gfunc.GenFunc('button', normCalc_b_dic, 'Back', normCalc_g_dic)
     b_back.widg.config(command= lambda: calcMenu(normCalc_frame))
 
+    #Delete button
+    normCalc_g_dic['column'] += 1
+    b_del = gfunc.GenFunc('button', normCalc_b_dic, 'Del', normCalc_g_dic)
+    b_del.widg.config(command= lambda: delete(l_op.widg.cget('text'), l_op, 1))
 
+    #Clear button
+    normCalc_g_dic['column'] += 1
+    b_clear = gfunc.GenFunc('button', normCalc_b_dic, 'Clear', normCalc_g_dic)
+    b_clear.widg.config(command= lambda: delete(l_op.widg.cget('text'), l_op, 2))
 
     normCalc_frame.pack()
+    return
+#Deleting a character from the expression
+def delete(exp, label_obj, op):
+    exp = str(exp).strip()
+    if exp == 'ERROR' or op == 2:
+        label_obj.widg.config(text='')
+        return
+    else:
+        label_obj.widg.config(text=exp[:-1])
     return
 #Evaluating expression
 def evalExp(exp, label_obj):
     exp = str(exp)
+    
     exp.replace('^', '**')
 
     #USE RECURSIONS TO EVALUATE BRACKETS!!!
@@ -1287,6 +1307,8 @@ def evalExp(exp, label_obj):
     return
 #Function for adding stuff
 def addNumOp(val, label_obj):
+    if label_obj.widg.cget('text') == 'ERROR':
+        label_obj.widg.config(text='')
     print(val)
     txt = str(label_obj.widg.cget('text'))
     print(f'{txt=}')

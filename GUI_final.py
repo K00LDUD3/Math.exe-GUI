@@ -1,5 +1,6 @@
 
 from functools import cache
+from glob import glob
 from pyexpat import native_encoding
 from tkinter import *
 #Importing required libs and mods
@@ -1289,14 +1290,15 @@ def delete(exp, label_obj, op):
     else:
         label_obj.widg.config(text=exp[:-1])
     return
+calc_hist = []
 #Evaluating expression
 def evalExp(exp, label_obj):
     exp = str(exp)
     
     exp.replace('^', '**')
-
-    #USE RECURSIONS TO EVALUATE BRACKETS!!!
-    #Later tho...
+    global calc_hist
+    if calc_hist[-1] != exp:
+        calc_hist.append(exp)
 
     try:
         val = eval(exp)

@@ -1,5 +1,4 @@
 
-from email import message
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
@@ -51,6 +50,7 @@ no_tries = 0 #Used in guessing game to count number of tries taken to guess the 
 calc_button_list = [] #Used to encapsulate all calculator button objects
 b1 = 2 #Base 1 in BaseN calculator (From what base)
 b2 = 2 #Base 2 in BaseN calculator (To what base)
+pass_dot = '\u2022'
 
 #Creating hide frame function
 #Used to hide previous frame so that new frame can safely come on screen
@@ -231,11 +231,10 @@ def signIn(frame):
     signIn_g_dic['column'] = 0
     l_pass = gfunc.GenFunc('label', signIn_l_dic, 'Password:', signIn_g_dic)
     signIn_g_dic['column']+=1
-    #e_pass = gfunc.GenFunc('entry', signIn_e_dic, '', signIn_g_dic)
-    #e_pass.widg.config(show='*')
-    e_pass = Entry(master=signIn_frame)
-    e_pass.grid(row=signIn_g_dic['row'], column=signIn_g_dic['column'])
-    
+    e_pass = gfunc.GenFunc('entry', signIn_e_dic, '', signIn_g_dic)
+    e_pass.widg.config(show=pass_dot)
+
+    '''
     hide_photo = Image.open('Hide.png')
     resized_image= hide_photo.resize((20,12), Image.ANTIALIAS)
     hide_photo= ImageTk.PhotoImage(resized_image)
@@ -243,12 +242,13 @@ def signIn(frame):
     show_photo = Image.open('Show.png')
     resized_image= show_photo.resize((20,12), Image.ANTIALIAS)
     show_photo= ImageTk.PhotoImage(resized_image)
-    
+    '''
+
     #Row 3
     signIn_g_dic['row']+= 1
     signIn_g_dic['column'] = 0
     signIn_g_dic['cspan'] = 2
-    l_op = gfunc.GenFunc('label', signIn_l_dic, '', signIn_g_dic)
+    l_op = gfunc.GenFunc('label', signIn_l_dic, None, signIn_g_dic)
     signIn_g_dic['cspan'] = 1
 
     #Row 4
@@ -259,7 +259,7 @@ def signIn(frame):
     b_back.widg.config(command= lambda: initSignInUp(signIn_frame))
     signIn_g_dic['column']+=1
     b_signIn = gfunc.GenFunc('button', signIn_b_dic, 'Sign In', signIn_g_dic)
-    
+    b_signIn.widg.config(command= lambda: SignInVer(l_op, e_user.widg.get(), e_pass.widg.get()))
    
     signIn_frame.pack()
     return
@@ -354,7 +354,7 @@ def signUp(frame):
     l_pass = gfunc.GenFunc('label', signUp_l_dic, 'Password:', signUp_g_dic)
     signUp_g_dic['column']+=1
     e_pass = gfunc.GenFunc('entry', signUp_e_dic, StringVar(), signUp_g_dic)
-    e_pass.widg.config(show='*')
+    e_pass.widg.config(show=pass_dot)
     
     #Row 3
     signUp_g_dic['row']+= 1
@@ -362,7 +362,7 @@ def signUp(frame):
     l_passConf = gfunc.GenFunc('label', signUp_l_dic, 'Confirm Password:', signUp_g_dic)
     signUp_g_dic['column']+=1
     e_passConf = gfunc.GenFunc('entry', signUp_e_dic, StringVar(), signUp_g_dic)
-    e_passConf.widg.config(show='*')
+    e_passConf.widg.config(show=pass_dot)
     
     #Row 4
     signUp_g_dic['row']+= 1
@@ -425,23 +425,28 @@ def homescreen(frame):
     b_guessG.widg.config(command= lambda: initGG(homescreen_frame))
 
     #Row 2
-    homescreen_g_dic['row'] = 1
+    homescreen_g_dic['row'] += 1
     homescreen_g_dic['column'] = 0
-    b_signOut = gfunc.GenFunc('button', homescreen_b_dic, 'Sign Out', homescreen_g_dic)
-    b_signOut.widg.config(command= lambda: initSignInUp(homescreen_frame))
-    homescreen_g_dic['column'] = 1
     b_calc = gfunc.GenFunc('button', homescreen_b_dic, 'Calculators', homescreen_g_dic)
     b_calc.widg.config(command= lambda: calcMenu(homescreen_frame))
+    homescreen_g_dic['column'] += 1
+    
+
     #Row 3
-    homescreen_g_dic['row'] = 2
-    homescreen_g_dic['column'] = 0
     global is_guest
-    if (is_guest):
+    if not(is_guest):
         configRoot(300, 150, 'Homescreen')
+        homescreen_g_dic['column'] = 1
         b_editProf = gfunc.GenFunc('button', homescreen_b_dic, 'Edit Profile', homescreen_g_dic)
         b_editProf.widg.config(command= lambda: editProfile(homescreen_frame))
+        homescreen_g_dic['row'] += 1
+        homescreen_g_dic['column'] = 0
+        b_signOut = gfunc.GenFunc('button', homescreen_b_dic, 'Sign Out', homescreen_g_dic)
+        b_signOut.widg.config(command= lambda: initSignInUp(homescreen_frame))
     else:
         configRoot(300, 100, 'Homescreen')
+        b_signOut = gfunc.GenFunc('button', homescreen_b_dic, 'Sign Out', homescreen_g_dic)
+        b_signOut.widg.config(command= lambda: initSignInUp(homescreen_frame))
     homescreen_frame.pack()
     return
 
@@ -746,17 +751,350 @@ def editProfile(frame):
 
 def changeUser(frame):
     hideFrame(frame)
-    
+
+    changeU_l_dic = {
+        'master':changeUser_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    changeU_b_dic = {
+        'master':changeUser_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    changeU_e_dic = {
+        'master':changeUser_frame,
+        'bd':None,
+        'height':None,
+        'w':15,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+    }
+    changeU_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+
+    #Row 1
+    l_user = gfunc.GenFunc('label',changeU_l_dic, 'Old Username:', changeU_g_dic)
+    changeU_g_dic['column'] += 1
+    e_user = gfunc.GenFunc('entry', changeU_e_dic, StringVar(), changeU_g_dic)
+
+    #Row 2
+    changeU_g_dic['column'] = 0
+    changeU_g_dic['row'] += 1
+    l_newUser = gfunc.GenFunc('label', changeU_l_dic, 'New Username:', changeU_g_dic)
+    changeU_g_dic['column'] += 1
+    e_newUser = gfunc.GenFunc('entry', changeU_e_dic, StringVar(), changeU_g_dic)
+
+    #Row 3
+    changeU_g_dic['column'] = 0
+    changeU_g_dic['row'] += 1
+    l_pass = gfunc.GenFunc('label', changeU_l_dic, 'Password:', changeU_g_dic)
+    changeU_g_dic['column'] += 1
+    e_pass = gfunc.GenFunc('entry', changeU_e_dic, StringVar(), changeU_g_dic)
+    e_pass.widg.config(show=pass_dot)
+
+    #Row 4
+    changeU_g_dic['column'] = 0
+    changeU_g_dic['row'] += 1
+    changeU_g_dic['cspan'] = 2
+    l_op = gfunc.GenFunc('label', changeU_l_dic, '<OUTPUT>', changeU_g_dic)
+    changeU_g_dic['cspan'] = 1
+
+    #Row 5
+    changeU_g_dic['column'] = 0
+    changeU_g_dic['row'] += 1
+    b_back = gfunc.GenFunc('Button', changeU_b_dic, 'Back', changeU_g_dic)
+    b_back.widg.config(command= lambda: editProfile(changeUser_frame))
+    changeU_g_dic['column'] += 1
+    b_go = gfunc.GenFunc('Button', changeU_b_dic, 'Change Username', changeU_g_dic)
+    b_go.widg.config(command= lambda: changeUserVer(l_op, e_user.widg.get(), e_newUser.widg.get(), e_pass.widg.get()))
+
+    changeUser_frame.pack()
     return
 
 def changePass(frame):
     hideFrame(frame)
+    changeP_l_dic = {
+        'master':changePass_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    changeP_b_dic = {
+        'master':changePass_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    changeP_e_dic = {
+        'master':changePass_frame,
+        'bd':None,
+        'height':None,
+        'w':15,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+    }
+    changeP_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
 
+    #Row 1
+    l_user = gfunc.GenFunc('label',changeP_l_dic, 'Username:', changeP_g_dic)
+    changeP_g_dic['column'] += 1
+    e_user = gfunc.GenFunc('entry', changeP_e_dic, StringVar(), changeP_g_dic)
+
+    #Row 2
+    changeP_g_dic['column'] = 0
+    changeP_g_dic['row'] += 1
+    l_pass = gfunc.GenFunc('label', changeP_l_dic, 'Password:', changeP_g_dic)
+    changeP_g_dic['column'] += 1
+    e_pass = gfunc.GenFunc('entry', changeP_e_dic, StringVar(), changeP_g_dic)
+    e_pass.widg.config(show=pass_dot)
+
+    #Row 3
+    changeP_g_dic['column'] = 0
+    changeP_g_dic['row'] += 1
+    l_newPass = gfunc.GenFunc('label', changeP_l_dic, 'New Password:', changeP_g_dic)
+    changeP_g_dic['column'] += 1
+    e_newPass = gfunc.GenFunc('entry', changeP_e_dic, StringVar(), changeP_g_dic)
+    e_newPass.widg.config(show=pass_dot)
+
+    #Row 4
+    changeP_g_dic['column'] = 0
+    changeP_g_dic['row'] += 1
+    l_newPassConf = gfunc.GenFunc('label', changeP_l_dic, 'Confirm Password:', changeP_g_dic)
+    changeP_g_dic['column'] += 1
+    e_newPassConf = gfunc.GenFunc('entry', changeP_e_dic, StringVar(), changeP_g_dic)
+    e_newPassConf.widg.config(show=pass_dot)
+
+    #Row 5
+    changeP_g_dic['column'] = 0
+    changeP_g_dic['row'] += 1
+    changeP_g_dic['cspan'] = 2
+    l_op = gfunc.GenFunc('label', changeP_l_dic, '<OUTPUT>', changeP_g_dic)
+    changeP_g_dic['cspan'] = 1
+
+    #Row 6
+    changeP_g_dic['column'] = 0
+    changeP_g_dic['row'] += 1
+    b_back = gfunc.GenFunc('Button', changeP_b_dic, 'Back', changeP_g_dic)
+    b_back.widg.config(command= lambda: editProfile(changePass_frame))
+    changeP_g_dic['column'] += 1
+    b_go = gfunc.GenFunc('Button', changeP_b_dic, 'Change Password', changeP_g_dic)
+    b_go.widg.config(command= lambda: changePassVer(l_op, e_user.widg.get(), e_pass.widg.get(), e_newPass.widg.get(), e_newPassConf.widg.get()))
+
+    changePass_frame.pack()
     return
 
 def delProf(frame):
     hideFrame(frame)
 
+    delProf_l_dic = {
+        'master':delProf_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    delProf_b_dic = {
+        'master':delProf_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    delProf_e_dic = {
+        'master':delProf_frame,
+        'bd':None,
+        'height':None,
+        'w':15,
+        'bg':None,
+        'fg':None,
+        'font':None,
+        'insertofftime':None,
+        'insertontime':None,
+        'highlbg':None,
+        'highlcolor':None,
+        'cursor':None,
+        'padx':None,
+        'pady':None,
+        'highthick':None,
+        'charwidth':None,
+        'relief':None,
+        'yscrollcommand':None,
+        'xscrollcommand':None,
+    }
+    delProf_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':10,
+        'pady':10,
+        'ipadx':0,
+        'ipady':0
+    }
+
+    #Row 1
+    l_user = gfunc.GenFunc('label',delProf_l_dic, 'Username:', delProf_g_dic)
+    delProf_g_dic['column'] += 1
+    e_user = gfunc.GenFunc('entry', delProf_e_dic, StringVar(), delProf_g_dic)
+
+    #Row 2
+    delProf_g_dic['column'] = 0
+    delProf_g_dic['row'] += 1
+    l_pass = gfunc.GenFunc('label', delProf_l_dic, 'Password:', delProf_g_dic)
+    delProf_g_dic['column'] += 1
+    e_pass = gfunc.GenFunc('entry', delProf_e_dic, StringVar(), delProf_g_dic)
+    e_pass.widg.config(show=pass_dot)
+
+    #Row 3
+    delProf_g_dic['column'] = 0
+    delProf_g_dic['row'] += 1
+    l_passConf = gfunc.GenFunc('label', delProf_l_dic, 'Confirm Password:', delProf_g_dic)
+    delProf_g_dic['column'] += 1
+    e_passConf = gfunc.GenFunc('entry', delProf_e_dic, StringVar(), delProf_g_dic)
+    e_passConf.widg.config(show=pass_dot)
+
+    #Row 4
+    delProf_g_dic['column'] = 0
+    delProf_g_dic['row'] += 1
+    delProf_g_dic['cspan'] = 2
+    l_op = gfunc.GenFunc('label', delProf_l_dic, '<OUTPUT>', delProf_g_dic)
+    delProf_g_dic['cspan'] = 1
+
+    #Row 5
+    delProf_g_dic['column'] = 0
+    delProf_g_dic['row'] += 1
+    b_back = gfunc.GenFunc('Button', delProf_b_dic, 'Back', delProf_g_dic)
+    b_back.widg.config(command= lambda: editProfile(delProf_frame))
+    delProf_g_dic['column'] += 1
+    b_go = gfunc.GenFunc('Button', delProf_b_dic, 'Delete Profile', delProf_g_dic)
+    b_go.widg.config(command= lambda: delPofileVer(l_op, e_user.widg.get(), e_pass.widg.get(), e_passConf.widg.get()))
+
+    delProf_frame.pack()
     return
 #Calculator menu
 def calcMenu(frame):
@@ -1362,7 +1700,7 @@ def SignInVer(label_obj, user, password):
     is_guest = False
     homescreen(signIn_frame)
     '''
-    #Uncomment above command to call homesreen function
+    #Uncomment above command if sign in is a success
 
     mess = 'Invalid User or Password. Missed the part where thats my problem...' #DIsplay message if user or pass is invalid
     #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
@@ -1376,7 +1714,7 @@ def signUpVer(label_obj, user, password, conf_password):
     is_guest = False
     homescreen(signUp_frame)
     '''
-    #Uncomment the above to call homescreen
+    #Uncomment the above to call homescreen (Sign Up successful)
 
     mess = 'Invalid User or Password. Missed the part where thats my problem...'#DIsplay message if user or pass or conf pass is invalid
     #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
@@ -1390,9 +1728,9 @@ def delPofileVer(label_obj, user, password, conf_password):
     is_guest = True
     initSignInUp(delProf_frame)
     '''
-    #Uncomment the above to call homescreen
+    #Uncomment the above to call homescreen (Delete profile successful)
 
-    mess = 'Invalid User or Password. Missed the part where thats my problem...'#DIsplay message if user or pass or conf pass is invalid
+    mess = 'Invalid User or Password. Missed the part where thats my problem...'#Display message if user or pass or conf pass is invalid
     #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
 
     return
@@ -1408,6 +1746,21 @@ def changeUserVer(label_obj, user, new_user, password):
     mess = 'Invalid User or Password. Missed the part where thats my problem...'#DIsplay message if user or pass or conf pass is invalid
     #label_obj.widg.config(text=mess) #uncomment this line to display invalid text message
 
+    return
+
+def changePassVer(label_obj, user, password, new_pass, new_pass_conf):
+    '''
+    mess = 'Password Changed'
+    label_obj.widg.config(text=mess)
+    '''
+    #Uncomment if password has been changed
+
+
+    '''
+    mess = 'Please try again'
+    label_obj.widg.config(text=mess)
+    '''
+    #Uncomment if input is invalid blah blah etc etc...
     return
 #Function for verifying Change Password:
 initSignInUp(None)

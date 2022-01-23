@@ -1,4 +1,5 @@
 
+from functools import cache
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
@@ -1150,9 +1151,156 @@ def calcMenu(frame):
 def normCalc(frame):
     hideFrame(frame)
 
+    normCalc_b_dic = {
+        'master':normCalc_frame,
+        'act_bg':'blue',
+        'act_fg':'yellow',
+        'bg':None,
+        'fg':None,
+        'border':None,
+        'font':None,
+        'height':None,
+        'highl_color':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'underline':None,
+        'w':5,
+        'wraplength':None
+    }
+    normCalc_l_dic = {
+        'master':normCalc_frame,
+        'anchor':None,
+        'bg':None,
+        'bitmap':None,
+        'bd':None,
+        'font':None,
+        'fg':None,
+        'height':None,
+        'image':None,
+        'justify':None,
+        'padx':None,
+        'pady':None,
+        'relief':None,
+        'text':None,
+        'textvar':None,
+        'underline':None,
+        'w':15,
+        'wraplength':None
+    }
+    normCalc_g_dic = {
+        'column':0,
+        'row':0,
+        'cspan':1,
+        'rspan':1,
+        'padx':5,
+        'pady':5,
+        'ipadx':5,
+        'ipady':5
+    }
+
+    #Display Label
+    normCalc_g_dic['cspan'] = 3
+    l_op = gfunc.GenFunc('label', normCalc_l_dic, '', normCalc_g_dic)
+    normCalc_g_dic['cspan'] = 1
+
+    #Number buttons
+    normCalc_g_dic['row'] += 1
+    row_offest = 0
+    col_offest = 0
+    for i in range(0,9):
+        normCalc_g_dic['row'] = i//3+1 + row_offest
+        normCalc_g_dic['column'] =  i%3 + col_offest
+        calc_button_list.append(gfunc.GenFunc('button', normCalc_b_dic, str(i+1), normCalc_g_dic))
+    normCalc_g_dic['row'] += 1
+    normCalc_g_dic['column'] = 1
+    calc_button_list.append(gfunc.GenFunc('button', normCalc_b_dic, '0', normCalc_g_dic))
+    #Assigning commands of the number buttons
+    calc_button_list[0].widg.config(command= lambda: addNumOp(1, l_op))
+    calc_button_list[1].widg.config(command= lambda: addNumOp(2, l_op))
+    calc_button_list[2].widg.config(command= lambda: addNumOp(3, l_op))
+    calc_button_list[3].widg.config(command= lambda: addNumOp(4, l_op))
+    calc_button_list[4].widg.config(command= lambda: addNumOp(5, l_op))
+    calc_button_list[5].widg.config(command= lambda: addNumOp(6, l_op))
+    calc_button_list[6].widg.config(command= lambda: addNumOp(7, l_op))
+    calc_button_list[7].widg.config(command= lambda: addNumOp(8, l_op))
+    calc_button_list[8].widg.config(command= lambda: addNumOp(9, l_op))
+    calc_button_list[9].widg.config(command= lambda: addNumOp(0, l_op))
+    
+    #Decimal button (.)
+    normCalc_g_dic['column'] = 0
+    b_dot = gfunc.GenFunc('button', normCalc_b_dic, '.', normCalc_g_dic)
+    b_dot.widg.config(command= lambda: addNumOp('.', l_op))
+
+    #Equals sign (=)
+    normCalc_g_dic['column'] = 2 + col_offest
+    b_eval = gfunc.GenFunc('button', normCalc_b_dic, '=', normCalc_g_dic)
+    b_eval.widg.config(command= lambda: evalExp(l_op.widg.cget('text'), l_op))
+
+    #Operators (+, -, x, /)
+    normCalc_g_dic['column'] = 3 + col_offest
+    normCalc_g_dic['row'] = 1 + row_offest
+    b_add = gfunc.GenFunc('button', normCalc_b_dic, '+', normCalc_g_dic)
+    b_add.widg.config(command= lambda: addNumOp('+', l_op))
+
+    normCalc_g_dic['row'] += 1
+    b_sub = gfunc.GenFunc('button', normCalc_b_dic, '-', normCalc_g_dic)
+    b_sub.widg.config(command= lambda: addNumOp('-', l_op))
+
+    normCalc_g_dic['row'] += 1
+    b_mult = gfunc.GenFunc('button', normCalc_b_dic, 'x', normCalc_g_dic)
+    b_mult.widg.config(command= lambda: addNumOp('*', l_op))
+
+    normCalc_g_dic['row'] += 1
+    b_div = gfunc.GenFunc('button', normCalc_b_dic, '/', normCalc_g_dic)
+    b_div.widg.config(command= lambda: addNumOp('/', l_op))
+
+    normCalc_g_dic['row'] += 1
+    b_mod = gfunc.GenFunc('button', normCalc_b_dic, 'mod', normCalc_g_dic)
+    b_mod.widg.config(command= lambda: addNumOp('%', l_op))
+    #Last Row
+    normCalc_g_dic['row'] = 5
+    normCalc_g_dic['column'] = 0
+    b_back = gfunc.GenFunc('button', normCalc_b_dic, 'Back', normCalc_g_dic)
+    b_back.widg.config(command= lambda: calcMenu(normCalc_frame))
+
 
 
     normCalc_frame.pack()
+    return
+#Evaluating expression
+def evalExp(exp, label_obj):
+    exp = str(exp)
+    exp.replace('^', '**')
+
+    #USE RECURSIONS TO EVALUATE BRACKETS!!!
+    #Later tho...
+
+    try:
+        val = eval(exp)
+    except:
+        val = 'ERROR'
+    label_obj.widg.config(text= val)
+    
+    return
+#Function for adding stuff
+def addNumOp(val, label_obj):
+    print(val)
+    txt = str(label_obj.widg.cget('text'))
+    print(f'{txt=}')
+    operators = '+-*/%'
+
+    val = str(val)
+    if val.isnumeric() or str(val) == '.':
+        if val[-1] in operators:
+            txt = f'{txt} {val}'
+        else:
+            txt = f'{txt}{val}'
+    elif val in operators:
+        txt = f'{txt} {val} '
+    label_obj.widg.config(text= txt)
     return
 def baseCalc(frame):
     hideFrame(frame)

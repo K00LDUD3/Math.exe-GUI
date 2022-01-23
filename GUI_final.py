@@ -1204,7 +1204,7 @@ def normCalc(frame):
     }
 
     #Display Label
-    normCalc_g_dic['cspan'] = 3
+    normCalc_g_dic['cspan'] = 5
     l_op = gfunc.GenFunc('label', normCalc_l_dic, '', normCalc_g_dic)
     normCalc_g_dic['cspan'] = 1
 
@@ -1241,7 +1241,7 @@ def normCalc(frame):
     b_eval = gfunc.GenFunc('button', normCalc_b_dic, '=', normCalc_g_dic)
     b_eval.widg.config(command= lambda: evalExp(l_op.widg.cget('text'), l_op))
 
-    #Operators (+, -, x, /)
+    #Column 4
     normCalc_g_dic['column'] = 3 + col_offest
     normCalc_g_dic['row'] = 1 + row_offest
     b_add = gfunc.GenFunc('button', normCalc_b_dic, '+', normCalc_g_dic)
@@ -1279,6 +1279,14 @@ def normCalc(frame):
     b_clear = gfunc.GenFunc('button', normCalc_b_dic, 'Clear', normCalc_g_dic)
     b_clear.widg.config(command= lambda: delete(l_op.widg.cget('text'), l_op, 2))
 
+    #Column 5
+    normCalc_g_dic['column'] = 4
+    normCalc_g_dic['row'] = 1
+    b_undo = gfunc.GenFunc('button', normCalc_b_dic, 'UNDO', normCalc_g_dic)
+    normCalc_g_dic['row'] += 1
+    b_exponent = gfunc.GenFunc('button', normCalc_b_dic, '^', normCalc_g_dic)
+    b_exponent.widg.config(command= lambda: addNumOp('^', l_op))
+
     normCalc_frame.pack()
     return
 #Deleting a character from the expression
@@ -1290,15 +1298,20 @@ def delete(exp, label_obj, op):
     else:
         label_obj.widg.config(text=exp[:-1])
     return
-calc_hist = []
+calc_hist = [' ']
+#Displaying previous/next exppression
+def undoRedo(exp, l_obj, op):
+    global calc_hist
+    #ind = calc_hist.index(exp)
 #Evaluating expression
 def evalExp(exp, label_obj):
     exp = str(exp)
     
-    exp.replace('^', '**')
-    global calc_hist
-    if calc_hist[-1] != exp:
+    global calc_hist    
+    if calc_hist[-1] != exp and exp != 'ERROR':
         calc_hist.append(exp)
+    print(calc_hist)
+    exp = exp.replace(' ^ ', '**')
 
     try:
         val = eval(exp)
@@ -1314,7 +1327,7 @@ def addNumOp(val, label_obj):
     print(val)
     txt = str(label_obj.widg.cget('text'))
     print(f'{txt=}')
-    operators = '+-*/%'
+    operators = '+-*/%^'
 
     val = str(val)
     if val.isnumeric() or str(val) == '.':

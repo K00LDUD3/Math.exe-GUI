@@ -1,7 +1,4 @@
 
-from functools import cache
-from glob import glob
-from pyexpat import native_encoding
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
@@ -54,7 +51,8 @@ calc_button_list = [] #Used to encapsulate all calculator button objects
 b1 = 2 #Base 1 in BaseN calculator (From what base)
 b2 = 2 #Base 2 in BaseN calculator (To what base)
 pass_dot = '\u2022'
-
+calc_hist = ['']
+ind = 0
 #Creating hide frame function
 #Used to hide previous frame so that new frame can safely come on screen
 def hideFrame(frame):
@@ -1283,6 +1281,10 @@ def normCalc(frame):
     normCalc_g_dic['column'] = 4
     normCalc_g_dic['row'] = 1
     b_undo = gfunc.GenFunc('button', normCalc_b_dic, 'UNDO', normCalc_g_dic)
+    b_undo.widg.config(command= lambda: redo(l_op.widg.cget('text'), l_op))
+    normCalc_g_dic['row'] += 1
+    #b_redo = gfunc.GenFunc('button', normCalc_b_dic, 'REDO', normCalc_g_dic)
+    #b_redo.widg.config(command= lambda: undoRedo(l_op.widg.cget('text'), l_op, 'REDO'))
     normCalc_g_dic['row'] += 1
     b_exponent = gfunc.GenFunc('button', normCalc_b_dic, '^', normCalc_g_dic)
     b_exponent.widg.config(command= lambda: addNumOp('^', l_op))
@@ -1294,23 +1296,34 @@ def delete(exp, label_obj, op):
     exp = str(exp).strip()
     if exp == 'ERROR' or op == 2:
         label_obj.widg.config(text='')
-        return
     else:
         label_obj.widg.config(text=exp[:-1])
     return
-calc_hist = [' ']
 #Displaying previous/next exppression
-def undoRedo(exp, l_obj, op):
+def redo(exp, l_obj):
+    exp = str(exp).strip()
     global calc_hist
-    #ind = calc_hist.index(exp)
+    ind = calc_hist.index(exp)
+    if ind == 1:
+        print(f'Redo not possible because current step at 0th index of {calc_hist}')
+        return
+    else:
+        l_obj.widg.config(text=calc_hist[-2])
+    del calc_hist[-1]
+    print(calc_hist)
+    return
+#Getting index of expression in from last 
+#Assumption: expression to search for is in calc history index
+def getIndLast(startInd, exp):
+    exp = str(exp).strip
+    global calc_hist
+
 #Evaluating expression
 def evalExp(exp, label_obj):
     exp = str(exp)
     
+    
     global calc_hist    
-    if calc_hist[-1] != exp and exp != 'ERROR':
-        calc_hist.append(exp)
-    print(calc_hist)
     exp = exp.replace(' ^ ', '**')
 
     try:
@@ -1318,7 +1331,13 @@ def evalExp(exp, label_obj):
     except:
         val = 'ERROR'
     label_obj.widg.config(text= val)
-    
+    exp = str(label_obj.widg.cget('text')).strip()
+    if calc_hist[-1] != exp and exp != 'ERROR':
+        calc_hist.append(exp)
+    print(calc_hist)
+    global ind
+    ind += 1
+    print(f'{ind=}')
     return
 #Function for adding stuff
 def addNumOp(val, label_obj):
@@ -1338,6 +1357,13 @@ def addNumOp(val, label_obj):
     elif val in operators:
         txt = f'{txt} {val} '
     label_obj.widg.config(text= txt)
+    exp = str(label_obj.widg.cget('text')).strip()
+    global calc_hist    
+    if calc_hist[-1] != exp and exp != 'ERROR':
+        calc_hist.append(exp)
+    global ind
+    ind += 1
+    print(f'{ind=}')
     return
 def baseCalc(frame):
     hideFrame(frame)

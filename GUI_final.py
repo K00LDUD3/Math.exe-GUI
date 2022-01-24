@@ -1,4 +1,5 @@
 
+from audioop import add
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
@@ -51,8 +52,8 @@ calc_button_list = [] #Used to encapsulate all calculator button objects
 b1 = 2 #Base 1 in BaseN calculator (From what base)
 b2 = 2 #Base 2 in BaseN calculator (To what base)
 pass_dot = '\u2022'
-calc_hist = ['']
-ind = 0
+calc_hist = [' ']
+calc_ans = 0
 #Creating hide frame function
 #Used to hide previous frame so that new frame can safely come on screen
 def hideFrame(frame):
@@ -1281,14 +1282,16 @@ def normCalc(frame):
     normCalc_g_dic['column'] = 4
     normCalc_g_dic['row'] = 1
     b_undo = gfunc.GenFunc('button', normCalc_b_dic, 'UNDO', normCalc_g_dic)
-    b_undo.widg.config(command= lambda: redo(l_op.widg.cget('text'), l_op))
-    normCalc_g_dic['row'] += 1
+    b_undo.widg.config(command= lambda: undo(l_op.widg.cget('text'), l_op))
+    #normCalc_g_dic['row'] += 1
     #b_redo = gfunc.GenFunc('button', normCalc_b_dic, 'REDO', normCalc_g_dic)
     #b_redo.widg.config(command= lambda: undoRedo(l_op.widg.cget('text'), l_op, 'REDO'))
     normCalc_g_dic['row'] += 1
     b_exponent = gfunc.GenFunc('button', normCalc_b_dic, '^', normCalc_g_dic)
     b_exponent.widg.config(command= lambda: addNumOp('^', l_op))
-
+    normCalc_g_dic['row'] += 1
+    b_ans = gfunc.GenFunc('button', normCalc_b_dic, 'Ans', normCalc_g_dic)
+    b_ans.widg.config(command= lambda: getCalcAns(l_op))
     normCalc_frame.pack()
     return
 #Deleting a character from the expression
@@ -1300,11 +1303,13 @@ def delete(exp, label_obj, op):
         label_obj.widg.config(text=exp[:-1])
     return
 #Displaying previous/next exppression
-def redo(exp, l_obj):
-    exp = str(exp).strip()
+def undo(exp, l_obj):
+    exp = str(exp)
+    if exp == '':
+        return
     global calc_hist
     ind = calc_hist.index(exp)
-    if ind == 1:
+    if ind == 0:
         print(f'Redo not possible because current step at 0th index of {calc_hist}')
         return
     else:
@@ -1312,16 +1317,26 @@ def redo(exp, l_obj):
     del calc_hist[-1]
     print(calc_hist)
     return
-#Getting index of expression in from last 
-#Assumption: expression to search for is in calc history index
-def getIndLast(startInd, exp):
-    exp = str(exp).strip
-    global calc_hist
+#Getting last known answer
+def getCalcAns(l_obj):
+    global calc_ans
+    if l_obj.widg.cget('text') == 'ERROR':
+        l_obj.widg.config(text='')
+
+    txt = str(l_obj.widg.cget('text'))
+    if txt == '':
+        l_obj.widg.config(text= calc_ans)
+    operators = '+-*/%^'
+    if str(l_obj.widg.cget('text'))[-1] in operators:
+        txt = f'{txt} {calc_ans}'
+    else:
+        txt = f'{txt}{calc_ans}'
+    l_obj.widg.config(text= txt)
+    return
 
 #Evaluating expression
 def evalExp(exp, label_obj):
     exp = str(exp)
-    
     
     global calc_hist    
     exp = exp.replace(' ^ ', '**')
@@ -1334,37 +1349,43 @@ def evalExp(exp, label_obj):
     exp = str(label_obj.widg.cget('text')).strip()
     if calc_hist[-1] != exp and exp != 'ERROR':
         calc_hist.append(exp)
+        global calc_ans
+        calc_ans = float(exp)
+        print(calc_ans)
     print(calc_hist)
-    global ind
-    ind += 1
-    print(f'{ind=}')
     return
 #Function for adding stuff
 def addNumOp(val, label_obj):
     if label_obj.widg.cget('text') == 'ERROR':
         label_obj.widg.config(text='')
     print(val)
+
     txt = str(label_obj.widg.cget('text'))
     print(f'{txt=}')
     operators = '+-*/%^'
-
     val = str(val)
+
     if val.isnumeric() or str(val) == '.':
-        if val[-1] in operators:
-            txt = f'{txt} {val}'
-        else:
-            txt = f'{txt}{val}'
+        try:
+            if txt.endswith((operators,)):
+                print('exp ends with operator')
+            else:
+                txt = f'{txt}{val}'
+            None
+        except:
+            None
     elif val in operators:
         txt = f'{txt} {val} '
+
     label_obj.widg.config(text= txt)
-    exp = str(label_obj.widg.cget('text')).strip()
+    exp = str(label_obj.widg.cget('text'))
+
     global calc_hist    
     if calc_hist[-1] != exp and exp != 'ERROR':
         calc_hist.append(exp)
-    global ind
-    ind += 1
-    print(f'{ind=}')
+
     return
+
 def baseCalc(frame):
     hideFrame(frame)
 

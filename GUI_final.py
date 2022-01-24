@@ -1292,6 +1292,13 @@ def normCalc(frame):
     normCalc_g_dic['row'] += 1
     b_ans = gfunc.GenFunc('button', normCalc_b_dic, 'Ans', normCalc_g_dic)
     b_ans.widg.config(command= lambda: getCalcAns(l_op))
+    normCalc_g_dic['row'] += 1
+    b_openB = gfunc.GenFunc('button', normCalc_b_dic, '(', normCalc_g_dic)
+    b_openB.widg.config(command= lambda: addNumOp('(', l_op))
+    normCalc_g_dic['row'] += 1
+    b_closeB = gfunc.GenFunc('button', normCalc_b_dic, ')', normCalc_g_dic)
+    b_closeB.widg.config(command= lambda: addNumOp(')', l_op))
+
     normCalc_frame.pack()
     return
 #Deleting a character from the expression
@@ -1361,8 +1368,10 @@ def addNumOp(val, label_obj):
     print(val)
 
     txt = str(label_obj.widg.cget('text'))
+
+        
     print(f'{txt=}')
-    operators = '+-*/%^'
+    operators = '+-*/%()^'
     val = str(val)
 
     if val.isnumeric() or str(val) == '.':
@@ -1380,6 +1389,7 @@ def addNumOp(val, label_obj):
     label_obj.widg.config(text= txt)
     exp = str(label_obj.widg.cget('text'))
 
+    
     global calc_hist    
     if calc_hist[-1] != exp and exp != 'ERROR':
         calc_hist.append(exp)

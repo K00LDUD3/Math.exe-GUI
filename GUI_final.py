@@ -1,5 +1,5 @@
 
-from audioop import add
+
 from tkinter import *
 #Importing required libs and mods
 from tkinter import ttk
@@ -9,14 +9,16 @@ import random
 import math
 import GenFunctions as gfunc
 import cmath
-from PIL import Image,ImageTk
+import PIL.Image
+import PIL.ImageTk
 
 #Creating WINDOW for hosting FRAMES
 root = Tk()
 root.title('Math.exe')
 #root.resizable(False, False)
 root.geometry("365x150")
-photo = PhotoImage(file='Logo.png')
+im = PIL.Image.open("Logo.png")
+photo = PIL.ImageTk.PhotoImage(im)
 root.iconphoto(False, photo)
 
 

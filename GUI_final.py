@@ -7,23 +7,23 @@ import random
 import math
 import GenFunctions as gfunc
 import cmath
-import mysql.connector
+#import mysql.connector
 #from PIL import Image,ImageTk
 
 #Connecting the Database
-mydb = mysql.connector.connect(
+'''mydb = mysql.connector.connect(
     host="localhost", 
     user="root" , 
     password="shob25" , 
     database="Math"
 )
-
+'''
 #Creating WINDOW for hosting FRAMES
 root = Tk()
 root.title('Math.exe')
-#root.resizable(False, False)
+root.resizable(False, False)
 root.geometry("365x150")
-root.iconbitmap("Z:/Coding/MyPrograms/Shoubhit's Python Programs/Shoubhit's Programs/Uncategorized/Math.exe-GUI-main/Logo.ico")
+#root.iconbitmap("Z:/Coding/MyPrograms/Shoubhit's Python Programs/Shoubhit's Programs/Uncategorized/Math.exe-GUI-main/Logo.ico")
 
 #Creating FRAMES for hosting WIDGETS
 initSignInUp_frame = LabelFrame(root) #Signing in or signing up
@@ -67,9 +67,10 @@ current_pass = ''
 def hideFrame(frame):
     try:
         frame.pack_forget()
-        print(f'Frame Hidden')
+        #print(f'Frame Hidden')
     except (TypeError, AttributeError):
-        print(f'Err: No Frame Found <<{AttributeError}>>')
+        pass
+        #print(f'Err: No Frame Found <<{AttributeError}>>')
     finally:
         return
         
@@ -79,7 +80,8 @@ def destroySPNLab(label, frame):
         label.destroy()
         homescreen(frame)
     except:
-        print('Unable to destroy label')
+        pass
+        ##print('Unable to destroy label')
     finally:
         return
         
@@ -159,7 +161,7 @@ def quit():
 def switchButton(b1, b2):
     b1.place_forget()
     b2.place(relx=0.8)
-    print('button switched')
+    ##print('button switched')
     return
 #Signing in
 def signIn(frame):
@@ -740,7 +742,7 @@ def genNum(choice):
     elif choice == 'foodmen':
         number = random.randint(-1000000000, 1000000000)
         root.title(f'Guessing Game: -1000000000 - 1000000000')
-        print(f'{number=}')
+        ##print(f'{number=}')
         return number
     root.title(f'Guessing Game: {r}')
     return number
@@ -1403,12 +1405,12 @@ def undo(exp, l_obj):
     global calc_hist
     ind = calc_hist.index(exp)
     if ind == 0:
-        print(f'Redo not possible because current step at 0th index of {calc_hist}')
+        ##print(f'Redo not possible because current step at 0th index of {calc_hist}')
         return
     else:
         l_obj.widg.config(text=calc_hist[-2])
     del calc_hist[-1]
-    print(calc_hist)
+    ##print(calc_hist)
     return
 #Getting last known answer
 def getCalcAns(l_obj):
@@ -1444,26 +1446,27 @@ def evalExp(exp, label_obj):
         calc_hist.append(exp)
         global calc_ans
         calc_ans = float(exp)
-        print(calc_ans)
-    print(calc_hist)
+        ##print(calc_ans)
+    ##print(calc_hist)
     return
 #Function for adding stuff
 def addNumOp(val, label_obj):
     if label_obj.widg.cget('text') == 'ERROR':
         label_obj.widg.config(text='')
-    print(val)
+    ##print(val)
 
     txt = str(label_obj.widg.cget('text'))
 
         
-    print(f'{txt=}')
+    ##print(f'{txt=}')
     operators = '+-*/%()^'
     val = str(val)
 
     if val.isnumeric() or str(val) == '.':
         try:
             if txt.endswith((operators,)):
-                print('exp ends with operator')
+                None
+                ##print('exp ends with operator')
             else:
                 txt = f'{txt}{val}'
             None
@@ -1484,6 +1487,9 @@ def addNumOp(val, label_obj):
 
 def baseCalc(frame):
     hideFrame(frame)
+
+    #Setting size and title for window
+    configRoot(610, 189, 'Base Converter')
 
     base_list = [
         ('Base 2',2),
@@ -1712,6 +1718,9 @@ def validBase(num, op, labelOp_obj, labelErr_obj):
 def quadCalc(frame):
     hideFrame(frame)
 
+    #Setting size and title for window
+    configRoot(293, 98, 'Quadratic Calculator')
+
     #Definging param DICTIONARIES for WIDGETS
     quadCalc_l_dic = {
         'master':quadCalc_frame,
@@ -1831,10 +1840,10 @@ def quadCalc(frame):
     
 #Destroying label
 def destroyQuadLab(l):
-    print('Quad Destroy reached')
+    ##print('Quad Destroy reached')
     l.widg.grid_forget()
     l.widg.destroy()
-    print('label destroyed')
+    ##print('label destroyed')
     calcMenu(quadCalc_frame)
     return
 #Computing roots for given coefficients of x^2, x and 1
@@ -1860,7 +1869,7 @@ def computeQuadRoots(label_obj, a, b, c):
     r1 = str((-b-cmath.sqrt(d))/(2*a)).replace('j','i')
     r2 = str((-b+cmath.sqrt(d))/(2*a)).replace('j','i')
     
-    print(r1,r2)
+    ##print(r1,r2)
 
     label_obj.widg.config(text=f'Root 1: {r1}\nRoot 2: {r2}')
     return
@@ -1893,7 +1902,7 @@ def computeQuadRoots(label_obj, a, b, c):
 
         
     #Roots
-    print(r1, r2)
+    ##print(r1, r2)
 
     #Cleaning up raw string roots
     
@@ -1912,7 +1921,7 @@ def specNum(frame):
     hideFrame(frame)
 
     #Setting size and title of window
-    configRoot(300, 282, 'Special Numbers')
+    configRoot(335, 242, 'Special Numbers')
 
     #Definging param DICTIONARIES for WIDGETS
     spn_l_dic = {
@@ -1958,7 +1967,7 @@ def specNum(frame):
         'master':specNum_frame,
         'bd':None,
         'height':None,
-        'w':20,
+        'w':25,
         'bg':None,
         'fg':None,
         'font':None,
@@ -2010,7 +2019,7 @@ def specNum(frame):
                     'Prime'
                     ]
     specNum_list = [(str(i)+'. '+specNum_list[i]+ ' number') for i in range(len(specNum_list))]
-    combo = ttk.Combobox(specNum_frame, values= specNum_list, state= 'readonly', width=20)
+    combo = ttk.Combobox(specNum_frame, values= specNum_list, state= 'readonly', width=23)
     combo.current(0)
     spn_g_dic['column']+=1
     combo.grid(row=spn_g_dic['row'], column=spn_g_dic['column'])
@@ -2056,15 +2065,22 @@ def specNum(frame):
     
 #Function to explain the special numbers 
 def spnExplain(choice, label_obj, op_obj):
-    #set title accordingly 
-    #root.title(('Special Number -', choice.split(' ')[1]))
+    
     op_obj.widg.config(text='')
     if choice.split(' ')[2] == 'Square':
         choice = 'Square'
     else:
         choice = choice.split(' ')[1]
-    label_obj.widg.config(text=spn.specnum_explain[choice])
+    txt = spn.specnum_explain[choice]
+    label_obj.widg.config(text=txt)
+    
+    n_ex_ln = math.ceil(len(txt)/43) - 2
+    ##print(n_ex_ln)
+    s_factor = 10
+    configRoot(335, 242 + s_factor*n_ex_ln, 'Special Numbers')
     return
+
+#Checking if number is a certain special number
 def evalSpecNum(choice, num, label_obj):
     if len(num) == 0 or  not num.isnumeric():
         label_obj.widg.config(text='Invalid Entry!')
@@ -2082,11 +2098,11 @@ def evalSpecNum(choice, num, label_obj):
 
 #Function for verifying Sign In:
 def SignInVer(label_obj, user, password):
-    print(f'{user=}')
-    print(f'{password=}')
+    #print(f'{user=}')
+    #print(f'{password=}')
 
     foundu,foundp = False,False
-    print(foundp, foundu)
+    #print(foundp, foundu)
 
     mycursorU = mydb.cursor( )
     mycursorU.execute("Select Username from accounts")
@@ -2097,7 +2113,7 @@ def SignInVer(label_obj, user, password):
     myresultP = mycursorP.fetchall( )
 
     for u in myresultU:
-        print(u)
+        #print(u)
         if(user==u[0]):
             global current_user
             current_user = u[0]
@@ -2105,7 +2121,7 @@ def SignInVer(label_obj, user, password):
             break
 
     for p in myresultP:
-        print(p)
+        #print(p)
         if(password==p[0]):
             global current_pass
             current_pass = p[0]
@@ -2116,7 +2132,7 @@ def SignInVer(label_obj, user, password):
     if(foundu==True) and (foundp==True):  
         global is_guest
         is_guest = False
-        print('Sign In success')
+        #print('Sign In success')
         homescreen(frame=signIn_frame)        
     else:
         label_obj.widg.config(text='Username or password incorrect')
@@ -2136,11 +2152,11 @@ def signUpVer(label_obj, user, password, password_conf):
         try:
             mycursor.executemany(sqlform, acc)
             mydb.commit( )
-            print("Congratulations!!! You've made an account")
+            #print("Congratulations!!! You've made an account")
             initSignInUp(signUp_frame)
             return
         except:
-            print("ERROR: Username Already Exists!")
+            #print("ERROR: Username Already Exists!")
             label_obj.widg.config(text='ERROR: Username Already Exists!')
             return
     else:
@@ -2154,7 +2170,7 @@ def delPofileVer():
     sql = f"DELETE FROM accounts WHERE Username='{current_user}'"
     mycursor.execute(sql)
     mydb.commit( )
-    print("Your account was deleted")
+    #print("Your account was deleted")
     initSignInUp(frame=delProf_frame)
 
     return
@@ -2169,7 +2185,7 @@ def changeUserVer(label_obj, user, new_user, password):
         sql = f"UPDATE accounts SET Username='{new_user}' WHERE Passcode='{password}'"
         mycursor.execute(sql)
         mydb.commit( )
-        print("Your username was updated")
+        #print("Your username was updated")
 
     return
 
@@ -2184,7 +2200,7 @@ def changePassVer(label_obj, user, password, new_password, new_passwordConfirm):
                 sql = f"UPDATE accounts SET Passcode='{new_password}' WHERE Username='{user}'"
                 mycursor.execute(sql)
                 mydb.commit( )
-                print("Your password was updated")
+                #print("Your password was updated")
                 current_pass = new_password
                 label_obj.widg.config(text="Your password was updated")
             else:

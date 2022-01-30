@@ -72,7 +72,7 @@ def Factorial(num):
 	else:
 		return num * Factorial(num-1)
 
-def isArmstrong(num): # Function to check whether the number is armstrong or not
+def isArmstrong(num): # Function to check whether the number is armstrong or Not
 	d = 0
 	s = 0
 	n = num
@@ -83,7 +83,7 @@ def isArmstrong(num): # Function to check whether the number is armstrong or not
 	if s==n:
 		return 'Armstrong number'
 	else:
-		return 'not an Armstrong number'       
+		return 'Not an Armstrong number'       
 
 def isPerfect(num): #Eg. 28,8,496
 	sum = 0
@@ -92,9 +92,9 @@ def isPerfect(num): #Eg. 28,8,496
 			sum+=i
 
 	if num==sum:
-		return True
+		return 'Not Perfect number'
 	else:
-		return False
+		return 'Perfect number'
 
 def isAutomorphic(num):
 	# In mathematics, a number is called an Automorphic number if the square of the number ends with the same number.
@@ -107,14 +107,14 @@ def isAutomorphic(num):
 	if(n1==n2):
 		return 'Automorphic number'
 	else:
-		return 'not Automorphic number'
+		return 'Not Automorphic number'
 
 def isBuzz(num):
 	# If the number ends with a 7 or is divisible by 7 then the number is a buzz number
 	if num%7==0 or num%10==7:
 		return 'Buzz number'
 	else:
-		return 'not Buzz number'
+		return 'Not Buzz number'
 
 def isCapricon(num):
 	# A number whose square divided into two parts, and the sum of the parts is 
@@ -129,7 +129,7 @@ def isCapricon(num):
 		if(sum==num):
 			return 'Capricorn number'
 		else:
-			return 'not Capricorn number'
+			return 'Not Capricorn number'
 	else:
 		return False            
 
@@ -147,10 +147,10 @@ def isDisarium(num):
 	if(s==num):
 		return 'Disarium number'
 	else:
-		return 'not Disarium number'
+		return 'Not Disarium number'
 
 def isDuck(num):
-	# A number that has atleast one '0' (but not at the beginning of the number ) is called a duck number
+	# A number that has atleast one '0' (but Not at the beginning of the number ) is called a duck number
 	num = str(num)
 	n = num[1:]
 	count=0
@@ -160,7 +160,7 @@ def isDuck(num):
 	if(count>0):
 		return 'Duck number'
 	else:
-		return 'not Duck number'
+		return 'Not Duck number'
 	
 def isEvil(num):
 	# binary expansion has an evil number of 1's if it is evil
@@ -168,7 +168,7 @@ def isEvil(num):
 	count_1 = decimal.count('1')
 	if count_1 % 2 == 0:
 		return 'Evil number'
-	return 'not Evil number'
+	return 'Not Evil number'
 
 def isEvenOdd(num):
   # If a number is divisible by 2 its said to be an even number
@@ -181,7 +181,7 @@ def isKrishnamurthy(num):
 	fact = math.factorial(num)
 	if fact == num:
 		return 'Krishnamurthy number'
-	return 'not Krishnamurthy number'
+	return 'Not Krishnamurthy number'
 
 def isMagic(num):
 	# If the reverse of the sum of digits multiplied by sum of digits is equal to the original number, then its a magic number
@@ -200,7 +200,7 @@ def isMagic(num):
 	
 	if rev_sum * sum == num:
 		return 'Magic number'
-	return 'not Magic number'
+	return 'Not Magic number'
 
 def isNeon(num):
 	# sum of the digits of the square of the numbers is equal to the number itself
@@ -211,7 +211,7 @@ def isNeon(num):
 		num_sqr //= 10
 	if num == sum:
 		return 'Neon number'
-	return 'not Neon number'
+	return 'Not Neon number'
 	
 def isNiven(num):
 	sum = 0
@@ -221,28 +221,27 @@ def isNiven(num):
 		temp = temp // 10
 	if num % sum == 0:
 		return 'Niven number'
-	return 'not Niven number'  
+	return 'Not Niven number'  
 	
 def isPalindrome(num): 
 	# if the revers of a number is equal to itself
 	val = str(num)
 	if val == val[::-1]:
 		return 'Palindrome'
-	return 'not Palindrome'
+	return 'Not Palindrome'
 
 def isPerfectSq(n):
 	if (math.sqrt(n))%1 == 0:
 		return 'Perfect Square'
 	else:
-		return 'not a Perfect Square'
+		return 'Not a Perfect Square'
 	
 def isStrong(n):
 	#Strong number is a special number whose sum of the factorial of digits is equal to the original number
 	a = str(n)
 	sum = 0
 	if n<0 or n ==0:
-		print("It is not a strong no.")
-		quit()
+		pass
 	
 	else:
 		for i in a:
@@ -253,7 +252,7 @@ def isStrong(n):
 	if sum == n:
 		return 'Strong number'
 	else:
-		return 'not Strong number'
+		return 'Not Strong number'
 	
 
 def isPronic(n):
@@ -265,7 +264,7 @@ def isPronic(n):
 			if i * (i + 1) == n:
 				return 'Pronic number'
 		else:
-			return 'not Pronic number'
+			return 'Not Pronic number'
 
 def isSpy(n):
 	#A positive integer is called a spy number if the sum and product of its digits are equal
@@ -279,7 +278,7 @@ def isSpy(n):
 	if (sum == product):
 		return 'Spy number'
 	else:
-		return 'not Spy number'
+		return 'Not Spy number'
 
 
 def isTech(n):
@@ -302,7 +301,7 @@ def isTech(n):
 	if (Sum)**2 == a:
 		return 'Tech number'
 	else:
-		return 'not Tech number'
+		return 'Not Tech number'
 
 def isPrime(n):
 	# A Prime number is a number that is only divisible by itself and 1
@@ -313,4 +312,4 @@ def isPrime(n):
 	if(count==n-2):
 		return 'Prime number'
 	else:
-		return 'not Prime number'
+		return 'Not Prime number'

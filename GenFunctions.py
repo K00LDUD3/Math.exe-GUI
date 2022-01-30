@@ -1,6 +1,9 @@
 from tkinter import *
 import tkinter.font as font
+from tkinter import ttk
+from tkinter.ttk import *
 
+theme = 'xpnative'
 class GenFunc:
     widg = None
     text = ''
@@ -38,11 +41,13 @@ class GenFunc:
 
     #Generating a BUTTON using parameters stored in a dictionary
     def createB(self):
+        s=ttk.Style(master=None)
+        s.theme_use(theme)
         self.widg = Button(
             master= self.wd['master'],
             text=self.text,
-            activebackground= self.wd['act_bg'],
-            activeforeground= self.wd['act_fg'],
+            #activebackground= self.wd['act_bg'],
+            #activeforeground= self.wd['act_fg'],
             width=self.wd['w'],
             height=self.wd['height'],
             font=self.wd['font'],
@@ -92,6 +97,8 @@ class GenFunc:
 
     #Generating a LABEL using parameters stored in a dictionary
     def createL(self):
+        s=ttk.Style(master=None)
+        s.theme_use(theme)
         self.widg = Label(
             master= self.wd['master'],
             text=  self.text,
@@ -147,6 +154,8 @@ class GenFunc:
 
     #Generating a ENTRY (aka textbox) using parameters stored in a dictionary
     def createE(self):
+        s=ttk.Style(master=None)
+        s.theme_use(theme)
         self.widg = Entry(
             master= self.wd['master'],
             textvariable= self.text,

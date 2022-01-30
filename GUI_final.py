@@ -11,15 +11,19 @@ import mysql.connector
 #from PIL import Image,ImageTk
 
 #Connecting the Database
-mydb = mysql.connector.connect(host="localhost", user="root" , password="shob25" , database="Math")
+mydb = mysql.connector.connect(
+    host="localhost", 
+    user="root" , 
+    password="shob25" , 
+    database="Math"
+)
 
 #Creating WINDOW for hosting FRAMES
 root = Tk()
 root.title('Math.exe')
 #root.resizable(False, False)
 root.geometry("365x150")
-#root.iconbitmap("Z:/Coding/MyPrograms/Shoubhit's Python Programs/Shoubhit's Programs/Uncategorized/Math.exe-GUI-main/Logo.png")
-
+root.iconbitmap("Z:/Coding/MyPrograms/Shoubhit's Python Programs/Shoubhit's Programs/Uncategorized/Math.exe-GUI-main/Logo.ico")
 
 #Creating FRAMES for hosting WIDGETS
 initSignInUp_frame = LabelFrame(root) #Signing in or signing up
@@ -90,7 +94,8 @@ def configRoot(x, y, title):
 def initSignInUp(frame):
     hideFrame(frame)
 
-    
+    #Setting size and title of window
+    configRoot(235,170,'Main Screen')
 
     #Resetting is_guest
     global is_guest
@@ -113,7 +118,7 @@ def initSignInUp(frame):
         'pady':None,
         'relief':None,
         'underline':None,
-        'w':15,
+        'w':25,
         'wraplength':None
     }
 
@@ -160,6 +165,9 @@ def switchButton(b1, b2):
 def signIn(frame):
     hideFrame(frame)
 
+    #Setting size and title of window
+    configRoot(300, 185, 'Sign In')
+    
     #Setting is_guest as false
     global is_guest
     is_guest = False
@@ -286,6 +294,9 @@ def signIn(frame):
 def signUp(frame):
     hideFrame(frame)
 
+    #Setting size and title of window
+    configRoot(300, 266, 'Sign Up')
+
     #Setting is_guest as false
     global is_guest
     is_guest = False
@@ -379,6 +390,7 @@ def signUp(frame):
     #Row 3
     signUp_g_dic['row']+= 1
     signUp_g_dic['column'] = 0
+    signUp_l_dic['w'] = 17
     l_passConf = gfunc.GenFunc('label', signUp_l_dic, 'Confirm Password:', signUp_g_dic)
     signUp_g_dic['column']+=1
     e_passConf = gfunc.GenFunc('entry', signUp_e_dic, StringVar(), signUp_g_dic)
@@ -406,7 +418,7 @@ def signUp(frame):
     #Row 6
     signUp_g_dic['row']+= 1
     signUp_g_dic['column'] = 1
-    signUp_l_dic['w'] = 15
+    signUp_l_dic['w'] = 17
     l_guest = gfunc.GenFunc('label', signUp_l_dic, 'Continue as Guest', signUp_g_dic)
     l_guest.widg.bind("<Button-1>", lambda e: switchGuestBool(signUp_frame))
 
@@ -474,8 +486,10 @@ def homescreen(frame):
 
     #Row 3
     global is_guest
+    
     if not(is_guest):
-        configRoot(300, 150, 'Homescreen')
+        global current_user
+        configRoot(300, 167, f'Homescreen - {current_user}')
         homescreen_g_dic['column'] = 1
         b_editProf = gfunc.GenFunc('button', homescreen_b_dic, 'Edit Profile', homescreen_g_dic)
         b_editProf.widg.config(command= lambda: editProfile(homescreen_frame))
@@ -486,7 +500,7 @@ def homescreen(frame):
         b_signOut = gfunc.GenFunc('button', homescreen_b_dic, 'Sign Out', homescreen_g_dic)
         b_signOut.widg.config(command= lambda: initSignInUp(homescreen_frame))
     else:
-        configRoot(300, 100, 'Homescreen')
+        configRoot(290, 117, 'Homescreen - Guest')
         b_signOut = gfunc.GenFunc('button', homescreen_b_dic, 'Sign Out', homescreen_g_dic)
         b_signOut.widg.config(command= lambda: initSignInUp(homescreen_frame))
 
@@ -497,6 +511,9 @@ def homescreen(frame):
 #Guessing game menu
 def initGG(frame):
     hideFrame(frame)
+
+    #Setting size and title of window
+    configRoot(290, 117, 'Guessing Game')
 
     global no_tries
     no_tries = 0
@@ -562,7 +579,7 @@ def initGG(frame):
 
     #Row 1
     b_start = gfunc.GenFunc('button', initGG_b_dic, 'Start', initGG_g_dic)
-    b_start.widg.config(command= lambda: guessG(initGG_frame, genNum(combo.get())))
+    b_start.widg.config(command= lambda: guessG(initGG_frame, genNum(combo.get()),combo.get()))
     diff_list = [(str(i)+'. '+diff_list[i]+ ' Level') for i in range(len(diff_list))]
     combo = ttk.Combobox(initGG_frame, values= diff_list, state= 'readonly', width=20)
     combo.bind('<<ComboboxSelected>>', lambda event: diff_expl(l_range, combo.get()))
@@ -600,8 +617,11 @@ def diff_expl(label_obj, choice):
     return
 
 #Guessing game 
-def guessG(frame, number):
+def guessG(frame, number, choice):
     hideFrame(frame)
+
+    #Setting size and title of window
+    configRoot(290, 145, choice[3:])
 
     guessG_l_dic = {
         'master':guessG_frame,
@@ -613,7 +633,7 @@ def guessG(frame, number):
         'fg':None,
         'height':None,
         'image':None,
-        'justify':None,
+        'justify':CENTER,
         'padx':None,
         'pady':None,
         'relief':None,
@@ -683,7 +703,7 @@ def guessG(frame, number):
     guessG_g_dic['column'] = 0
     guessG_g_dic['row'] = 1
     guessG_g_dic['cspan'] = 2
-    guessG_l_dic['w'] = 20
+    guessG_l_dic['w'] = 30
     l_op = gfunc.GenFunc('label', guessG_l_dic, '', guessG_g_dic)
 
     #Row 3
@@ -1158,6 +1178,10 @@ def delProf(frame):
 #Calculator menu
 def calcMenu(frame):
     hideFrame(frame)
+
+    #Setting size and title of window
+    configRoot(290, 204, 'Calculator Menu')
+
     #Defining param DICTIONARIES for WIDGETS
     cm_b_dic = {
         'master':calcMenu_frame,
@@ -1175,7 +1199,7 @@ def calcMenu(frame):
         'pady':None,
         'relief':None,
         'underline':None,
-        'w':25,
+        'w':35,
         'wraplength':None
     }
     cm_g_dic = {
@@ -1209,6 +1233,9 @@ def calcMenu(frame):
 
 def normCalc(frame):
     hideFrame(frame)
+
+    #Setting size and title of window
+    configRoot(340, 285, 'Calculator')
 
     normCalc_b_dic = {
         'master':normCalc_frame,
@@ -1820,30 +1847,72 @@ def computeQuadRoots(label_obj, a, b, c):
     except:
         label_obj.widg.config(text='Floating values only!')
         return
-    
+
     #Preventing div by 0 err to be thrown
     if a == 0:
         label_obj.widg.config(text='Coefficient of x^2 cannot be 0!')
         return
 
     #Discriminant
-    d = (b**2) - (4*a*c)
+    d = b**2 - 4*a*c
 
     #Roots
-    r1 = str((-b-cmath.sqrt(d))/(2*a))[1:-1]
-    r2 = str((-b+cmath.sqrt(d))/(2*a))[1:-1]
+    r1 = str((-b-cmath.sqrt(d))/(2*a)).replace('j','i')
+    r2 = str((-b+cmath.sqrt(d))/(2*a)).replace('j','i')
+    
+    print(r1,r2)
+
+    label_obj.widg.config(text=f'Root 1: {r1}\nRoot 2: {r2}')
+    return
+#def computeQuadRoots(label_obj, a, b, c):
+    #Checking if only floating point / integer values are inputted
+    #try: 
+    #    a = float(a)
+    #    b = float(b)
+    #    c = float(c)
+    #except:
+    #    label_obj.widg.config(text='Floating values only!')
+    #   return
+    
+    #Preventing div by 0 err to be thrown
+    #if a == 0:
+    #    label_obj.widg.config(text='Coefficient of x^2 cannot be 0!')
+    #    return#
+
+    #Discriminant
+    d = str(((b**2) - (4*a*c))/(4 * a**2)).replace('j','i')
+    real = -b/(2*a)
+
+    if real == 0:
+        if d == 0:
+            real = '0'
+    if d >= 0:
+        d='+'+d
+    r1 = str(real) + str(-1 * (d)).replace('j','i')
+    r2 = str(real) + str(+1 * (d)).replace('j','i')
+
+        
+    #Roots
+    print(r1, r2)
 
     #Cleaning up raw string roots
-    if r1.endswith('0j'):
+    
+    '''if r1.endswith('j'):
         r1 = r1[0:-3]
-    if r2.endswith('0j'):
-        r2 = r2[0:-3]
+    if r2.endswith('j'):
+        r2 = r2[0:-3]'''
+    r1 = r1.replace('j','i')
+    r2 = r2.replace('j','i')
+
     label_obj.widg.config(text=f'Root 1: {r1}\nRoot 2: {r2}')
     return
 
 #Special number programs
 def specNum(frame):
     hideFrame(frame)
+
+    #Setting size and title of window
+    configRoot(300, 282, 'Special Numbers')
 
     #Definging param DICTIONARIES for WIDGETS
     spn_l_dic = {
@@ -1863,7 +1932,7 @@ def specNum(frame):
         'text':None,
         'textvar':None,
         'underline':None,
-        'w':15,
+        'w':17,
         'wraplength':None
     }
     spn_b_dic = {
@@ -1938,8 +2007,8 @@ def specNum(frame):
                     'Pronic',
                     'Spy',
                     'Tech',
-                    'Prime',
-                    'Factorial of a']
+                    'Prime'
+                    ]
     specNum_list = [(str(i)+'. '+specNum_list[i]+ ' number') for i in range(len(specNum_list))]
     combo = ttk.Combobox(specNum_frame, values= specNum_list, state= 'readonly', width=20)
     combo.current(0)
@@ -1964,7 +2033,7 @@ def specNum(frame):
     spn_g_dic['row']+=1
     spn_g_dic['rspan'] = 2
     spn_l_dic['w'] = 40
-    spn_l_dic['wraplength'] = 300
+    spn_l_dic['wraplength'] = 245
     l_exp = gfunc.GenFunc('label', spn_l_dic, '', spn_g_dic)
     spnExplain(combo.get(), l_exp, l_op)
     spn_g_dic['rspan'] = 1

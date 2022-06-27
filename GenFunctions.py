@@ -2,20 +2,25 @@ from tkinter import *
 import tkinter.font as font
 from tkinter import ttk
 from tkinter.ttk import *
+'''
+TKINTER - supports few widgets 
+TTK - supports lotta widgets BUT it doesnt support grid, pack and place so tkinter is used along with it
+'''
 
-theme = 'xpnative'
+theme = 'xpnative' #Setting the theme (Inbuilt themes)
 class GenFunc:
-    widg = None
+    widg = None #Current widget
     text = ''
-    wd = {} #Widget Dictionary
-    gd = {}
-    #frame = None
-    def __init__(self, type, widg_dict, text, grid_dict) -> None:
+    wd = {} #Widget Dictionary containing features 
+    gd = {} #Grid Dictionary containing placement info
+    def __init__(self, type, widg_dict, text, grid_dict): #Constructor
         #Assigning param variables to class variables
+        #SELF keyword is python equivalent of THIS in java
         self.text = text
         self.wd = widg_dict
         self.gd = grid_dict
         '''
+        GRID dictionary parameters
         gd = {
             'column':None,
             'row':None,
@@ -28,7 +33,7 @@ class GenFunc:
         }
         '''
 
-        #checking type of widg (button, label, textbox), then call a function to create that specific widg
+        #checking type of widg (button, label, textbox), then call a function to create that specific widget
         if type.upper() == 'BUTTON':
             self.createB()
         elif type.upper() == 'LABEL':
@@ -39,14 +44,14 @@ class GenFunc:
             print('err: widget unidentified')
         return
 
-    #Generating a BUTTON using parameters stored in a dictionary
+    #Generating a BUTTON using parameters/features stored in a dictionary
     def createB(self):
-        s=ttk.Style(master=None)
+        s=ttk.Style(master=None) #Setting a theme
         s.theme_use(theme)
         self.widg = Button(
             master= self.wd['master'],
             text=self.text,
-            #activebackground= self.wd['act_bg'],
+            #activebackground= self.wd['act_bg'], '''ACTIVE BACK/FORE GROUND doesnt work with xpnative theme'''
             #activeforeground= self.wd['act_fg'],
             width=self.wd['w'],
             height=self.wd['height'],
@@ -73,6 +78,7 @@ class GenFunc:
             ipady= self.gd['ipady']
         )
         '''
+        Use these KEYS for the features
         button_widg_dict = {
             'master':Nones,
             'act_bg':None,
@@ -95,7 +101,7 @@ class GenFunc:
         '''
         return
 
-    #Generating a LABEL using parameters stored in a dictionary
+    #Generating a LABEL using parameters/features stored in a dictionary
     def createL(self):
         s=ttk.Style(master=None)
         s.theme_use(theme)
@@ -152,7 +158,7 @@ class GenFunc:
         '''
         return
 
-    #Generating a ENTRY (aka textbox) using parameters stored in a dictionary
+    #Generating a ENTRY (aka textbox) using parameters/features stored in a dictionary
     def createE(self):
         s=ttk.Style(master=None)
         s.theme_use(theme)
